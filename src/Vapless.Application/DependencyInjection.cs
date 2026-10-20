@@ -16,6 +16,7 @@ public static class DependencyInjection
     {
         services.AddSingleton<ISavingsCalculator, SavingsCalculator>();
         services.AddSingleton<ISavingsComparisonCatalog, SavingsComparisonCatalog>();
+        services.AddSingleton<ICalculatorStrategy<PodProfileInput, NicotineProfileSnapshot>, NicotineProfileCalculator>();
         services.AddSingleton<ICravingInterventionFactory, CravingInterventionFactory>();
         services.AddSingleton<ISwipeEvaluationStrategy, SwipeEvaluationStrategy>();
 
@@ -37,12 +38,13 @@ public static class DependencyInjection
 
         services.AddScoped<ICravingService, CravingService>();
         services.AddScoped<ISavingsService, SavingsService>();
+        services.AddScoped<INicotineProfileService, NicotineProfileService>();
+        services.AddScoped<IAssessmentService, AssessmentService>();
         services.AddScoped<IComunaPulseService, ComunaPulseService>();
         services.AddScoped<IPsychoSocialAnalysisService, PsychoSocialAnalysisService>();
         services.AddScoped<IHackService, HackService>();
         services.AddScoped<IDojoService, DojoService>();
         services.AddScoped<ISupportService, SupportService>();
-        services.AddScoped<ISchoolAirService, SchoolAirService>();
         services.AddScoped<IProfileService, ProfileService>();
 
         return services;

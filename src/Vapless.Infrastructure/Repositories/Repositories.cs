@@ -105,21 +105,6 @@ public sealed class SupportHotlineRepository : ISupportHotlineRepository
         await _db.SupportHotlines.AsNoTracking().ToListAsync(ct);
 }
 
-public sealed class SchoolAirRepository : ISchoolAirRepository
-{
-    private readonly Data.VaplessDbContext _db;
-    public SchoolAirRepository(Data.VaplessDbContext db) => _db = db;
-
-    public async Task AddAsync(SchoolAirReading reading, CancellationToken ct = default) =>
-        await _db.SchoolAirReadings.AddAsync(reading, ct);
-
-    public async Task<IReadOnlyList<SchoolAirReading>> ListLatestAsync(int take, CancellationToken ct = default) =>
-        await _db.SchoolAirReadings.AsNoTracking()
-            .OrderByDescending(r => r.RecordedAt)
-            .Take(take)
-            .ToListAsync(ct);
-}
-
 public sealed class UnitOfWork : IUnitOfWork
 {
     private readonly Data.VaplessDbContext _db;

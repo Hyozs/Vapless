@@ -21,6 +21,17 @@ public interface ISavingsService
     Task<SavingsSummaryDto> GetSummaryAsync(int? profileId, CancellationToken ct = default);
 }
 
+public interface INicotineProfileService
+{
+    Task<NicotineProfileDto> GetAsync(int? profileId, CancellationToken ct = default);
+}
+
+public interface IAssessmentService
+{
+    Task<AssessmentQuestionsDto> GetQuestionsAsync(CancellationToken ct = default);
+    Task<AssessmentResultDto> EvaluateAsync(AssessmentSubmissionDto submission, CancellationToken ct = default);
+}
+
 public interface IComunaPulseService
 {
     Task<SurveyAcceptedDto> SubmitAsync(SurveySubmissionDto submission, CancellationToken ct = default);
@@ -47,11 +58,6 @@ public interface IDojoService
 public interface ISupportService
 {
     Task<IReadOnlyList<SupportHotlineDto>> GetHotlinesAsync(CancellationToken ct = default);
-}
-
-public interface ISchoolAirService
-{
-    Task<IReadOnlyList<SchoolAirReadingDto>> GetLatestAsync(CancellationToken ct = default);
 }
 
 public interface IProfileService

@@ -13,7 +13,15 @@ public class UserProgress : BaseEntity
     public DeviceType PrimaryDevice { get; set; } = DeviceType.Desechable;
     public bool IsActive { get; set; } = true;
 
+    public PodProfile PodProfile => PodProfileCatalog.For(PrimaryDevice);
+
     public decimal NicotineMgPerDay => PodsPerWeek / 7m * NicotineMgPerPod;
+
+    public decimal NicotineMgPerWeek => PodsPerWeek * NicotineMgPerPod;
+
+    public decimal CigarettesEquivalentPerWeek => PodsPerWeek * PodProfile.CigarettesEquivalentPerPod;
+
+    public decimal WeeklyCostCop => PodsPerWeek * PodProfile.EstimatedCostCop;
 
     public int DaysClean(DateTime asOf)
     {
@@ -24,4 +32,8 @@ public class UserProgress : BaseEntity
     public decimal CopSaved(DateTime asOf) => DaysClean(asOf) * DailyCostCop;
 
     public decimal NicotineAvoidedMg(DateTime asOf) => DaysClean(asOf) * NicotineMgPerDay;
+
+    public decimal NicotineIngestedMg(DateTime asOf) => NicotineMgPerWeek * (DaysClean(asOf) / 7m);
+
+    public decimal CigarettesAvoided(DateTime asOf) => CigarettesEquivalentPerWeek * (DaysClean(asOf) / 7m);
 }

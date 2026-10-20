@@ -29,12 +29,12 @@ public sealed class ComunaPulseService : IComunaPulseService
     {
         if (!ComunaCatalog.IsValid(submission.ComunaCode))
         {
-            throw new ArgumentException("Esa comuna no existe en MedellÃ­n.");
+            throw new ArgumentException("Esa comuna no existe en Medellín.");
         }
 
         if (submission.Age is < 12 or > 19)
         {
-            throw new ArgumentException("La encuesta es para estudiantes entre 12 y 19 aÃ±os.");
+            throw new ArgumentException("La encuesta es para estudiantes entre 12 y 19 años.");
         }
 
         if (submission.FrequencyPerDay is < 0 or > 40)
@@ -44,17 +44,17 @@ public sealed class ComunaPulseService : IComunaPulseService
 
         if (!Enum.IsDefined(typeof(DeviceType), submission.DeviceType))
         {
-            throw new ArgumentException("Tipo de dispositivo no vÃ¡lido.");
+            throw new ArgumentException("Tipo de dispositivo no válido.");
         }
 
         if (!Enum.IsDefined(typeof(EmotionalTrigger), submission.Trigger))
         {
-            throw new ArgumentException("Disparador emocional no vÃ¡lido.");
+            throw new ArgumentException("Disparador emocional no válido.");
         }
 
         if (!Enum.IsDefined(typeof(FamilyContext), submission.FamilyContext))
         {
-            throw new ArgumentException("Contexto familiar no vÃ¡lido.");
+            throw new ArgumentException("Contexto familiar no válido.");
         }
 
         var survey = new RiskSurvey
@@ -75,7 +75,7 @@ public sealed class ComunaPulseService : IComunaPulseService
         var comuna = ComunaCatalog.GetName(survey.Comuna);
         return new SurveyAcceptedDto(
             true,
-            $"Gracias, ya quedÃ³. Tu respuesta es anÃ³nima y ayuda a leer el pulso de {comuna}.",
+            $"Gracias, ya quedó. Tu respuesta es anónima y ayuda a leer el pulso de {comuna}.",
             submission.ComunaCode,
             comuna);
     }

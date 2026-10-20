@@ -102,17 +102,21 @@
         return;
       }
 
-      container.innerHTML = analysis.insights
-        .map(function (insight) {
-          return (
-            '<div class="insight">' +
-            "<h4>" + utils.escapeHtml(insight.title) + "</h4>" +
-            "<p>" + utils.escapeHtml(insight.finding) + "</p>" +
-            '<p class="rec">' + utils.escapeHtml(insight.recommendation) + "</p>" +
-            "</div>"
-          );
-        })
-        .join("");
+      const items = analysis.insights.map(function (insight, index) {
+        const enough = insight.hasSufficientData;
+        return {
+          id: "analysis-" + index,
+          title: insight.title,
+          subtitle: enough ? "Dato visible para la ciudad" : "Muestra insuficiente: dato enmascarado",
+          badge: enough ? "Visible" : "Enmascarado",
+          badgeClass: enough ? "green" : "",
+          content:
+            '<p class="card-text">' + utils.escapeHtml(insight.finding) + "</p>" +
+            '<p class="rec">' + utils.escapeHtml(insight.recommendation) + "</p>"
+        };
+      });
+
+      window.VaplessAccordion.render(container, items, { group: "analysis" });
     } catch (error) {
       container.innerHTML = '<p class="card-text">No pudimos cargar el análisis psicosocial.</p>';
     }
@@ -127,58 +131,30 @@
         return;
       }
 
-      container.innerHTML = lines
-        .map(function (line) {
-          const numeric = /^\d+$/.test(line.phone);
-          const phone = numeric
-            ? '<a class="hotline-phone" href="tel:' + line.phone + '">' + utils.escapeHtml(line.phone) + "</a>"
-            : '<span class="hotline-phone" style="font-size: 14px">' + utils.escapeHtml(line.phone) + "</span>";
+      const items = lines.map(function (line, index) {
+        const numeric = /^\d+$/.test(line.phone);
+        const phone = numeric
+          ? '<a class="hotline-phone" href="tel:' + utils.escapeHtml(line.phone) + '">' + utils.escapeHtml(line.phone) + "</a>"
+          : '<span class="hotline-phone" style="font-size: 14px">' + utils.escapeHtml(line.phone) + "</span>";
 
-          return (
-            '<div class="hotline" style="padding: 12px 0; border-bottom: 1px dashed rgba(35,41,54,.9)">' +
-            "<div>" +
-            '<h3 class="card-title">' + utils.escapeHtml(line.name) + "</h3>" +
+        return {
+          id: "line-" + index,
+          title: line.name,
+          subtitle: line.schedule + " · " + line.scope,
+          badge: numeric ? "Llamar ahora" : "Contacto",
+          badgeClass: numeric ? "green" : "",
+          content:
             '<p class="card-text">' + utils.escapeHtml(line.description) + "</p>" +
-            '<p class="card-text dim small mt-8">' + utils.escapeHtml(line.schedule) + " · " + utils.escapeHtml(line.scope) + "</p>" +
-            "</div>" +
+            '<div class="btn-row mt-12">' +
             phone +
+            '<a class="btn btn-ghost btn-small" href="tel:' + utils.escapeHtml(line.phone) + '">Llamar ' + utils.escapeHtml(line.phone) + "</a>" +
             "</div>"
-          );
-        })
-        .join("");
+        };
+      });
+
+      window.VaplessAccordion.render(container, items, { group: "support" });
     } catch (error) {
       container.innerHTML = '<p class="card-text">No pudimos cargar las líneas de apoyo.</p>';
-    }
-  }
-
-  async function loadAir() {
-    const container = document.getElementById("air-card");
-    try {
-      const readings = await api.get("/school-air/metrics");
-      if (!readings || !readings.length) {
-        container.innerHTML = '<p class="card-text">Sin lecturas por ahora.</p>';
-        return;
-      }
-
-      const cells = readings
-        .slice(0, 4)
-        .map(function (reading) {
-          return (
-            '<div class="air-cell">' +
-            '<div class="label">' + utils.escapeHtml(reading.zone) + "</div>" +
-            '<div class="value">' + utils.formatNumber(reading.co2Ppm, 0) + " ppm CO₂</div>" +
-            '<div class="label">' + utils.escapeHtml(reading.airQualityLabel) + " · PM2.5 " +
-            utils.formatNumber(reading.pm25, 1) + "</div>" +
-            "</div>"
-          );
-        })
-        .join("");
-
-      container.innerHTML =
-        '<div class="air-grid">' + cells + "</div>" +
-        '<p class="synthetic-note">synthetic: true · datos simulados para el prototipo escolar.</p>';
-    } catch (error) {
-      container.innerHTML = '<p class="card-text">No pudimos cargar el aire escolar.</p>';
     }
   }
 
@@ -273,7 +249,6 @@
     loadRiskMap();
     loadAnalysis();
     loadHotlines();
-    loadAir();
     loadScenarios();
   }
 

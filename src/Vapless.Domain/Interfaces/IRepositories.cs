@@ -38,12 +38,6 @@ public interface ISupportHotlineRepository
     Task<IReadOnlyList<SupportHotline>> ListAsync(CancellationToken ct = default);
 }
 
-public interface ISchoolAirRepository
-{
-    Task AddAsync(SchoolAirReading reading, CancellationToken ct = default);
-    Task<IReadOnlyList<SchoolAirReading>> ListLatestAsync(int take, CancellationToken ct = default);
-}
-
 public interface IUnitOfWork
 {
     Task<int> SaveChangesAsync(CancellationToken ct = default);

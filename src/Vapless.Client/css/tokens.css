@@ -1,33 +1,62 @@
 :root {
-  --vapless-bg: #0b0d12;
-  --vapless-bg-soft: #10141c;
-  --vapless-surface: #141821;
+  /* Colores Vapless */
+  --vapless-bg: #0b0d12; /* BG profundo: fondo de pantalla */
+  --vapless-bg-energy: #111827; /* Negro Energía: fondo principal */
+  --vapless-surface: #141821; /* Surface: tarjetas y sheets */
   --vapless-surface-hover: #1c2230;
-  --vapless-border: #232936;
+  --vapless-border: #232936; /* Borde: tarjetas e inputs */
 
-  --vapless-yellow: #facc15;
+  --vapless-yellow: #facc15; /* Amarillo Vapless: CTA, rachas, punto */
   --vapless-yellow-soft: rgba(250, 204, 21, 0.12);
-  --vapless-orange: #f97316;
+  --vapless-orange: #f97316; /* Naranja Impulso: solo craving */
   --vapless-orange-soft: rgba(249, 115, 22, 0.14);
-  --vapless-green: #4ade80;
+  --vapless-green: #4ade80; /* Verde Progreso: logros y confirmaciones */
   --vapless-green-soft: rgba(74, 222, 128, 0.12);
+  --vapless-white: #f8fafc; /* Blanco Nube: fondos claros */
 
-  --vapless-text: #f8fafc;
-  --vapless-text-muted: #94a3b8;
-  --vapless-text-dim: #64748b;
+  --vapless-text: #e5e7eb; /* Texto primario */
+  --vapless-text-muted: #9ca3af; /* Texto secundario */
+  --vapless-text-dim: #6b7280; /* Placeholders y deshabilitados */
 
+  /* Tipografía */
   --font-title: "Poppins", "Segoe UI", system-ui, sans-serif;
   --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
 
+  --fs-12: 12px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-20: 20px;
+  --fs-28: 28px;
+  --fs-36: 36px;
+  --fs-48: 48px;
+  --fs-72: 72px;
+
+  /* Formas */
+  --radius-btn: 12px;
+  --radius-card: 18px;
+  --radius-modal: 28px;
+  --radius-pill: 999px;
   --radius-sm: 12px;
   --radius-md: 18px;
-  --radius-lg: 26px;
-  --radius-pill: 999px;
+  --radius-lg: 20px;
 
-  --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.35);
+  /* Espaciado */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 40px;
+
+  /* Sombras */
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-yellow: 0 12px 32px rgba(250, 204, 21, 0.22);
   --shadow-orange: 0 12px 32px rgba(249, 115, 22, 0.28);
 
   --nav-height: 76px;
   --app-width: 540px;
+  --app-width-desktop: 1180px;
+  --sidebar-width: 236px;
 }

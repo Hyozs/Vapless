@@ -1,209 +1,364 @@
 <!DOCTYPE html>
-<html lang="es-CO">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0B0D12" />
-  <meta name="description" content="vapless. Una ruta para dejar o reducir el vapeo. Menos vape. Más vida." />
-  <title>vapless. — Menos vape. Más vida.</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/fonts.css" />
-  <link rel="stylesheet" href="css/tokens.css" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <div class="app">
-    <header class="app-header">
-      <div class="brand">
-        <span class="brand-name">vapless<span class="brand-dot">.</span></span>
-        <span class="brand-slogan">Menos vape. Más vida.</span>
-      </div>
-      <div class="header-chip">Racha <strong id="header-streak">0</strong> días</div>
-    </header>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B0D12" />
+    <meta name="description" content="vapless. Menos vape. Más vida." />
+    <title>vapless. — Menos vape. Más vida.</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/icon.svg" />
+    <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="brand">
+          <span class="brand-name">vapless<span class="brand-dot">.</span></span>
+          <span class="brand-slogan">Menos vape. Más vida.</span>
+        </div>
+        <span class="header-chip"><strong id="header-streak">0</strong> días vapeless</span>
+      </header>
 
-    <main>
-      <!-- ================= SALIDA ================= -->
-      <section id="view-salida" class="view is-active" aria-label="Inicio">
-        <div class="hero">
-          <div class="hero-label">Tu ruta de salida</div>
-          <div class="streak-wrap">
-            <svg class="streak-ring" viewBox="0 0 200 200" aria-hidden="true">
-              <circle class="streak-track" cx="100" cy="100" r="86" />
-              <circle class="streak-arc" id="streak-arc" cx="100" cy="100" r="86" />
-            </svg>
-            <div class="streak-center">
-              <span class="hero-days" id="streak-days">0</span>
-              <span class="hero-days-label" id="streak-label">días de racha</span>
+      <main>
+        <!-- ================= TAB 1 · INICIO ================= -->
+        <section id="view-inicio" class="view is-active" aria-label="Inicio">
+          <div class="hero">
+            <div class="hero-greeting">
+              <span class="hero-greeting-text" id="greeting">Hola, parce</span>
+              <span class="hero-greeting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 11V7a1.5 1.5 0 0 1 3 0v4" />
+                  <path d="M10 11V5.5a1.5 1.5 0 0 1 3 0V11" />
+                  <path d="M13 11V7a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-1a5 5 0 0 1-4.2-2.3L4 14a1.5 1.5 0 0 1 2.4-1.8L8 13.5" />
+                </svg>
+              </span>
             </div>
-          </div>
-          <button class="btn btn-craving btn-block mt-12" id="craving-open" type="button">Registrar craving</button>
-          <div class="hero-actions mt-12">
-            <button class="btn btn-ghost btn-small" id="toggle-profile" type="button">Ajustar mis datos</button>
-            <button class="btn btn-ghost btn-small" id="refresh-dashboard" type="button">Actualizar</button>
-          </div>
-        </div>
 
-        <div class="stat-grid">
-          <div class="stat">
-            <div class="stat-label">Ahorrado</div>
-            <div class="stat-value green" id="stat-cop">$0</div>
-            <div class="stat-sub" id="stat-cop-sub">COP</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Vida recuperada</div>
-            <div class="stat-value yellow" id="stat-nicotine">0 mg</div>
-            <div class="stat-sub">Nicotina que tu cuerpo no recibió</div>
-          </div>
-        </div>
+            <div class="streak-wrap">
+              <svg class="streak-ring" viewBox="0 0 200 200" aria-hidden="true">
+                <circle class="streak-track" cx="100" cy="100" r="86" />
+                <circle class="streak-arc" id="streak-arc" cx="100" cy="100" r="86" />
+              </svg>
+              <div class="streak-center">
+                <span class="hero-days" id="streak-days">0</span>
+                <span class="hero-days-label" id="streak-label">días vapeless</span>
+              </div>
+            </div>
 
-        <div class="card mt-12">
-          <div class="card-eyebrow">Lo que ya cambió</div>
-          <p class="card-text" id="savings-phrase">Cargando tu resumen…</p>
-          <p class="card-text mt-8" id="nicotine-phrase"></p>
-        </div>
+            <div class="progress-line">
+              <div class="progress-line-item">
+                <span class="progress-dot green" aria-hidden="true"></span>
+                <span id="home-cop">+ $0 ahorrados</span>
+              </div>
+              <div class="progress-line-item">
+                <span class="progress-dot green" aria-hidden="true"></span>
+                <span id="home-life">+ 0 mg de vida recuperada</span>
+              </div>
+            </div>
 
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Vida recuperada</h2>
-            <span class="section-hint">Paso a paso</span>
+            <button class="btn btn-primary btn-block mt-16" id="craving-open" type="button">Registrar craving</button>
+            <button class="btn btn-ghost btn-block mt-8" id="toggle-progress" type="button">Ver mi progreso</button>
           </div>
-          <div class="card" id="recovery-list">
-            <div class="skeleton"></div>
+
+          <nav class="subnav" aria-label="Módulos de Vapless">
+            <button class="subnav-tab is-active" type="button" data-sub="salida">Mi salida</button>
+            <button class="subnav-tab" type="button" data-sub="pulso">Pulso</button>
+            <button class="subnav-tab" type="button" data-sub="dojo">Dojo</button>
+          </nav>
+
+          <div class="subpanel is-active" id="sub-salida" aria-label="Mi salida">
+            <div class="stat-grid">
+              <div class="stat">
+                <div class="stat-label">Ahorrado</div>
+                <div class="stat-value green" id="stat-cop">$0</div>
+                <div class="stat-sub" id="stat-cop-sub">COP</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Vida recuperada</div>
+                <div class="stat-value green" id="stat-nicotine">0 mg</div>
+                <div class="stat-sub">Nicotina que tu cuerpo no recibió</div>
+              </div>
+            </div>
+
+            <div class="card mt-12">
+              <div class="card-eyebrow">Lo que ya cambió</div>
+              <p class="card-text" id="savings-phrase">Cargando tu resumen…</p>
+              <p class="card-text mt-8" id="nicotine-phrase"></p>
+            </div>
+
+            <section class="section dash-nicotine" id="progress-block">
+              <div class="section-head">
+                <h2 class="section-title">Tu nicotina en números</h2>
+                <span class="section-hint">Automático</span>
+              </div>
+              <div class="card" id="nicotine-summary">
+                <div class="skeleton"></div>
+              </div>
+            </section>
+
+            <section class="section dash-recovery">
+              <div class="section-head">
+                <h2 class="section-title">Vida recuperada</h2>
+                <span class="section-hint">Paso a paso</span>
+              </div>
+              <div class="card" id="recovery-list">
+                <div class="skeleton"></div>
+              </div>
+              <div class="card sources-card">
+                <details class="sources">
+                  <summary>Ver fuentes científicas y evidencia</summary>
+                  <ul>
+                    <li>
+                      <strong>Organización Mundial de la Salud (OMS).</strong>
+                      Preguntas y respuestas sobre cigarrillos electrónicos y sistemas de administración de nicotina.
+                      <a href="https://www.who.int/news-room/questions-and-answers/item/tobacco-e-cigarettes" target="_blank" rel="noopener noreferrer">who.int</a>
+                    </li>
+                    <li>
+                      <strong>Ministerio de Salud y Protección Social de Colombia.</strong>
+                      Prevención del consumo de cigarrillos electrónicos y productos de tabaco.
+                      <a href="https://www.minsalud.gov.co/" target="_blank" rel="noopener noreferrer">minsalud.gov.co</a>
+                    </li>
+                    <li>
+                      <strong>Centros para el Control y la Prevención de Enfermedades (CDC).</strong>
+                      Información sobre cigarrillos electrónicos y vapeo.
+                      <a href="https://www.cdc.gov/tobacco/basic_information/e-cigarettes/" target="_blank" rel="noopener noreferrer">cdc.gov</a>
+                    </li>
+                    <li>
+                      <strong>Organización Panamericana de la Salud (OPS).</strong>
+                      Control del tabaco y nuevos productos de nicotina en las Américas.
+                      <a href="https://www.paho.org/es/temas/control-tabaco" target="_blank" rel="noopener noreferrer">paho.org</a>
+                    </li>
+                  </ul>
+                  <p class="form-note">
+                    Estas referencias son educativas y no sustituyen una consulta médica. Si tenés síntomas, llamá a la Línea 106.
+                  </p>
+                </details>
+              </div>
+            </section>
+
+            <section class="section dash-goals">
+              <div class="section-head">
+                <h2 class="section-title">Metas con tus lucas</h2>
+                <span class="section-hint">COP</span>
+              </div>
+              <div class="card" id="goals-list">
+                <div class="skeleton"></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="subpanel" id="sub-pulso" aria-label="Pulso de Medellín">
+            <div class="hero">
+              <div class="hero-label">Pulso comunal</div>
+              <h1 class="section-title mt-8">Leer la ciudad sin señalar a nadie</h1>
+              <p class="card-text mt-8">
+                Tu respuesta es anónima. Con 5 o más respuestas por comuna activamos el mapa de riesgo.
+                Nada de nombres, documentos ni correos.
+              </p>
+            </div>
+
+            <section class="section">
+              <div class="section-head">
+                <h2 class="section-title">Mapa de riesgo</h2>
+                <span class="section-hint" id="risk-count">—</span>
+              </div>
+              <div class="card" id="risk-map">
+                <div class="skeleton"></div>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="section-head">
+                <h2 class="section-title">Análisis psicosocial</h2>
+                <span class="section-hint">M2</span>
+              </div>
+              <div class="card" id="analysis-list">
+                <div class="skeleton"></div>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="section-head">
+                <h2 class="section-title">Sumá tu pulso</h2>
+                <span class="section-hint">Anónimo</span>
+              </div>
+              <form class="card form" id="survey-form">
+                <div class="form-row two">
+                  <div class="form-row">
+                    <label class="field-label" for="survey-comuna">Comuna</label>
+                    <select class="field" id="survey-comuna" required></select>
+                  </div>
+                  <div class="form-row">
+                    <label class="field-label" for="survey-age">Edad</label>
+                    <input class="field" type="number" id="survey-age" min="12" max="19" value="16" required />
+                  </div>
+                </div>
+                <div class="form-row two">
+                  <div class="form-row">
+                    <label class="field-label" for="survey-device">Dispositivo</label>
+                    <select class="field" id="survey-device">
+                      <option value="1">Desechable</option>
+                      <option value="2">Pod recargable</option>
+                      <option value="3">Mod / caja</option>
+                      <option value="0">No uso</option>
+                    </select>
+                  </div>
+                  <div class="form-row">
+                    <label class="field-label" for="survey-frequency">Veces al día</label>
+                    <input class="field" type="number" id="survey-frequency" min="0" max="40" value="2" required />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <label class="field-label" for="survey-trigger">¿Qué te dispara las ganas?</label>
+                  <select class="field" id="survey-trigger">
+                    <option value="1">Curiosidad</option>
+                    <option value="2">Presión del parche</option>
+                    <option value="3">Ansiedad</option>
+                    <option value="4">Estrés académico</option>
+                    <option value="5">Situaciones en casa</option>
+                    <option value="6">Aburrimiento</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label class="field-label" for="survey-family">En casa</label>
+                  <select class="field" id="survey-family">
+                    <option value="1">Vivo con ambos padres</option>
+                    <option value="2">Vivo con un solo padre</option>
+                    <option value="3">Vivo con familia extensa</option>
+                    <option value="4">Vivo con acudiente</option>
+                    <option value="5">Paso tardes solo en casa</option>
+                    <option value="6">Prefiero no decir</option>
+                  </select>
+                </div>
+                <div class="switch-row">
+                  <span>¿Has vapeado dentro del colegio?</span>
+                  <label class="switch">
+                    <input type="checkbox" id="survey-school" />
+                    <span></span>
+                  </label>
+                </div>
+                <p class="form-note">No pedimos nombre, correo ni ubicación exacta. Solo comuna.</p>
+                <button class="btn btn-primary btn-block" type="submit">Enviar mi pulso anónimo</button>
+              </form>
+            </section>
+          </div>
+
+          <div class="subpanel" id="sub-dojo" aria-label="Dojo y hack al hábito">
+            <div class="hero">
+              <div class="hero-label">Hack al hábito</div>
+              <h1 class="section-title mt-8">Deslizá, decidí y desarmá el mito</h1>
+              <p class="card-text mt-8">
+                Arrastrá la tarjeta o usá los botones. Si te equivocás, no pasa nada: acá se aprende sin sermón.
+              </p>
+              <div class="mt-12">
+                <span class="xp-pill">XP <strong id="xp-value">0</strong></span>
+              </div>
+            </div>
+
+            <div class="chip-row mt-12" id="deck-chips"></div>
+
+            <div class="deck-progress">
+              <span id="deck-position">0 / 0</span>
+              <div class="progress"><span id="deck-bar" style="width: 0%"></span></div>
+              <span id="deck-name">Mazo</span>
+            </div>
+
+            <div class="deck-stage" id="deck-stage">
+              <div class="empty-card" id="deck-empty">Cargando tarjetas…</div>
+            </div>
+
+            <div class="swipe-actions" id="swipe-actions">
+              <button class="btn btn-myth" id="swipe-myth" type="button">Es mito</button>
+              <button class="btn btn-real" id="swipe-real" type="button">Es realidad</button>
+            </div>
+
+            <div class="card mt-16 hidden" id="deck-summary">
+              <div class="card-eyebrow">Mazo completado</div>
+              <h3 class="card-title" id="summary-title">Bien ahí.</h3>
+              <p class="card-text" id="summary-text"></p>
+              <div class="mt-12">
+                <button class="btn btn-primary" id="summary-support" type="button">¿Necesitás hablar con alguien?</button>
+              </div>
+            </div>
+
+            <section class="section">
+              <div class="section-head">
+                <h2 class="section-title">Dojo de presión social</h2>
+                <span class="section-hint">Frases reales</span>
+              </div>
+              <p class="card-text small dim" style="margin-bottom: 10px">Tocá una respuesta para ver cómo suena. Elegí la que te quede natural.</p>
+              <div id="scenarios-list">
+                <div class="empty-card">Cargando escenarios…</div>
+              </div>
+            </section>
           </div>
         </section>
 
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Metas con tus lucas</h2>
-            <span class="section-hint">COP</span>
+        <!-- ================= TAB 2 · CRAVING ================= -->
+        <section id="view-craving" class="view" aria-label="Craving">
+          <div class="hero craving-hero">
+            <div class="hero-label">Naranja impulso</div>
+            <h1 class="section-title mt-8">Resistí. Seguí. Viví.</h1>
+            <p class="card-text mt-8">
+              Van <strong id="craving-minutes">0</strong> minutos. El craving pasa siempre: vos solo tenés que aguantar la ola.
+            </p>
           </div>
-          <div class="card" id="goals-list">
-            <div class="skeleton"></div>
-          </div>
-        </section>
 
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Ajustar mi ruta</h2>
-          </div>
-          <form class="card form hidden" id="profile-form">
-            <div class="form-row two">
-              <div class="form-row">
-                <label class="field-label" for="profile-quitdate">Fecha de inicio</label>
-                <input class="field" type="date" id="profile-quitdate" />
-              </div>
-              <div class="form-row">
-                <label class="field-label" for="profile-cost">Costo diario (COP)</label>
-                <input class="field" type="number" id="profile-cost" min="0" max="500000" step="500" />
+          <div class="card craving-card" id="craving-card">
+            <div class="technique-tabs" id="technique-tabs" role="tablist" aria-label="Técnicas de respiración">
+              <button class="technique is-active" type="button" data-technique="square" role="tab" aria-selected="true">
+                <strong>Respiración Cuadrada 4-4-4</strong>
+                <span>Para la ansiedad y los impulsos en el momento</span>
+              </button>
+              <button class="technique" type="button" data-technique="sleep" role="tab" aria-selected="false">
+                <strong>Respiración Guiada para Dormir 4-7-8</strong>
+                <span>Para inducir relajación y conciliar el sueño</span>
+              </button>
+            </div>
+            <p class="technique-hint" id="technique-hint">Inhalá 4 segundos, sostené 4 y exhalá 4.</p>
+
+            <div class="breath-wrap">
+              <svg class="breath-ring" viewBox="0 0 220 220" aria-hidden="true">
+                <circle class="track" cx="110" cy="110" r="95" />
+                <circle class="bar" id="breath-bar" cx="110" cy="110" r="95" />
+              </svg>
+              <div class="breath-center">
+                <div class="breath-phase" id="breath-phase">Inhalá</div>
+                <div class="breath-count" id="breath-count">4</div>
+                <div class="breath-cycles" id="breath-cycles">Listo para empezar</div>
               </div>
             </div>
-            <div class="form-row two">
-              <div class="form-row">
-                <label class="field-label" for="profile-pods">Pods por semana</label>
-                <input class="field" type="number" id="profile-pods" min="0" max="70" />
-              </div>
-              <div class="form-row">
-                <label class="field-label" for="profile-mg">Nicotina por pod (mg)</label>
-                <input class="field" type="number" id="profile-mg" min="0" max="200" />
+
+            <div class="craving-timer">
+              <span id="craving-elapsed">00:00</span>
+              <span class="timer-sep">respirando</span>
+            </div>
+
+            <div class="craving-actions">
+              <button class="btn btn-primary btn-block" id="craving-start" type="button">Empezar respiración</button>
+              <button class="btn btn-ghost btn-block hidden" id="craving-stop" type="button">Terminé la respiración</button>
+              <button class="btn btn-ghost btn-block" id="craving-support" type="button">Hablar con la comunidad</button>
+            </div>
+          </div>
+
+          <div class="card mt-12 hidden" id="craving-log">
+            <div class="card-eyebrow">Antojo superado</div>
+            <h3 class="card-title">¿Qué tan fuerte estaba?</h3>
+            <div class="form-row">
+              <div class="intensity-row" id="intensity-row">
+                <button class="intensity is-active" type="button" data-intensity="1">Leve</button>
+                <button class="intensity" type="button" data-intensity="2">Moderado</button>
+                <button class="intensity" type="button" data-intensity="3">Fuerte</button>
+                <button class="intensity" type="button" data-intensity="4">Intenso</button>
               </div>
             </div>
             <div class="form-row">
-              <label class="field-label" for="profile-device">Dispositivo principal</label>
-              <select class="field" id="profile-device">
-                <option value="1">Desechable</option>
-                <option value="2">Pod recargable</option>
-                <option value="3">Mod / caja</option>
-                <option value="0">No uso</option>
-              </select>
-            </div>
-            <p class="form-note">Estos datos quedan solo en tu base local. Nada se envía por fuera.</p>
-            <button class="btn btn-primary btn-block" type="submit">Guardar mis datos</button>
-          </form>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Si necesitás hablar</h2>
-            <span class="section-hint">Confidencial</span>
-          </div>
-          <div class="card">
-            <div class="hotline">
-              <div>
-                <h3 class="card-title">Línea Amiga 106</h3>
-                <p class="card-text">Orientación psicológica en Medellín, 24/7. No es un reporte ni te va a regañar nadie.</p>
-              </div>
-              <a class="hotline-phone" href="tel:106">106</a>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <!-- ================= PULSO ================= -->
-      <section id="view-pulso" class="view" aria-label="Pulso y Medellín">
-        <div class="hero">
-          <div class="hero-label">Pulso comunal</div>
-          <h1 class="section-title mt-8">Leer la ciudad sin señalar a nadie</h1>
-          <p class="card-text mt-8">
-            Tu respuesta es anónima. Con 5 o más respuestas por comuna activamos el mapa de riesgo.
-            Nada de nombres, documentos ni correos.
-          </p>
-        </div>
-
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Mapa de riesgo</h2>
-            <span class="section-hint" id="risk-count">—</span>
-          </div>
-          <div class="card" id="risk-map">
-            <div class="skeleton"></div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Análisis psicosocial</h2>
-            <span class="section-hint">M2</span>
-          </div>
-          <div class="card" id="analysis-list">
-            <div class="skeleton"></div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Sumá tu pulso</h2>
-            <span class="section-hint">Anónimo</span>
-          </div>
-          <form class="card form" id="survey-form">
-            <div class="form-row two">
-              <div class="form-row">
-                <label class="field-label" for="survey-comuna">Comuna</label>
-                <select class="field" id="survey-comuna" required></select>
-              </div>
-              <div class="form-row">
-                <label class="field-label" for="survey-age">Edad</label>
-                <input class="field" type="number" id="survey-age" min="12" max="19" value="16" required />
-              </div>
-            </div>
-            <div class="form-row two">
-              <div class="form-row">
-                <label class="field-label" for="survey-device">Dispositivo</label>
-                <select class="field" id="survey-device">
-                  <option value="1">Desechable</option>
-                  <option value="2">Pod recargable</option>
-                  <option value="3">Mod / caja</option>
-                  <option value="0">No uso</option>
-                </select>
-              </div>
-              <div class="form-row">
-                <label class="field-label" for="survey-frequency">Veces al día</label>
-                <input class="field" type="number" id="survey-frequency" min="0" max="40" value="2" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="field-label" for="survey-trigger">¿Qué te dispara las ganas?</label>
-              <select class="field" id="survey-trigger">
+              <label class="field-label" for="craving-trigger">¿Qué lo disparó?</label>
+              <select class="field" id="craving-trigger">
                 <option value="1">Curiosidad</option>
                 <option value="2">Presión del parche</option>
                 <option value="3">Ansiedad</option>
@@ -212,203 +367,225 @@
                 <option value="6">Aburrimiento</option>
               </select>
             </div>
-            <div class="form-row">
-              <label class="field-label" for="survey-family">En casa</label>
-              <select class="field" id="survey-family">
-                <option value="1">Vivo con ambos padres</option>
-                <option value="2">Vivo con un solo padre</option>
-                <option value="3">Vivo con familia extensa</option>
-                <option value="4">Vivo con acudiente</option>
-                <option value="5">Paso tardes solo en casa</option>
-                <option value="6">Prefiero no decir</option>
-              </select>
+            <button class="btn btn-primary btn-block" id="craving-done" type="button">Registrar mi antojo</button>
+            <button class="btn btn-ghost btn-block mt-8" id="craving-reset" type="button">Volver a empezar</button>
+          </div>
+
+          <div class="card result-box hidden" id="craving-result">
+            <div class="card-eyebrow">Completado</div>
+            <h3 id="craving-result-title">Antojo superado</h3>
+            <p class="card-text" id="craving-result-text"></p>
+            <ul id="craving-result-messages"></ul>
+          </div>
+        </section>
+
+        <!-- ================= TAB 3 · PERFIL ================= -->
+        <section id="view-perfil" class="view" aria-label="Perfil">
+          <div class="hero profile-hero">
+            <div class="hero-label">Tu perfil</div>
+            <h1 class="section-title mt-8" id="profile-name">parce</h1>
+            <p class="card-text mt-8">
+              Menos vape. Más vida. Todo lo que ves vive en este dispositivo: nada se envía por fuera.
+            </p>
+          </div>
+
+          <section class="section">
+            <div class="section-head">
+              <h2 class="section-title">Logros</h2>
+              <span class="section-hint">7 · 14 · 30 · 90 días</span>
             </div>
-            <div class="switch-row">
-              <span>¿Has vapeado dentro del colegio?</span>
-              <label class="switch">
-                <input type="checkbox" id="survey-school" />
-                <span></span>
-              </label>
+            <div class="achievement-row" id="achievement-row"></div>
+            <button class="btn btn-ghost btn-block mt-12" id="share-streak" type="button">Compartir mi racha</button>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2 class="section-title">Ajustar mi ruta</h2>
             </div>
-            <p class="form-note">No pedimos nombre, correo ni ubicación exacta. Solo comuna.</p>
-            <button class="btn btn-primary btn-block" type="submit">Enviar mi pulso anónimo</button>
-          </form>
+            <form class="card form" id="profile-form">
+              <div class="form-row two">
+                <div class="form-row">
+                  <label class="field-label" for="profile-alias">Cómo te llamamos</label>
+                  <input class="field" type="text" id="profile-alias" maxlength="20" placeholder="parce" />
+                </div>
+                <div class="form-row">
+                  <label class="field-label" for="profile-quitdate">Fecha de inicio</label>
+                  <input class="field" type="date" id="profile-quitdate" />
+                </div>
+              </div>
+              <div class="form-row two">
+                <div class="form-row">
+                  <label class="field-label" for="profile-cost">Costo diario (COP)</label>
+                  <input class="field" type="number" id="profile-cost" min="0" max="500000" step="500" />
+                </div>
+                <div class="form-row">
+                  <label class="field-label" for="profile-pod-type">Tipo de dispositivo / pod</label>
+                  <select class="field" id="profile-pod-type">
+                    <option value="1">Desechable (20-50 mg)</option>
+                    <option value="2">Pod recargable (20-40 mg)</option>
+                    <option value="3">Mod / caja (10-30 mg)</option>
+                    <option value="0">No uso</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row two">
+                <div class="form-row">
+                  <label class="field-label" for="profile-pods">Pods por semana</label>
+                  <input class="field" type="number" id="profile-pods" min="0" max="70" value="3" />
+                </div>
+                <div class="form-row">
+                  <label class="field-label" for="profile-mg">Nicotina por pod (mg)</label>
+                  <input class="field" type="number" id="profile-mg" min="0" max="200" step="5" />
+                </div>
+              </div>
+              <div class="form-row">
+                <label class="field-label" for="profile-cigs">Equivalente en cigarrillos</label>
+                <input class="field" id="profile-cigs" type="text" readonly />
+              </div>
+
+              <div class="nicotine-panel" id="nicotine-panel">
+                <div class="card-eyebrow">Cálculo automático de nicotina</div>
+                <div class="nicotine-grid">
+                  <div class="stat">
+                    <div class="stat-label">Nicotina semanal</div>
+                    <div class="stat-value green" id="nic-weekly">0 mg</div>
+                    <div class="stat-sub" id="nic-weekly-sub">0 mg al día</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-label">Equivalente en cigarrillos</div>
+                    <div class="stat-value green" id="nic-cigarettes">0</div>
+                    <div class="stat-sub" id="nic-cigarettes-sub">por semana</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-label">Nicotina ingerida</div>
+                    <div class="stat-value green" id="nic-ingested">0 mg</div>
+                    <div class="stat-sub">desde que empezaste</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-label">Nicotina evitada</div>
+                    <div class="stat-value green" id="nic-avoided">0 mg</div>
+                    <div class="stat-sub" id="nic-avoided-sub">en tu racha</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-label">Ahorro por pods</div>
+                    <div class="stat-value green" id="nic-cost">$0</div>
+                    <div class="stat-sub" id="nic-cost-sub">por semana</div>
+                  </div>
+                </div>
+                <p class="form-note" id="nic-note">
+                  Elegí el tipo de pod y la cantidad por semana: la equivalencia se calcula sola.
+                </p>
+              </div>
+
+              <p class="form-note">Estos datos quedan solo en tu base local. Nada se envía por fuera.</p>
+              <button class="btn btn-primary btn-block" type="submit">Guardar mis datos</button>
+            </form>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2 class="section-title">Autoevaluación psicosocial</h2>
+              <span class="section-hint">10 preguntas</span>
+            </div>
+            <div class="card">
+              <p class="card-text">
+                Frecuencia, dependencia emocional, control y entorno escolar. Te da un resultado y,
+                si hace falta, te conecta con apoyo profesional. No es un diagnóstico.
+              </p>
+              <button class="btn btn-primary btn-block mt-12" id="assessment-open" type="button">Hacer mi autoevaluación</button>
+            </div>
+          </section>
+
+          <section class="section" id="support-section">
+            <div class="section-head">
+              <h2 class="section-title">Rutas de Apoyo Local</h2>
+              <span class="section-hint">Tocá para abrir</span>
+            </div>
+            <div class="card" id="hotlines-list">
+              <div class="skeleton"></div>
+            </div>
+          </section>
         </section>
+      </main>
 
-        <section class="section" id="support-section">
-          <div class="section-head">
-            <h2 class="section-title">Rutas de apoyo en Medellín</h2>
-          </div>
-          <div class="card" id="hotlines-list">
-            <div class="skeleton"></div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Aire escolar</h2>
-            <span class="section-hint">Simulado</span>
-          </div>
-          <div class="card" id="air-card">
-            <div class="skeleton"></div>
-          </div>
-        </section>
-      </section>
-
-      <!-- ================= DOJO ================= -->
-      <section id="view-dojo" class="view" aria-label="Dojo y hack al hábito">
-        <div class="hero">
-          <div class="hero-label">Hack al hábito</div>
-          <h1 class="section-title mt-8">Deslizá, decidí y desarmá el mito</h1>
-          <p class="card-text mt-8">
-            Arrastrá la tarjeta o usá los botones. Si te equivocás, no pasa nada: acá se aprende sin sermón.
-          </p>
-          <div class="mt-12">
-            <span class="xp-pill">XP <strong id="xp-value">0</strong></span>
-          </div>
-        </div>
-
-        <div class="chip-row mt-12" id="deck-chips"></div>
-
-        <div class="deck-progress">
-          <span id="deck-position">0 / 0</span>
-          <div class="progress"><span id="deck-bar" style="width: 0%"></span></div>
-          <span id="deck-name">Mazo</span>
-        </div>
-
-        <div class="deck-stage" id="deck-stage">
-          <div class="empty-card" id="deck-empty">Cargando tarjetas…</div>
-        </div>
-
-        <div class="swipe-actions" id="swipe-actions">
-          <button class="btn btn-myth" id="swipe-myth" type="button">Es mito</button>
-          <button class="btn btn-real" id="swipe-real" type="button">Es realidad</button>
-        </div>
-
-        <div class="card mt-16 hidden" id="deck-summary">
-          <div class="card-eyebrow">Mazo completado</div>
-          <h3 class="card-title" id="summary-title">Bien ahí.</h3>
-          <p class="card-text" id="summary-text"></p>
-          <div class="mt-12">
-            <button class="btn btn-primary" id="summary-support" type="button">¿Necesitás hablar con alguien?</button>
-          </div>
-        </div>
-
-        <section class="section">
-          <div class="section-head">
-            <h2 class="section-title">Dojo de presión social</h2>
-            <span class="section-hint">Frases reales</span>
-          </div>
-          <p class="card-text small dim" style="margin-bottom: 10px">Tocá una respuesta para ver cómo suena. Elegí la que te quede natural.</p>
-          <div id="scenarios-list">
-            <div class="empty-card">Cargando escenarios…</div>
-          </div>
-        </section>
-      </section>
-    </main>
-
-    <button class="craving-fab" id="craving-fab" type="button" aria-haspopup="dialog">
-      <span class="pulse-dot"></span>
-      Siento ganas
-    </button>
-
-    <nav class="bottom-nav" aria-label="Navegación principal">
-      <button class="nav-tab is-active" data-tab="salida" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 12h4l3-8 4 16 3-8h4" />
-        </svg>
-        <span>Inicio</span>
-        <span class="nav-dot"></span>
+      <button class="craving-fab" id="craving-fab" type="button">
+        <span class="pulse-dot"></span>
+        Siento ganas
       </button>
-      <button class="nav-tab" data-tab="pulso" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.5-7 10-7 10Z" />
-        </svg>
-        <span>Pulso</span>
-        <span class="nav-dot"></span>
-      </button>
-      <button class="nav-tab" data-tab="dojo" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M4 4l7 7M20 4l-7 7M12 12l6 6M12 12l-6 6" />
-          <circle cx="12" cy="12" r="2" />
-        </svg>
-        <span>Dojo</span>
-        <span class="nav-dot"></span>
-      </button>
-    </nav>
-  </div>
 
-  <!-- ================= MODAL CRAVING ================= -->
-  <div class="modal" id="craving-modal" role="dialog" aria-modal="true" aria-labelledby="craving-title">
-    <div class="modal-sheet">
-      <div class="sheet-head">
-        <div>
-          <div class="card-eyebrow">Naranja impulso</div>
-          <h2 id="craving-title" style="font-size: 23px">Respirá. Esto pasa.</h2>
-          <p class="card-text mt-8">Tres minutos de respiración 4-7-8 bajan el pico del antojo. Vos tenés el control.</p>
+      <nav class="bottom-nav" aria-label="Navegación principal">
+        <button class="nav-tab is-active" data-tab="inicio" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 12h4l3-8 4 16 3-8h4" />
+          </svg>
+          <span>Inicio</span>
+          <span class="nav-dot"></span>
+        </button>
+        <button class="nav-tab" data-tab="craving" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3c2.5 3.2 4 5.6 4 7.6A4 4 0 0 1 8 10.6C8 8.6 9.5 6.2 12 3Z" />
+            <path d="M5 15a7 7 0 0 0 14 0" />
+          </svg>
+          <span>Craving</span>
+          <span class="nav-dot"></span>
+        </button>
+        <button class="nav-tab" data-tab="perfil" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5" />
+            <path d="M5 20a7 7 0 0 1 14 0" />
+          </svg>
+          <span>Perfil</span>
+          <span class="nav-dot"></span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- ================= MODAL AUTOEVALUACIÓN ================= -->
+    <div class="modal" id="assessment-modal" role="dialog" aria-modal="true" aria-labelledby="assessment-title">
+      <div class="modal-sheet assessment-sheet">
+        <div class="sheet-head">
+          <div>
+            <div class="card-eyebrow">Autoevaluación psicosocial</div>
+            <h2 id="assessment-title" style="font-size: 23px">¿Cómo estás hoy, en serio?</h2>
+            <p class="card-text mt-8">10 preguntas cortas. Nada sale de tu dispositivo y esto no es un diagnóstico.</p>
+          </div>
+          <button class="sheet-close" id="assessment-close" type="button" aria-label="Cerrar">×</button>
         </div>
-        <button class="sheet-close" id="craving-close" type="button" aria-label="Cerrar">×</button>
-      </div>
 
-      <div class="breath-wrap">
-        <svg class="breath-ring" viewBox="0 0 220 220" aria-hidden="true">
-          <circle class="track" cx="110" cy="110" r="95" />
-          <circle class="bar" id="breath-bar" cx="110" cy="110" r="95" />
-        </svg>
-        <div class="breath-center">
-          <div class="breath-phase" id="breath-phase">Inhalá</div>
-          <div class="breath-count" id="breath-count">4</div>
-          <div class="breath-cycles" id="breath-cycles">Ciclo 1 de 4</div>
-        </div>
-      </div>
+        <form class="form" id="assessment-form">
+          <div class="quiz-list" id="assessment-questions"></div>
+          <button class="btn btn-primary btn-block" type="submit">Ver mi resultado</button>
+          <p class="form-note">Respondé con la primera opción que sentís hoy, sin pensarlo mucho.</p>
+        </form>
 
-      <div class="breath-timer">
-        <span id="craving-elapsed">00:00</span>
-        <span class="timer-sep">transcurridos</span>
-        <span class="timer-dot">·</span>
-        <span id="craving-remaining">03:00</span>
-        <span class="timer-sep">restantes</span>
-      </div>
-
-      <div class="form">
-        <div class="form-row">
-          <label class="field-label">¿Qué tan fuerte está?</label>
-          <div class="intensity-row" id="intensity-row">
-            <button class="intensity is-active" type="button" data-intensity="1">Leve</button>
-            <button class="intensity" type="button" data-intensity="2">Moderado</button>
-            <button class="intensity" type="button" data-intensity="3">Fuerte</button>
-            <button class="intensity" type="button" data-intensity="4">Intenso</button>
+        <div class="assessment-result hidden" id="assessment-result" aria-live="polite">
+          <div class="assessment-head">
+            <div>
+              <div class="card-eyebrow" id="assessment-level">Resultado</div>
+              <div class="assessment-score">
+                <span id="assessment-score">0</span><span class="assessment-score-max">/100</span>
+              </div>
+            </div>
+            <h3 id="assessment-result-title" class="mt-8">Resultado</h3>
+          </div>
+          <p class="card-text mt-8" id="assessment-result-text"></p>
+          <div class="mt-16" id="assessment-support"></div>
+          <div class="btn-row mt-16">
+            <button class="btn btn-ghost" type="button" id="assessment-retry">Responder de nuevo</button>
+            <button class="btn btn-ghost" type="button" id="assessment-done">Cerrar</button>
           </div>
         </div>
-        <div class="form-row">
-          <label class="field-label" for="craving-trigger">¿Qué lo disparó?</label>
-          <select class="field" id="craving-trigger">
-            <option value="1">Curiosidad</option>
-            <option value="2">Presión del parche</option>
-            <option value="3">Ansiedad</option>
-            <option value="4">Estrés académico</option>
-            <option value="5">Situaciones en casa</option>
-            <option value="6">Aburrimiento</option>
-          </select>
-        </div>
-        <button class="btn btn-craving btn-block" id="craving-done" type="button">Ya pasó, lo superé</button>
-        <button class="btn btn-ghost btn-block" id="craving-support" type="button">Necesito hablar con alguien</button>
-      </div>
-
-      <div class="result-box hidden" id="craving-result">
-        <h3 id="craving-result-title">Antojo superado</h3>
-        <p class="card-text" id="craving-result-text"></p>
-        <ul id="craving-result-messages"></ul>
       </div>
     </div>
-  </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/api.js"></script>
-  <script src="js/craving.js"></script>
-  <script src="js/hack.js"></script>
-  <script src="js/pulse.js"></script>
-  <script src="js/app.js"></script>
-</body>
+    <script src="js/api.js"></script>
+    <script src="js/accordion.js"></script>
+    <script src="js/craving.js"></script>
+    <script src="js/hack.js"></script>
+    <script src="js/pulse.js"></script>
+    <script src="js/assessment.js"></script>
+    <script src="js/app.js"></script>
+  </body>
 </html>

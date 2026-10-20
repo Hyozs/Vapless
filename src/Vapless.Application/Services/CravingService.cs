@@ -78,7 +78,7 @@ public sealed class CravingService : ICravingService
             days,
             cop,
             nicotine,
-            days == 0 ? "Antojo superado. Hoy ya ganaste." : $"Antojo superado. Racha de {days} dÃ­a(s).",
+            days == 0 ? "Antojo superado. Hoy ya ganaste." : $"Antojo superado. Racha de {days} día(s).",
             messages,
             _interventions.Create(request.Intensity));
     }

@@ -7,7 +7,11 @@ public record ProfileDto(
     decimal DailyCostCop,
     decimal NicotineMgPerPod,
     int PodsPerWeek,
-    int PrimaryDevice);
+    int PrimaryDevice,
+    string PodTypeName,
+    decimal PodCostCop,
+    decimal CigarettesPerPod,
+    string PodNote);
 
 public record ProfileUpsertDto(
     string? Alias,
@@ -55,7 +59,25 @@ public record SavingsSummaryDto(
     decimal DailyCostCop,
     string CopComparisonPhrase,
     string NicotinePhrase,
-    IReadOnlyList<SavingsGoalDto> NextGoals);
+    IReadOnlyList<SavingsGoalDto> NextGoals,
+    NicotineProfileDto Nicotine);
+
+public record NicotineProfileDto(
+    int PodType,
+    string PodTypeName,
+    decimal NicotineMgPerPod,
+    decimal CigarettesPerPod,
+    decimal PodCostCop,
+    int PodsPerWeek,
+    decimal WeeklyNicotineMg,
+    decimal DailyNicotineMg,
+    decimal WeeklyCigarettes,
+    decimal NicotineIngestedMg,
+    decimal NicotineAvoidedMg,
+    decimal CigarettesAvoided,
+    decimal WeeklyCostCop,
+    decimal CopSaved,
+    string Phrase);
 
 public record SavingsGoalDto(
     string Name,
@@ -149,13 +171,33 @@ public record SupportHotlineDto(
     string Description,
     string Scope);
 
-public record SchoolAirReadingDto(
-    string SensorId,
-    string Zone,
-    double Co2Ppm,
-    double Pm25,
-    double TemperatureC,
-    double Humidity,
-    bool Synthetic,
-    DateTime RecordedAt,
-    string AirQualityLabel);
+public record AssessmentOptionDto(string Id, string Label, int Value);
+
+public record AssessmentQuestionDto(
+    string Id,
+    string Dimension,
+    string DimensionLabel,
+    string Prompt,
+    string Helper,
+    IReadOnlyList<AssessmentOptionDto> Options);
+
+public record AssessmentQuestionsDto(int Total, IReadOnlyList<AssessmentQuestionDto> Questions);
+
+public record AssessmentAnswerDto(string QuestionId, string OptionId);
+
+public record AssessmentSubmissionDto(IReadOnlyList<AssessmentAnswerDto> Answers);
+
+public record AssessmentDimensionResultDto(string Dimension, string Label, int Score, string Finding);
+
+public record AssessmentSupportLineDto(string Name, string Phone, string Description, bool IsEmergency);
+
+public record AssessmentResultDto(
+    int Score,
+    string Level,
+    string LevelLabel,
+    string Headline,
+    bool RequiresSupport,
+    IReadOnlyList<AssessmentDimensionResultDto> Dimensions,
+    IReadOnlyList<string> Findings,
+    IReadOnlyList<string> Recommendations,
+    IReadOnlyList<AssessmentSupportLineDto> SupportLines);

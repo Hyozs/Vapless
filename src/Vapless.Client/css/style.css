@@ -1,4 +1,4 @@
-﻿* {
+* {
   box-sizing: border-box;
 }
 
@@ -16,7 +16,7 @@ body {
     var(--vapless-bg);
   color: var(--vapless-text);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--fs-14);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
@@ -165,8 +165,9 @@ main {
 .card {
   background: var(--vapless-surface);
   border: 1px solid var(--vapless-border);
-  border-radius: var(--radius-md);
-  padding: 18px;
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
 }
 
 .card + .card {
@@ -265,14 +266,14 @@ main {
 
 .streak-track {
   fill: none;
-  stroke: rgba(250, 204, 21, 0.12);
-  stroke-width: 10;
+  stroke: var(--vapless-border);
+  stroke-width: 8;
 }
 
 .streak-arc {
   fill: none;
   stroke: var(--vapless-yellow);
-  stroke-width: 10;
+  stroke-width: 8;
   stroke-linecap: round;
   stroke-dasharray: 540.35;
   stroke-dashoffset: 540.35;
@@ -295,9 +296,12 @@ main {
 
 .streak-center .hero-days-label {
   padding: 4px 0 0;
-  max-width: 120px;
-  font-size: 12px;
-  letter-spacing: 0.02em;
+  max-width: 130px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vapless-text-dim);
 }
 
 .breath-timer {
@@ -440,12 +444,13 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   min-height: 46px;
-  padding: 0 18px;
-  border-radius: var(--radius-pill);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-btn);
+  font-family: var(--font-body);
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--fs-14);
   transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
 }
 
@@ -455,7 +460,9 @@ main {
 
 .btn-primary {
   background: var(--vapless-yellow);
-  color: #16130a;
+  color: var(--vapless-bg);
+  font-family: var(--font-title);
+  font-weight: 800;
   box-shadow: var(--shadow-yellow);
 }
 
@@ -476,12 +483,14 @@ main {
 
 .btn-ghost {
   border: 1px solid var(--vapless-border);
-  background: var(--vapless-surface);
-  color: var(--vapless-text);
+  background: transparent;
+  color: var(--vapless-text-dim);
+  font-weight: 600;
 }
 
 .btn-ghost:hover {
   background: var(--vapless-surface-hover);
+  color: var(--vapless-text-muted);
 }
 
 .btn-block {
@@ -553,8 +562,7 @@ main {
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   padding: 0 10px 8px;
-  background: linear-gradient(180deg, rgba(11, 13, 18, 0.4), rgba(11, 13, 18, 0.98) 40%);
-  backdrop-filter: blur(14px);
+  background: var(--vapless-bg);
   border-top: 1px solid rgba(35, 41, 54, 0.7);
 }
 
@@ -763,7 +771,7 @@ main {
 }
 
 .comuna-reasons[open] summary::after {
-  content: " âˆ’";
+  content: " -";
 }
 
 .comuna-reasons ul {
@@ -1163,42 +1171,6 @@ select.field {
   margin-top: 6px;
 }
 
-.air-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.air-cell {
-  border: 1px solid var(--vapless-border);
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  background: #0f131b;
-}
-
-.air-cell .label {
-  color: var(--vapless-text-dim);
-  font-size: 10.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.air-cell .value {
-  font-weight: 600;
-  font-size: 15px;
-  margin-top: 2px;
-}
-
-.synthetic-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-  color: var(--vapless-text-dim);
-  font-size: 11px;
-  font-style: italic;
-}
-
 /* Modal */
 .modal {
   position: fixed;
@@ -1469,3 +1441,866 @@ select.field {
   }
 }
 
+/* =========================================================
+   Técnicas de respiración
+   ========================================================= */
+.technique-tabs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 16px 0 10px;
+}
+
+.technique {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface);
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.technique strong {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vapless-text);
+}
+
+.technique span {
+  font-size: 12px;
+  color: var(--vapless-text-dim);
+}
+
+.technique.is-active {
+  border-color: var(--vapless-orange);
+  background: var(--vapless-orange-soft);
+}
+
+.technique.is-active strong {
+  color: var(--vapless-orange);
+}
+
+.technique-hint {
+  color: var(--vapless-text-muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+/* =========================================================
+   Fuentes científicas (acordeón)
+   ========================================================= */
+.sources-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.sources summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vapless-yellow);
+}
+
+.sources summary::-webkit-details-marker {
+  display: none;
+}
+
+.sources summary::after {
+  content: "+";
+  margin-left: auto;
+  color: var(--vapless-text-dim);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.sources[open] summary::after {
+  content: "–";
+}
+
+.sources ul {
+  margin: 0;
+  padding: 0 18px 4px;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.sources li {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--vapless-text-muted);
+  border-left: 2px solid var(--vapless-border);
+  padding-left: 12px;
+}
+
+.sources li strong {
+  display: block;
+  color: var(--vapless-text);
+  font-weight: 600;
+}
+
+.sources li a {
+  color: var(--vapless-yellow);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(250, 204, 21, 0.5);
+}
+
+.sources .form-note {
+  padding: 8px 18px 16px;
+  margin-top: 8px;
+}
+
+/* =========================================================
+   Autoevaluación psicosocial
+   ========================================================= */
+.assessment-sheet {
+  max-width: 660px;
+}
+
+.quiz-list {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.quiz-question {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.quiz-question legend {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--vapless-text);
+}
+
+.quiz-number {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vapless-yellow-soft);
+  color: var(--vapless-yellow);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface);
+  color: var(--vapless-text-muted);
+  font-size: 12.5px;
+  line-height: 1.35;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.quiz-option input {
+  accent-color: var(--vapless-yellow);
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.quiz-option.is-checked,
+.quiz-option:has(input:checked) {
+  border-color: var(--vapless-yellow);
+  background: var(--vapless-yellow-soft);
+  color: var(--vapless-text);
+}
+
+.assessment-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.assessment-score {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--vapless-yellow);
+}
+
+.assessment-score-max {
+  font-size: 15px;
+  color: var(--vapless-text-dim);
+  margin-left: 4px;
+}
+
+.assessment-result[data-level="leve"] .assessment-score {
+  color: var(--vapless-green);
+}
+
+.assessment-result[data-level="moderado"] .assessment-score {
+  color: var(--vapless-yellow);
+}
+
+.assessment-result[data-level="grave"] .assessment-score {
+  color: var(--vapless-orange);
+}
+
+.support-card {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface);
+}
+
+.support-card[data-level="leve"] {
+  border-color: rgba(74, 222, 128, 0.4);
+  background: var(--vapless-green-soft);
+}
+
+.support-card[data-level="moderado"] {
+  border-color: rgba(250, 204, 21, 0.45);
+  background: var(--vapless-yellow-soft);
+}
+
+.support-card[data-level="grave"] {
+  border-color: rgba(249, 115, 22, 0.6);
+  background: var(--vapless-orange-soft);
+}
+
+.support-card h4 {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.support-card p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--vapless-text-muted);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-row .btn {
+  min-height: 42px;
+  font-size: 13px;
+}
+
+/* =========================================================
+   Escritorio: sidebar + dos columnas
+   ========================================================= */
+@media (min-width: 1024px) {
+  body {
+    padding: 0;
+    background:
+      radial-gradient(1200px 620px at 50% -12%, rgba(250, 204, 21, 0.08), transparent 62%),
+      var(--vapless-bg);
+  }
+
+  .app {
+    width: min(100% - 48px, var(--app-width-desktop));
+    margin: 24px auto;
+    min-height: calc(100vh - 48px);
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "nav header"
+      "nav main";
+    border: 1px solid var(--vapless-border);
+    border-radius: 28px;
+    background: rgba(10, 12, 17, 0.72);
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.5);
+    overflow: visible;
+  }
+
+  .app-header {
+    grid-area: header;
+    position: static;
+    padding: 26px 34px 6px;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  main {
+    grid-area: main;
+    padding: 10px 34px 40px;
+  }
+
+  .bottom-nav {
+    grid-area: nav;
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    width: auto;
+    height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 26px 14px;
+    border-top: 0;
+    border-right: 1px solid var(--vapless-border);
+    border-radius: 28px 0 0 28px;
+    background: linear-gradient(180deg, rgba(16, 20, 28, 0.96), rgba(11, 13, 18, 0.96));
+    backdrop-filter: none;
+  }
+
+  .nav-tab {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+  }
+
+  .nav-tab.is-active {
+    background: var(--vapless-yellow-soft);
+  }
+
+  .nav-tab svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-dot {
+    margin-left: auto;
+  }
+
+  .craving-fab {
+    display: none;
+  }
+
+  .technique-tabs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .quiz-options {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #sub-salida.is-active {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-areas:
+      "stats savings"
+      "nicotine recovery"
+      "goals recovery";
+    gap: 18px;
+    align-items: start;
+  }
+
+  #sub-salida.is-active > .stat-grid {
+    grid-area: stats;
+  }
+
+  #sub-salida.is-active > .card.mt-12 {
+    grid-area: savings;
+  }
+
+  #sub-salida.is-active > .dash-nicotine {
+    grid-area: nicotine;
+  }
+
+  #sub-salida.is-active > .dash-recovery {
+    grid-area: recovery;
+  }
+
+  #sub-salida.is-active > .dash-goals {
+    grid-area: goals;
+  }
+
+  #sub-salida.is-active > .section {
+    margin-top: 0;
+  }
+
+  #sub-pulso.is-active {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  #sub-pulso.is-active > .hero {
+    grid-column: 1 / -1;
+  }
+
+  #sub-pulso.is-active > .section {
+    margin-top: 0;
+  }
+
+  #sub-dojo {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .modal-sheet {
+    max-height: 88vh;
+  }
+
+  .assessment-sheet {
+    width: min(100%, 680px);
+  }
+}
+
+
+
+/* =========================================================
+   Acordeones
+   ========================================================= */
+.accordion {
+  display: grid;
+  gap: 8px;
+}
+
+.accordion-item {
+  border: 1px solid var(--vapless-border);
+  border-radius: var(--radius-sm);
+  background: #10141c;
+  overflow: hidden;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.accordion-item.is-open {
+  border-color: rgba(250, 204, 21, 0.45);
+  background: #121724;
+}
+
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  text-align: left;
+  color: var(--vapless-text);
+}
+
+.accordion-head {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.accordion-title {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--vapless-text);
+}
+
+.accordion-item.is-open .accordion-title {
+  color: var(--vapless-yellow);
+}
+
+.accordion-sub {
+  font-size: 12px;
+  color: var(--vapless-text-dim);
+}
+
+.accordion-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--vapless-border);
+}
+
+.accordion-icon::before,
+.accordion-icon::after {
+  content: "";
+  position: absolute;
+  background: var(--vapless-text-muted);
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.accordion-icon::before {
+  left: 5px;
+  top: 9px;
+  width: 8px;
+  height: 1px;
+}
+
+.accordion-icon::after {
+  left: 9px;
+  top: 5px;
+  width: 1px;
+  height: 8px;
+}
+
+.accordion-item.is-open .accordion-icon::after {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.accordion-panel {
+  border-top: 1px solid var(--vapless-border);
+  padding: 14px 16px 16px;
+  background: rgba(11, 13, 18, 0.55);
+}
+
+.accordion-content > p + p {
+  margin-top: 8px;
+}
+
+.accordion-content .rec {
+  color: var(--vapless-green);
+  font-size: 12.5px;
+}
+
+.accordion-content .hotline-phone {
+  display: inline-flex;
+}
+
+.accordion-content .btn-row .hotline-phone {
+  min-width: 0;
+}
+
+/* =========================================================
+   Panel de nicotina
+   ========================================================= */
+.nicotine-panel {
+  border: 1px solid var(--vapless-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  background: #0f131b;
+  margin-bottom: 14px;
+}
+
+.nicotine-grid,
+.nicotine-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.nicotine-grid .stat,
+.nicotine-summary-grid .stat {
+  padding: 12px;
+}
+
+.nicotine-grid .stat-value,
+.nicotine-summary-grid .stat-value {
+  font-size: 19px;
+}
+
+@media (min-width: 560px) {
+  .nicotine-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* =========================================================
+   Test psicosocial: resultado
+   ========================================================= */
+.quiz-helper {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11.5px;
+  color: var(--vapless-text-dim);
+}
+
+.assessment-dimensions {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.dimension-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dimension-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dimension-score {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vapless-yellow);
+}
+
+.recommendation-list,
+.support-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--vapless-text-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.recommendation-list li,
+.support-list li {
+  margin-top: 5px;
+}
+
+.support-list {
+  font-size: 12px;
+}
+
+.support-card.priority {
+  border-color: rgba(249, 115, 22, 0.7);
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0.18), rgba(249, 115, 22, 0.06));
+  box-shadow: var(--shadow-orange);
+}
+
+.support-card.priority h4 {
+  color: var(--vapless-orange);
+}
+/* =========================================================
+   Saludo y línea de progreso (Inicio)
+   ========================================================= */
+.hero-greeting {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--vapless-text-muted);
+  font-size: var(--fs-14);
+}
+
+.hero-greeting-text {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: var(--fs-16);
+  color: var(--vapless-text);
+}
+
+.hero-greeting-icon svg {
+  width: 20px;
+  height: 20px;
+  color: var(--vapless-yellow);
+}
+
+.progress-line {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--vapless-border);
+  background: rgba(10, 12, 17, 0.45);
+}
+
+.progress-line-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--vapless-text-muted);
+  font-size: var(--fs-12);
+}
+
+.progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vapless-text-dim);
+}
+
+.progress-dot.green {
+  background: var(--vapless-green);
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+}
+
+/* =========================================================
+   Subnavegación de módulos
+   ========================================================= */
+.subnav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  padding: var(--space-1);
+  border-radius: var(--radius-btn);
+  background: var(--vapless-surface);
+  border: 1px solid var(--vapless-border);
+}
+
+.subnav-tab {
+  padding: 9px var(--space-2);
+  border-radius: 9px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-12);
+  color: var(--vapless-text-dim);
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.subnav-tab.is-active {
+  background: var(--vapless-yellow);
+  color: var(--vapless-bg);
+  font-weight: 700;
+}
+
+.subpanel {
+  display: none;
+  animation: view-in 0.24s ease;
+}
+
+.subpanel.is-active {
+  display: block;
+}
+
+/* =========================================================
+   Logros (Perfil)
+   ========================================================= */
+.achievement-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+
+.achievement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  text-align: center;
+}
+
+.achievement-tile {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-btn);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: var(--fs-14);
+  background: var(--vapless-yellow);
+  color: var(--vapless-bg);
+  box-shadow: var(--shadow-yellow);
+}
+
+.achievement.is-locked .achievement-tile {
+  background: var(--vapless-surface);
+  border: 1px solid var(--vapless-border);
+  color: var(--vapless-text-dim);
+  opacity: 0.35;
+  box-shadow: none;
+}
+
+.achievement-label {
+  font-size: 11px;
+  color: var(--vapless-text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.achievement.is-unlocked .achievement-label {
+  color: var(--vapless-green);
+}
+
+/* =========================================================
+   Pantalla de craving
+   ========================================================= */
+.craving-hero {
+  background:
+    radial-gradient(160% 120% at 10% 0%, rgba(249, 115, 22, 0.18), transparent 58%),
+    var(--vapless-surface);
+}
+
+.craving-card {
+  text-align: center;
+}
+
+.craving-card .technique-tabs {
+  text-align: left;
+}
+
+.craving-timer {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-4);
+  color: var(--vapless-text-muted);
+  font-size: var(--fs-12);
+}
+
+.craving-timer #craving-elapsed {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: var(--fs-28);
+  color: var(--vapless-orange);
+  letter-spacing: -0.02em;
+}
+
+.craving-actions {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.craving-card.is-respirando {
+  border-color: rgba(249, 115, 22, 0.55);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(249, 115, 22, 0.18);
+}
+
+.craving-card.is-completado {
+  border-color: rgba(74, 222, 128, 0.55);
+  background: linear-gradient(180deg, rgba(74, 222, 128, 0.08), rgba(20, 24, 33, 1) 60%);
+}
+
+.craving-card.is-completado .craving-timer #craving-elapsed {
+  color: var(--vapless-green);
+}
+
+.craving-card.is-completado .breath-phase {
+  color: var(--vapless-green);
+}
+
+.result-box.is-green {
+  border-color: rgba(74, 222, 128, 0.45);
+  background: linear-gradient(180deg, rgba(74, 222, 128, 0.1), rgba(20, 24, 33, 1) 70%);
+}
+
+.result-box.is-green h3 {
+  color: var(--vapless-green);
+}

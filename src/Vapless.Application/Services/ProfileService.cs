@@ -47,6 +47,16 @@ public sealed class ProfileService : IProfileService
             profile.DailyCostCop = Math.Clamp(update.DailyCostCop.Value, 0m, 500_000m);
         }
 
+        if (update.PrimaryDevice is not null && Enum.IsDefined(typeof(DeviceType), update.PrimaryDevice.Value))
+        {
+            profile.PrimaryDevice = (DeviceType)update.PrimaryDevice.Value;
+
+            if (update.NicotineMgPerPod is null)
+            {
+                profile.NicotineMgPerPod = profile.PodProfile.NicotineMgPerPod;
+            }
+        }
+
         if (update.NicotineMgPerPod is not null)
         {
             profile.NicotineMgPerPod = Math.Clamp(update.NicotineMgPerPod.Value, 0m, 200m);
@@ -57,17 +67,26 @@ public sealed class ProfileService : IProfileService
             profile.PodsPerWeek = Math.Clamp(update.PodsPerWeek.Value, 0, 70);
         }
 
-        if (update.PrimaryDevice is not null && Enum.IsDefined(typeof(DeviceType), update.PrimaryDevice.Value))
-        {
-            profile.PrimaryDevice = (DeviceType)update.PrimaryDevice.Value;
-        }
-
         await _unitOfWork.SaveChangesAsync(ct);
         return Map(profile);
     }
 
-    private static ProfileDto Map(Domain.Entities.UserProgress profile) =>
-        new(profile.Id, profile.Alias, profile.QuitDate, profile.DailyCostCop,
-            profile.NicotineMgPerPod, profile.PodsPerWeek, (int)profile.PrimaryDevice);
+    private static ProfileDto Map(Domain.Entities.UserProgress profile)
+    {
+        var pod = profile.PodProfile;
+
+        return new ProfileDto(
+            profile.Id,
+            profile.Alias,
+            profile.QuitDate,
+            profile.DailyCostCop,
+            profile.NicotineMgPerPod,
+            profile.PodsPerWeek,
+            (int)profile.PrimaryDevice,
+            pod.Name,
+            pod.EstimatedCostCop,
+            pod.CigarettesEquivalentPerPod,
+            pod.Note);
+    }
 }
 

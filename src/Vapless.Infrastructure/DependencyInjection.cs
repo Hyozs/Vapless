@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Vapless.Application.Interfaces;
 using Vapless.Domain.Interfaces;
-using Vapless.Infrastructure.AirQuality;
 using Vapless.Infrastructure.Data;
 using Vapless.Infrastructure.Repositories;
 using Vapless.Infrastructure.Security;
@@ -24,11 +23,9 @@ public static class DependencyInjection
         services.AddScoped<IHackCardRepository, HackCardRepository>();
         services.AddScoped<ISocialScenarioRepository, SocialScenarioRepository>();
         services.AddScoped<ISupportHotlineRepository, SupportHotlineRepository>();
-        services.AddScoped<ISchoolAirRepository, SchoolAirRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddSingleton<IKAnonymityEvaluator, KAnonymityEvaluator>();
-        services.AddSingleton<ISchoolAirGenerator, SchoolAirSimulator>();
 
         return services;
     }

@@ -1,15 +1,17 @@
-const CACHE_NAME = "vapless-v1";
+const CACHE_NAME = "vapless-v4";
 const SHELL = [
   "./",
   "./index.html",
   "./css/tokens.css",
   "./css/style.css",
   "./css/fonts.css",
-  "./assets/fonts/inter-400.woff2",
-  "./assets/fonts/inter-600.woff2",
+  "./assets/fonts/inter-var.woff2",
+  "./assets/fonts/poppins-600.woff2",
   "./assets/fonts/poppins-800.woff2",
   "./js/api.js",
   "./js/app.js",
+  "./js/accordion.js",
+  "./js/assessment.js",
   "./js/craving.js",
   "./js/hack.js",
   "./js/pulse.js",
@@ -58,14 +60,15 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     caches.match(request).then((cached) => {
-      if (cached) {
-        return cached;
-      }
-      return fetch(request).then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        return response;
-      });
+      const network = fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => cached);
+
+      return cached || network;
     })
   );
 });

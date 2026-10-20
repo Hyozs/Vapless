@@ -17,12 +17,12 @@ public sealed class StreakObserver : ICravingObserver
         {
             days == 0
                 ? "Hoy sumaste un antojo superado. Ese ya es un logro."
-                : $"LlevÃ¡s {days} dÃ­a(s) construyendo tu racha."
+                : $"Llevás {days} día(s) construyendo tu racha."
         };
 
         if (days > 0 && days % 7 == 0)
         {
-            messages.Add($"Â¡Semana nueva! {days} dÃ­as de racha. TÃº mandÃ¡s.");
+            messages.Add($"¡Semana nueva! {days} días de racha. Tú mandás.");
         }
 
         return Task.FromResult<IReadOnlyList<string>>(messages);
@@ -60,17 +60,17 @@ public sealed class TriggerCoachObserver : ICravingObserver
         var message = log.Trigger switch
         {
             EmotionalTrigger.Familia =>
-                "Si vuelve el impulso por algo de tu casa, entonces escribÃ­ lo que sentÃ­s y respirÃ¡ 4-7-8 antes de decidir.",
+                "Si vuelve el impulso por algo de tu casa, entonces escribí lo que sentís y respirá 4-7-8 antes de decidir.",
             EmotionalTrigger.Ansiedad =>
-                "Si aparece la ansiedad, entonces hacÃ© 4 ciclos de respiraciÃ³n y tomÃ¡ agua antes de buscar el vape.",
+                "Si aparece la ansiedad, entonces hacé 4 ciclos de respiración y tomá agua antes de buscar el vape.",
             EmotionalTrigger.PresionSocial =>
-                "Si el parche insiste, entonces usÃ¡ una salida corta: \"no, gracias\" y cambiÃ¡ de tema.",
+                "Si el parche insiste, entonces usá una salida corta: \"no, gracias\" y cambiá de tema.",
             EmotionalTrigger.EstresAcademico =>
-                "Si te agarra el estrÃ©s de parciales, entonces salÃ­ 3 minutos y caminÃ¡ antes de volver.",
+                "Si te agarra el estrés de parciales, entonces salí 3 minutos y caminá antes de volver.",
             EmotionalTrigger.Aburrimiento =>
-                "Si te agarra el aburrimiento, entonces elegÃ­ una tarea de 5 minutos que te mueva de lugar.",
+                "Si te agarra el aburrimiento, entonces elegí una tarea de 5 minutos que te mueva de lugar.",
             _ =>
-                "Si te da curiosidad otra vez, entonces recordÃ¡ por quÃ© empezaste esta ruta."
+                "Si te da curiosidad otra vez, entonces recordá por qué empezaste esta ruta."
         };
 
         return Task.FromResult<IReadOnlyList<string>>([message]);

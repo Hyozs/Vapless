@@ -9,15 +9,18 @@ public sealed class SavingsService : ISavingsService
     private readonly IProfileRepository _profiles;
     private readonly ISavingsCalculator _calculator;
     private readonly ISavingsComparisonCatalog _catalog;
+    private readonly INicotineProfileService _nicotine;
 
     public SavingsService(
         IProfileRepository profiles,
         ISavingsCalculator calculator,
-        ISavingsComparisonCatalog catalog)
+        ISavingsComparisonCatalog catalog,
+        INicotineProfileService nicotine)
     {
         _profiles = profiles;
         _calculator = calculator;
         _catalog = catalog;
+        _nicotine = nicotine;
     }
 
     public async Task<SavingsSummaryDto> GetSummaryAsync(int? profileId, CancellationToken ct = default)
@@ -31,6 +34,7 @@ public sealed class SavingsService : ISavingsService
         var days = _calculator.DaysClean(profile, now);
         var cop = _calculator.CopSaved(profile, now);
         var nicotine = _calculator.NicotineAvoidedMg(profile, now);
+        var nicotineProfile = await _nicotine.GetAsync(profile.Id, ct);
 
         var nicotinePhrase = nicotine <= 0
             ? "Cada día sin vape es nicotina que tu cuerpo no recibe."
@@ -43,6 +47,7 @@ public sealed class SavingsService : ISavingsService
             profile.DailyCostCop,
             _catalog.BuildPhrase(cop),
             nicotinePhrase,
-            _catalog.BuildGoalProgress(cop));
+            _catalog.BuildGoalProgress(cop),
+            nicotineProfile);
     }
 }

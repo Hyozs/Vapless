@@ -15,7 +15,6 @@ public sealed class VaplessDbContext : DbContext
     public DbSet<HackCard> HackCards => Set<HackCard>();
     public DbSet<SocialScenario> SocialScenarios => Set<SocialScenario>();
     public DbSet<SupportHotline> SupportHotlines => Set<SupportHotline>();
-    public DbSet<SchoolAirReading> SchoolAirReadings => Set<SchoolAirReading>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -75,14 +74,6 @@ public sealed class VaplessDbContext : DbContext
             entity.ToTable("SupportHotlines");
             entity.Property(h => h.Name).HasMaxLength(120).IsRequired();
             entity.Property(h => h.Phone).HasMaxLength(40).IsRequired();
-        });
-
-        modelBuilder.Entity<SchoolAirReading>(entity =>
-        {
-            entity.ToTable("SchoolAirReadings");
-            entity.Property(r => r.SensorId).HasMaxLength(40);
-            entity.Property(r => r.Zone).HasMaxLength(80);
-            entity.HasIndex(r => r.RecordedAt);
         });
 
         base.OnModelCreating(modelBuilder);
