@@ -1,0 +1,20 @@
+{
+  "name": "vapless. — Menos vape. Más vida.",
+  "short_name": "vapless.",
+  "description": "Ruta local de prevención y acompañamiento para dejar o reducir el vapeo. Medellín, Colombia.",
+  "lang": "es-CO",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B0D12",
+  "theme_color": "#0B0D12",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="vapless.">
+  <rect width="512" height="512" rx="112" fill="#0B0D12" />
+  <circle cx="256" cy="256" r="176" fill="none" stroke="#232936" stroke-width="14" />
+  <text x="238" y="318" text-anchor="middle" font-family="Poppins, 'Segoe UI', sans-serif" font-size="196" font-weight="800" fill="#F8FAFC">v</text>
+  <circle cx="352" cy="330" r="24" fill="#FACC15" />
+</svg>

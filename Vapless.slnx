@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Vapless.Api/Vapless.Api.csproj" />
+    <Project Path="src/Vapless.Application/Vapless.Application.csproj" />
+    <Project Path="src/Vapless.Domain/Vapless.Domain.csproj" />
+    <Project Path="src/Vapless.Infrastructure/Vapless.Infrastructure.csproj" />
+  </Folder>
+</Solution>

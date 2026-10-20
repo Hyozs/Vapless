@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0B0D12" />
+  <meta name="description" content="vapless. Una ruta para dejar o reducir el vapeo. Menos vape. Más vida." />
+  <title>vapless. — Menos vape. Más vida.</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-name">vapless<span class="brand-dot">.</span></span>
+        <span class="brand-slogan">Menos vape. Más vida.</span>
+      </div>
+      <div class="header-chip">Racha <strong id="header-streak">0</strong> días</div>
+    </header>
+
+    <main>
+      <!-- ================= SALIDA ================= -->
+      <section id="view-salida" class="view is-active" aria-label="Inicio">
+        <div class="hero">
+          <div class="hero-label">Tu ruta de salida</div>
+          <div class="streak-wrap">
+            <svg class="streak-ring" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="streak-track" cx="100" cy="100" r="86" />
+              <circle class="streak-arc" id="streak-arc" cx="100" cy="100" r="86" />
+            </svg>
+            <div class="streak-center">
+              <span class="hero-days" id="streak-days">0</span>
+              <span class="hero-days-label" id="streak-label">días de racha</span>
+            </div>
+          </div>
+          <button class="btn btn-craving btn-block mt-12" id="craving-open" type="button">Registrar craving</button>
+          <div class="hero-actions mt-12">
+            <button class="btn btn-ghost btn-small" id="toggle-profile" type="button">Ajustar mis datos</button>
+            <button class="btn btn-ghost btn-small" id="refresh-dashboard" type="button">Actualizar</button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-label">Ahorrado</div>
+            <div class="stat-value green" id="stat-cop">$0</div>
+            <div class="stat-sub" id="stat-cop-sub">COP</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Vida recuperada</div>
+            <div class="stat-value yellow" id="stat-nicotine">0 mg</div>
+            <div class="stat-sub">Nicotina que tu cuerpo no recibió</div>
+          </div>
+        </div>
+
+        <div class="card mt-12">
+          <div class="card-eyebrow">Lo que ya cambió</div>
+          <p class="card-text" id="savings-phrase">Cargando tu resumen…</p>
+          <p class="card-text mt-8" id="nicotine-phrase"></p>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Vida recuperada</h2>
+            <span class="section-hint">Paso a paso</span>
+          </div>
+          <div class="card" id="recovery-list">
+            <div class="skeleton"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Metas con tus lucas</h2>
+            <span class="section-hint">COP</span>
+          </div>
+          <div class="card" id="goals-list">
+            <div class="skeleton"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Ajustar mi ruta</h2>
+          </div>
+          <form class="card form hidden" id="profile-form">
+            <div class="form-row two">
+              <div class="form-row">
+                <label class="field-label" for="profile-quitdate">Fecha de inicio</label>
+                <input class="field" type="date" id="profile-quitdate" />
+              </div>
+              <div class="form-row">
+                <label class="field-label" for="profile-cost">Costo diario (COP)</label>
+                <input class="field" type="number" id="profile-cost" min="0" max="500000" step="500" />
+              </div>
+            </div>
+            <div class="form-row two">
+              <div class="form-row">
+                <label class="field-label" for="profile-pods">Pods por semana</label>
+                <input class="field" type="number" id="profile-pods" min="0" max="70" />
+              </div>
+              <div class="form-row">
+                <label class="field-label" for="profile-mg">Nicotina por pod (mg)</label>
+                <input class="field" type="number" id="profile-mg" min="0" max="200" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="field-label" for="profile-device">Dispositivo principal</label>
+              <select class="field" id="profile-device">
+                <option value="1">Desechable</option>
+                <option value="2">Pod recargable</option>
+                <option value="3">Mod / caja</option>
+                <option value="0">No uso</option>
+              </select>
+            </div>
+            <p class="form-note">Estos datos quedan solo en tu base local. Nada se envía por fuera.</p>
+            <button class="btn btn-primary btn-block" type="submit">Guardar mis datos</button>
+          </form>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Si necesitás hablar</h2>
+            <span class="section-hint">Confidencial</span>
+          </div>
+          <div class="card">
+            <div class="hotline">
+              <div>
+                <h3 class="card-title">Línea Amiga 106</h3>
+                <p class="card-text">Orientación psicológica en Medellín, 24/7. No es un reporte ni te va a regañar nadie.</p>
+              </div>
+              <a class="hotline-phone" href="tel:106">106</a>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ================= PULSO ================= -->
+      <section id="view-pulso" class="view" aria-label="Pulso y Medellín">
+        <div class="hero">
+          <div class="hero-label">Pulso comunal</div>
+          <h1 class="section-title mt-8">Leer la ciudad sin señalar a nadie</h1>
+          <p class="card-text mt-8">
+            Tu respuesta es anónima. Con 5 o más respuestas por comuna activamos el mapa de riesgo.
+            Nada de nombres, documentos ni correos.
+          </p>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Mapa de riesgo</h2>
+            <span class="section-hint" id="risk-count">—</span>
+          </div>
+          <div class="card" id="risk-map">
+            <div class="skeleton"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Análisis psicosocial</h2>
+            <span class="section-hint">M2</span>
+          </div>
+          <div class="card" id="analysis-list">
+            <div class="skeleton"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Sumá tu pulso</h2>
+            <span class="section-hint">Anónimo</span>
+          </div>
+          <form class="card form" id="survey-form">
+            <div class="form-row two">
+              <div class="form-row">
+                <label class="field-label" for="survey-comuna">Comuna</label>
+                <select class="field" id="survey-comuna" required></select>
+              </div>
+              <div class="form-row">
+                <label class="field-label" for="survey-age">Edad</label>
+                <input class="field" type="number" id="survey-age" min="12" max="19" value="16" required />
+              </div>
+            </div>
+            <div class="form-row two">
+              <div class="form-row">
+                <label class="field-label" for="survey-device">Dispositivo</label>
+                <select class="field" id="survey-device">
+                  <option value="1">Desechable</option>
+                  <option value="2">Pod recargable</option>
+                  <option value="3">Mod / caja</option>
+                  <option value="0">No uso</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="field-label" for="survey-frequency">Veces al día</label>
+                <input class="field" type="number" id="survey-frequency" min="0" max="40" value="2" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="field-label" for="survey-trigger">¿Qué te dispara las ganas?</label>
+              <select class="field" id="survey-trigger">
+                <option value="1">Curiosidad</option>
+                <option value="2">Presión del parche</option>
+                <option value="3">Ansiedad</option>
+                <option value="4">Estrés académico</option>
+                <option value="5">Situaciones en casa</option>
+                <option value="6">Aburrimiento</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label class="field-label" for="survey-family">En casa</label>
+              <select class="field" id="survey-family">
+                <option value="1">Vivo con ambos padres</option>
+                <option value="2">Vivo con un solo padre</option>
+                <option value="3">Vivo con familia extensa</option>
+                <option value="4">Vivo con acudiente</option>
+                <option value="5">Paso tardes solo en casa</option>
+                <option value="6">Prefiero no decir</option>
+              </select>
+            </div>
+            <div class="switch-row">
+              <span>¿Has vapeado dentro del colegio?</span>
+              <label class="switch">
+                <input type="checkbox" id="survey-school" />
+                <span></span>
+              </label>
+            </div>
+            <p class="form-note">No pedimos nombre, correo ni ubicación exacta. Solo comuna.</p>
+            <button class="btn btn-primary btn-block" type="submit">Enviar mi pulso anónimo</button>
+          </form>
+        </section>
+
+        <section class="section" id="support-section">
+          <div class="section-head">
+            <h2 class="section-title">Rutas de apoyo en Medellín</h2>
+          </div>
+          <div class="card" id="hotlines-list">
+            <div class="skeleton"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Aire escolar</h2>
+            <span class="section-hint">Simulado</span>
+          </div>
+          <div class="card" id="air-card">
+            <div class="skeleton"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ================= DOJO ================= -->
+      <section id="view-dojo" class="view" aria-label="Dojo y hack al hábito">
+        <div class="hero">
+          <div class="hero-label">Hack al hábito</div>
+          <h1 class="section-title mt-8">Deslizá, decidí y desarmá el mito</h1>
+          <p class="card-text mt-8">
+            Arrastrá la tarjeta o usá los botones. Si te equivocás, no pasa nada: acá se aprende sin sermón.
+          </p>
+          <div class="mt-12">
+            <span class="xp-pill">XP <strong id="xp-value">0</strong></span>
+          </div>
+        </div>
+
+        <div class="chip-row mt-12" id="deck-chips"></div>
+
+        <div class="deck-progress">
+          <span id="deck-position">0 / 0</span>
+          <div class="progress"><span id="deck-bar" style="width: 0%"></span></div>
+          <span id="deck-name">Mazo</span>
+        </div>
+
+        <div class="deck-stage" id="deck-stage">
+          <div class="empty-card" id="deck-empty">Cargando tarjetas…</div>
+        </div>
+
+        <div class="swipe-actions" id="swipe-actions">
+          <button class="btn btn-myth" id="swipe-myth" type="button">Es mito</button>
+          <button class="btn btn-real" id="swipe-real" type="button">Es realidad</button>
+        </div>
+
+        <div class="card mt-16 hidden" id="deck-summary">
+          <div class="card-eyebrow">Mazo completado</div>
+          <h3 class="card-title" id="summary-title">Bien ahí.</h3>
+          <p class="card-text" id="summary-text"></p>
+          <div class="mt-12">
+            <button class="btn btn-primary" id="summary-support" type="button">¿Necesitás hablar con alguien?</button>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Dojo de presión social</h2>
+            <span class="section-hint">Frases reales</span>
+          </div>
+          <p class="card-text small dim" style="margin-bottom: 10px">Tocá una respuesta para ver cómo suena. Elegí la que te quede natural.</p>
+          <div id="scenarios-list">
+            <div class="empty-card">Cargando escenarios…</div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <button class="craving-fab" id="craving-fab" type="button" aria-haspopup="dialog">
+      <span class="pulse-dot"></span>
+      Siento ganas
+    </button>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button class="nav-tab is-active" data-tab="salida" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12h4l3-8 4 16 3-8h4" />
+        </svg>
+        <span>Inicio</span>
+        <span class="nav-dot"></span>
+      </button>
+      <button class="nav-tab" data-tab="pulso" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.5-7 10-7 10Z" />
+        </svg>
+        <span>Pulso</span>
+        <span class="nav-dot"></span>
+      </button>
+      <button class="nav-tab" data-tab="dojo" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 4l7 7M20 4l-7 7M12 12l6 6M12 12l-6 6" />
+          <circle cx="12" cy="12" r="2" />
+        </svg>
+        <span>Dojo</span>
+        <span class="nav-dot"></span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ================= MODAL CRAVING ================= -->
+  <div class="modal" id="craving-modal" role="dialog" aria-modal="true" aria-labelledby="craving-title">
+    <div class="modal-sheet">
+      <div class="sheet-head">
+        <div>
+          <div class="card-eyebrow">Naranja impulso</div>
+          <h2 id="craving-title" style="font-size: 23px">Respirá. Esto pasa.</h2>
+          <p class="card-text mt-8">Tres minutos de respiración 4-7-8 bajan el pico del antojo. Vos tenés el control.</p>
+        </div>
+        <button class="sheet-close" id="craving-close" type="button" aria-label="Cerrar">×</button>
+      </div>
+
+      <div class="breath-wrap">
+        <svg class="breath-ring" viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="track" cx="110" cy="110" r="95" />
+          <circle class="bar" id="breath-bar" cx="110" cy="110" r="95" />
+        </svg>
+        <div class="breath-center">
+          <div class="breath-phase" id="breath-phase">Inhalá</div>
+          <div class="breath-count" id="breath-count">4</div>
+          <div class="breath-cycles" id="breath-cycles">Ciclo 1 de 4</div>
+        </div>
+      </div>
+
+      <div class="breath-timer">
+        <span id="craving-elapsed">00:00</span>
+        <span class="timer-sep">transcurridos</span>
+        <span class="timer-dot">·</span>
+        <span id="craving-remaining">03:00</span>
+        <span class="timer-sep">restantes</span>
+      </div>
+
+      <div class="form">
+        <div class="form-row">
+          <label class="field-label">¿Qué tan fuerte está?</label>
+          <div class="intensity-row" id="intensity-row">
+            <button class="intensity is-active" type="button" data-intensity="1">Leve</button>
+            <button class="intensity" type="button" data-intensity="2">Moderado</button>
+            <button class="intensity" type="button" data-intensity="3">Fuerte</button>
+            <button class="intensity" type="button" data-intensity="4">Intenso</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="field-label" for="craving-trigger">¿Qué lo disparó?</label>
+          <select class="field" id="craving-trigger">
+            <option value="1">Curiosidad</option>
+            <option value="2">Presión del parche</option>
+            <option value="3">Ansiedad</option>
+            <option value="4">Estrés académico</option>
+            <option value="5">Situaciones en casa</option>
+            <option value="6">Aburrimiento</option>
+          </select>
+        </div>
+        <button class="btn btn-craving btn-block" id="craving-done" type="button">Ya pasó, lo superé</button>
+        <button class="btn btn-ghost btn-block" id="craving-support" type="button">Necesito hablar con alguien</button>
+      </div>
+
+      <div class="result-box hidden" id="craving-result">
+        <h3 id="craving-result-title">Antojo superado</h3>
+        <p class="card-text" id="craving-result-text"></p>
+        <ul id="craving-result-messages"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/craving.js"></script>
+  <script src="js/hack.js"></script>
+  <script src="js/pulse.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
