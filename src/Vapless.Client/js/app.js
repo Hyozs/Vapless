@@ -41,31 +41,39 @@
     document.querySelectorAll(".view").forEach(function (view) {
       view.classList.toggle("is-active", view.id === "view-" + tab);
     });
-    document.querySelectorAll(".nav-tab").forEach(function (button) {
-      button.classList.toggle("is-active", button.dataset.tab === tab);
+    document.querySelectorAll(".topnav-tab").forEach(function (button) {
+      const active = button.dataset.tab === tab;
+      button.classList.toggle("is-active", active);
+      if (active) {
+        button.setAttribute("aria-current", "page");
+      } else {
+        button.removeAttribute("aria-current");
+      }
     });
+    revealActiveTab();
     if (scroll !== false) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
-  function showSub(sub) {
-    document.querySelectorAll(".subpanel").forEach(function (panel) {
-      panel.classList.toggle("is-active", panel.id === "sub-" + sub);
-    });
-    document.querySelectorAll(".subnav-tab").forEach(function (button) {
-      button.classList.toggle("is-active", button.dataset.sub === sub);
-    });
+  /* En pantallas angostas la barra de pestañas se desplaza: mantenemos visible la activa. */
+  function revealActiveTab() {
+    const strip = document.querySelector(".topnav-tabs");
+    const active = document.querySelector(".topnav-tab.is-active");
+    if (!strip || !active || strip.scrollWidth <= strip.clientWidth) {
+      return;
+    }
+    const stripBox = strip.getBoundingClientRect();
+    const activeBox = active.getBoundingClientRect();
+    const delta = activeBox.left - stripBox.left;
+    const target = strip.scrollLeft + delta - (strip.clientWidth - activeBox.width) / 2;
+    strip.scrollLeft = Math.max(0, target);
   }
 
   function goSupport(lines) {
-    showTab("perfil");
-    const section = document.getElementById("support-section");
+    showTab("apoyo");
+    const container = document.getElementById("hotlines-list");
     setTimeout(function () {
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-      const container = document.getElementById("hotlines-list");
       if (container && window.VaplessAccordion) {
         (lines || ["106", "123"]).forEach(function (needle) {
           window.VaplessAccordion.openByTitle(container, needle);
@@ -283,22 +291,28 @@
   }
 
   function setupNavigation() {
-    document.querySelectorAll(".nav-tab").forEach(function (button) {
+    document.querySelectorAll(".topnav-tab").forEach(function (button) {
       button.addEventListener("click", function () {
-        showTab(button.dataset.tab);
+        const tab = button.dataset.tab;
+        showTab(tab);
+
+        if (tab === "test" && window.VaplessAssessment) {
+          window.VaplessAssessment.open();
+        }
+        if (tab === "reporte" && window.VaplessPulse) {
+          window.VaplessPulse.reload();
+        }
       });
     });
 
-    document.querySelectorAll(".subnav-tab").forEach(function (button) {
+    document.querySelectorAll("[data-goto]").forEach(function (button) {
       button.addEventListener("click", function () {
-        showSub(button.dataset.sub);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        showTab(button.dataset.goto);
       });
     });
 
     document.getElementById("toggle-progress").addEventListener("click", function () {
       showTab("inicio");
-      showSub("salida");
       setTimeout(function () {
         const block = document.getElementById("progress-block");
         if (block) {
@@ -316,6 +330,16 @@
         });
       }
     });
+
+    const assessmentOpen = document.getElementById("assessment-open");
+    if (assessmentOpen) {
+      assessmentOpen.addEventListener("click", function () {
+        showTab("test");
+        if (window.VaplessAssessment) {
+          window.VaplessAssessment.open();
+        }
+      });
+    }
   }
 
   function setupProfileForm() {
@@ -395,6 +419,10 @@
   }
 
   function init() {
+    if (window.VaplessTheme) {
+      window.VaplessTheme.init();
+    }
+
     setupNavigation();
     setupProfileForm();
     setupShareStreak();
@@ -415,7 +443,13 @@
     }
 
     if (window.VaplessAssessment) {
-      window.VaplessAssessment.init({ onSupport: goSupport, toast: toast });
+      window.VaplessAssessment.init({
+        onSupport: goSupport,
+        onDone: function () {
+          showTab("inicio");
+        },
+        toast: toast
+      });
     }
 
     if ("serviceWorker" in navigator) {

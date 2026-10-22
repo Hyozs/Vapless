@@ -1,5 +1,5 @@
 :root {
-  /* Colores Vapless */
+  /* Colores Vapless — Modo oscuro (predeterminado) */
   --vapless-bg: #0b0d12; /* BG profundo: fondo de pantalla */
   --vapless-bg-energy: #111827; /* Negro Energía: fondo principal */
   --vapless-surface: #141821; /* Surface: tarjetas y sheets */
@@ -17,6 +17,24 @@
   --vapless-text: #e5e7eb; /* Texto primario */
   --vapless-text-muted: #9ca3af; /* Texto secundario */
   --vapless-text-dim: #6b7280; /* Placeholders y deshabilitados */
+
+  /* Tintes legibles de los acentos (texto y trazos) */
+  --vapless-yellow-ink: #facc15;
+  --vapless-orange-ink: #f97316;
+  --vapless-green-ink: #4ade80;
+  --vapless-on-accent: #0b0d12; /* Texto sobre amarillo/naranja/verde */
+
+  /* Superficies derivadas */
+  --vapless-field: #0f131b; /* Inputs y paneles internos */
+  --vapless-track: #0e1219; /* Tracks de barras y switches */
+  --vapless-soft-bg: #0b0d12; /* Fondos secundarios (paneles, acordeones) */
+  --vapless-glass: rgba(10, 12, 17, 0.45); /* Superficies translúcidas */
+  --vapless-overlay: rgba(4, 6, 10, 0.72); /* Overlay de modales */
+  --vapless-nav-bg: rgba(11, 13, 18, 0.96); /* Barra superior */
+  --vapless-app-bg: rgba(10, 12, 17, 0.72); /* Contenedor de la app */
+  --vapless-divider: rgba(35, 41, 54, 0.9); /* Separadores punteados */
+  --vapless-skeleton-a: #161b25;
+  --vapless-skeleton-b: #1d2330;
 
   /* Tipografía */
   --font-title: "Poppins", "Segoe UI", system-ui, sans-serif;
@@ -54,9 +72,48 @@
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-yellow: 0 12px 32px rgba(250, 204, 21, 0.22);
   --shadow-orange: 0 12px 32px rgba(249, 115, 22, 0.28);
+  --shadow-app: 0 40px 120px rgba(0, 0, 0, 0.5);
 
   --nav-height: 76px;
   --app-width: 540px;
   --app-width-desktop: 1180px;
   --sidebar-width: 236px;
+}
+
+/* =========================================================
+   Modo claro — mismo lenguaje visual, fondos claros
+   ========================================================= */
+[data-theme="light"] {
+  --vapless-bg: #f8fafc;
+  --vapless-bg-energy: #ffffff;
+  --vapless-surface: #ffffff;
+  --vapless-surface-hover: #f1f5f9;
+  --vapless-border: #e2e8f0;
+
+  --vapless-text: #0f172a;
+  --vapless-text-muted: #475569;
+  --vapless-text-dim: #64748b;
+
+  /* Los acentos de marca se mantienen; solo se oscurecen para leerse */
+  --vapless-yellow-ink: #b45309;
+  --vapless-orange-ink: #c2410c;
+  --vapless-green-ink: #15803d;
+  --vapless-on-accent: #0b0d12;
+
+  --vapless-field: #ffffff;
+  --vapless-track: #e2e8f0;
+  --vapless-soft-bg: #f1f5f9;
+  --vapless-glass: rgba(15, 23, 42, 0.04);
+  --vapless-overlay: rgba(15, 23, 42, 0.45);
+  --vapless-nav-bg: rgba(255, 255, 255, 0.92);
+  --vapless-app-bg: rgba(255, 255, 255, 0.92);
+  --vapless-divider: #e2e8f0;
+  --vapless-skeleton-a: #eef2f7;
+  --vapless-skeleton-b: #e2e8f0;
+
+  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-yellow: 0 12px 32px rgba(250, 204, 21, 0.3);
+  --shadow-orange: 0 12px 32px rgba(249, 115, 22, 0.24);
+  --shadow-app: 0 40px 120px rgba(15, 23, 42, 0.12);
 }

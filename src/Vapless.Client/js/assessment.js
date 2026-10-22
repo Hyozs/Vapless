@@ -2,7 +2,6 @@
   const api = window.VaplessApi;
   const utils = window.VaplessUtils;
 
-  let modal;
   let form;
   let questionsEl;
   let resultEl;
@@ -12,6 +11,7 @@
   let resultTextEl;
   let supportEl;
   let onSupport = function () {};
+  let onDone = function () {};
   let toast = function (message) {
     if (window.VaplessToast) {
       window.VaplessToast(message);
@@ -228,7 +228,6 @@
     const supportButton = supportEl.querySelector('[data-action="support"]');
     if (supportButton) {
       supportButton.addEventListener("click", function () {
-        close();
         onSupport(result.level === "Grave" ? ["106", "123"] : null);
       });
     }
@@ -279,21 +278,16 @@
 
   function open() {
     reset();
-    modal.classList.add("is-open");
     loadQuestions();
-  }
-
-  function close() {
-    modal.classList.remove("is-open");
   }
 
   function init(options) {
     onSupport = (options && options.onSupport) || onSupport;
+    onDone = (options && options.onDone) || onDone;
     if (options && options.toast) {
       toast = options.toast;
     }
 
-    modal = document.getElementById("assessment-modal");
     form = document.getElementById("assessment-form");
     questionsEl = document.getElementById("assessment-questions");
     resultEl = document.getElementById("assessment-result");
@@ -311,30 +305,15 @@
       });
     });
 
-    document.getElementById("assessment-close").addEventListener("click", close);
-    document.getElementById("assessment-done").addEventListener("click", close);
     document.getElementById("assessment-retry").addEventListener("click", function () {
       reset();
       form.scrollTop = 0;
     });
 
-    const opener = document.getElementById("assessment-open");
-    if (opener) {
-      opener.addEventListener("click", open);
-    }
-
-    modal.addEventListener("click", function (event) {
-      if (event.target === modal) {
-        close();
-      }
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && modal.classList.contains("is-open")) {
-        close();
-      }
+    document.getElementById("assessment-done").addEventListener("click", function () {
+      onDone();
     });
   }
 
-  window.VaplessAssessment = { init, open, close };
+  window.VaplessAssessment = { init, open };
 })();

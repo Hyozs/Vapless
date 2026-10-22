@@ -1,4 +1,4 @@
-const CACHE_NAME = "vapless-v4";
+const CACHE_NAME = "vapless-v5";
 const SHELL = [
   "./",
   "./index.html",
@@ -10,6 +10,7 @@ const SHELL = [
   "./assets/fonts/poppins-800.woff2",
   "./js/api.js",
   "./js/app.js",
+  "./js/theme.js",
   "./js/accordion.js",
   "./js/assessment.js",
   "./js/craving.js",

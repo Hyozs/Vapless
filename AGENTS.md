@@ -115,16 +115,17 @@ Vapless/
 │       ├── manifest.json
 │       ├── sw.js
 │       ├── assets/icon.svg
-│       ├── css/tokens.css
+│       ├── css/tokens.css                  # Tokens de los dos temas (oscuro y claro)
 │       ├── css/style.css
 │       └── js/
 │           ├── api.js                       # Cliente fetch + utilidades de formato
-│           ├── app.js                       # Navegación (3 tabs + subnav), dashboard, perfil, toasts
+│           ├── theme.js                     # Conmutador claro/oscuro + localStorage
+│           ├── app.js                       # Navegación (topnav), dashboard, perfil, toasts
 │           ├── accordion.js                 # Acordeones (análisis y rutas de apoyo)
 │           ├── assessment.js                # Test psicosocial (10 preguntas) + derivación
 │           ├── craving.js                   # Pantalla Craving: 4-4-4 / 4-7-8 indefinida + registro
 │           ├── hack.js                      # Mazos swipe, XP y progreso local
-│           └── pulse.js                     # Mapa, análisis, encuesta, apoyo
+│           └── pulse.js                     # Mapa, análisis, reporte Robledo, encuesta, apoyo
 ```
 
 Regla de dependencias: `Api → Infrastructure → Application → Domain`. El `Client` solo habla con `/api/v1` y con `localStorage`.
@@ -167,10 +168,12 @@ Configuración de estáticos: `Program.cs` resuelve `../Vapless.Client` desde el
 
 ### Frontend
 
-- JavaScript en IIFE, sin módulos ES ni bundler. Cada archivo expone un único global (`VaplessApi`, `VaplessHack`, `VaplessCraving`, `VaplessPulse`, `VaplessToast`, `VaplessAccordion`, `VaplessAssessment`).
-- Navegación: `showTab(tab)` cambia entre `view-inicio`, `view-craving` y `view-perfil`; `showSub(sub)` cambia entre `sub-salida`, `sub-pulso` y `sub-dojo` dentro de Inicio.
+- JavaScript en IIFE, sin módulos ES ni bundler. Cada archivo expone un único global (`VaplessApi`, `VaplessTheme`, `VaplessHack`, `VaplessCraving`, `VaplessPulse`, `VaplessToast`, `VaplessAccordion`, `VaplessAssessment`).
+- Navegación: una sola barra superior (`nav.topnav-tabs`) con todas las secciones visibles, sin menús anidados: Inicio, Craving / Ansiedad, Test Psicosocial, Dojo, Reporte Robledo, Rutas de Apoyo y Perfil. Cada pestaña es una vista (`section#view-<tab>`) y `showTab(tab)` en `app.js` alterna la vista, marca la pestaña activa (`is-active` + `aria-current="page"`) y desplaza la barra para dejarla visible en pantallas angostas.
+- Tema: `data-theme="dark" | "light"` en `<html>`; `js/theme.js` aplica y persiste la preferencia en `localStorage` (`vapless.theme`). El script inline del `<head>` aplica el tema antes del primer pintado para evitar parpadeos.
 - Toda inserción de texto proveniente de la API pasa por `VaplessUtils.escapeHtml`.
 - Estado personal en `localStorage`:
+  - `vapless.theme`: `dark` (predeterminado) o `light`.
   - `vapless.xp`: XP acumulado en el Dojo.
   - `vapless.completedDecks`: array JSON de categorías completadas.
 - No se usan librerías de UI, íconos externos ni emojis en la interfaz.
@@ -182,22 +185,26 @@ Configuración de estáticos: `Program.cs` resuelve `../Vapless.Client` desde el
 
 ### Tokens (en `css/tokens.css`)
 
-| Token | Valor | Uso |
-|---|---|---|
-| `--vapless-bg` | `#0B0D12` | BG profundo: fondo de pantalla |
-| `--vapless-bg-energy` | `#111827` | Negro Energía: fondo principal |
-| `--vapless-surface` | `#141821` | Surface: tarjetas y sheets |
-| `--vapless-surface-hover` | `#1C2230` | Hover de superficies |
-| `--vapless-border` | `#232936` | Borde: tarjetas e inputs |
-| `--vapless-yellow` | `#FACC15` | CTA primario, rachas, punto del logo, logros |
-| `--vapless-orange` | `#F97316` | Exclusivo craving / alertas de impulso |
-| `--vapless-green` | `#4ADE80` | Logros, ahorro y confirmaciones |
-| `--vapless-white` | `#F8FAFC` | Blanco Nube: fondos claros |
-| `--vapless-text` | `#E5E7EB` | Texto principal |
-| `--vapless-text-muted` | `#9CA3AF` | Texto secundario |
-| `--vapless-text-dim` | `#6B7280` | Placeholders y deshabilitados |
+La paleta se declara una sola vez por tema. El modo oscuro vive en `:root` y el claro en `[data-theme="light"]`; el atributo se fija en `<html>`.
 
-**Prohibido:** rojo `#EF4444`, tonos de alarma y mensajes de culpa. Máximo 3 colores por pantalla; el amarillo nunca ocupa un fondo completo y el botón primario es amarillo con texto `#0B0D12`.
+| Token | Modo oscuro | Modo claro | Uso |
+|---|---|---|---|
+| `--vapless-bg` | `#0B0D12` | `#F8FAFC` | Fondo de pantalla |
+| `--vapless-bg-energy` | `#111827` | `#FFFFFF` | Negro Energía: fondo principal |
+| `--vapless-surface` | `#141821` | `#FFFFFF` | Surface: tarjetas y sheets |
+| `--vapless-surface-hover` | `#1C2230` | `#F1F5F9` | Hover de superficies |
+| `--vapless-border` | `#232936` | `#E2E8F0` | Borde: tarjetas e inputs |
+| `--vapless-yellow` | `#FACC15` | `#FACC15` | CTA primario, rellenos de marca |
+| `--vapless-orange` | `#F97316` | `#F97316` | Exclusivo craving / alertas de impulso |
+| `--vapless-green` | `#4ADE80` | `#4ADE80` | Logros, ahorro y confirmaciones |
+| `--vapless-white` | `#F8FAFC` | `#F8FAFC` | Blanco Nube: fondos claros |
+| `--vapless-text` | `#E5E7EB` | `#0F172A` | Texto principal |
+| `--vapless-text-muted` | `#9CA3AF` | `#475569` | Texto secundario |
+| `--vapless-text-dim` | `#6B7280` | `#64748B` | Placeholders y deshabilitados |
+
+Tokens derivados (heredan por tema): `--vapless-yellow-ink`, `--vapless-orange-ink`, `--vapless-green-ink` (variantes legibles para texto y trazos), `--vapless-on-accent` (`#0B0D12`), `--vapless-field`, `--vapless-track`, `--vapless-soft-bg`, `--vapless-glass`, `--vapless-overlay`, `--vapless-nav-bg`, `--vapless-app-bg`, `--vapless-divider`, `--vapless-skeleton-*` y las sombras.
+
+**Prohibido:** rojo `#EF4444`, tonos de alarma y mensajes de culpa. Máximo 3 colores por pantalla; el amarillo nunca ocupa un fondo completo y el botón primario es amarillo con texto `#0B0D12`. El rojo nunca aparece en ningún tema.
 
 ### Tipografía
 
@@ -215,16 +222,16 @@ Configuración de estáticos: `Program.cs` resuelve `../Vapless.Client` desde el
 ### Componentes clave
 
 - **Logo:** `vapless` en minúscula + punto amarillo (nunca existe la versión sin punto).
-- **Header sticky:** logo, eslogan y chip de racha ("N días vapeless").
-- **BottomNav de 3 tabs:** Inicio, Craving, Perfil. Activo en amarillo con punto indicador, fondo `#0B0D12`.
-- **Subnav de módulos** dentro de Inicio: Mi salida, Pulso, Dojo (secciones plegables, no tabs del bottom nav).
+- **TopNav (barra superior sticky):** logo + eslogan, chip de racha ("N días vapeless") y conmutador de tema en la esquina superior derecha; debajo, la fila de pestañas con todas las secciones: Inicio, Craving / Ansiedad, Test Psicosocial, Dojo, Reporte Robledo, Rutas de Apoyo y Perfil. La pestaña activa se rellena en `#FACC15` con texto `#0B0D12`; en pantallas angostas la fila se desplaza y la pestaña activa queda centrada.
+- **Conmutador de tema:** botón circular con ícono de luna (modo oscuro) o sol (modo claro); alterna `data-theme` en `<html>` y guarda la preferencia en `localStorage` (`vapless.theme`).
 - **Pantalla Craving:** estados `idle → respirando → completado (verde)`. La respiración sigue en la técnica elegida hasta que el usuario termine o cambie de técnica.
 - **Botón flotante naranja** "Siento ganas": lleva a la pantalla de Craving.
-- **Tarjetas:** fondo `#141821`, borde `#232936`, radio 18 px, padding 20 px.
+- **Tarjetas:** fondo `#141821` (oscuro) / `#FFFFFF` (claro), borde `#232936` / `#E2E8F0`, radio 18 px, padding 20 px.
 - **ProgressRing:** SVG con trazo amarillo de 8 px sobre track `#232936`; centro con número Poppins 800 y label en 10 px uppercase.
 - **Tiles de logros:** 48×48, radio 12; desbloqueado con fondo amarillo, bloqueado con `#141821` y opacidad 0.35.
 - **Barras de progreso:** amarillas para racha/XP, verdes para ahorro y metas.
 - **Badges de riesgo:** verde (bajo), amarillo (medio), naranja (alto y muy alto).
+- **Reporte por comuna (Robledo):** tarjeta con índice de riesgo, nivel, respuestas, k-anonimato, puesto entre comunas, disparadores más reportados y razones explicables; se alimenta de `GET /api/v1/surveys/risk-map`.
 - **Acordeones (`js/accordion.js`):** secciones plegables de Vapless (tarjeta `#141821`, borde `#232936`, título en `#FACC15` con ícono +/−) para el análisis psicosocial y las rutas de apoyo local. Un grupo por sección: al abrir uno se cierran los demás.
 - **Panel de nicotina:** recálculo en vivo (mg semanales, mg diarios, equivalente en cigarrillos, nicotina ingerida/evitada y ahorro en COP) a partir del tipo de pod y los pods por semana.
 
@@ -235,7 +242,7 @@ Configuración de estáticos: `Program.cs` resuelve `../Vapless.Client` desde el
 | Módulo | Tier | Implementación |
 |---|---|---|
 | Shared Kernel | — | Entidades, SQLite, `KAnonymityPolicy` (k = 5), calculadora COP/nicotina, rutas de ayuda |
-| M1 Pulso Comunal | MUST | `POST /api/v1/surveys`, `GET /api/v1/surveys/risk-map`, reglas `IRiskRule` |
+| M1 Pulso Comunal | MUST | `POST /api/v1/surveys`, `GET /api/v1/surveys/risk-map`, reglas `IRiskRule`; el cliente arma el Reporte Robledo con esos agregados |
 | M2 Análisis Psicosocial | MUST | `GET /api/v1/surveys/analysis`: familia, ansiedad, presión social, inicio temprano, desechables |
 | M3 Hack al Hábito + Dojo | SHOULD | Mazos swipe (`/api/v1/hack/*`) y escenarios asertivos (`/api/v1/dojo/scenarios`) |
 | M4 Ruta de Salida | SHOULD | `/api/v1/cravings`, `/api/v1/progress/summary`, `/api/v1/progress`, `/api/v1/progress/nicotine` |
@@ -293,7 +300,7 @@ Respuestas de error: `{ "error": "mensaje en español" }`.
 - No se recolectan datos personales identificables de menores.
 - La ubicación se limita a la comuna seleccionada manualmente; no hay GPS.
 - Los agregados comunales solo se publican con `n >= 5`. Si no se cumple, la API devuelve `hasSufficientData: false`, índice 0 y un mensaje de enmascaramiento.
-- El progreso personal (XP, mazos completados, racha visible) se guarda en el navegador del estudiante.
+- El progreso personal (XP, mazos completados, racha visible, tema claro/oscuro) se guarda en el navegador del estudiante.
 - SQLite opera como archivo local (`vapless.db`); no hay servicios externos.
 - Los textos de apoyo recuerdan que la Línea Amiga 106 y psicoorientación son confidenciales, no un reporte disciplinario.
 

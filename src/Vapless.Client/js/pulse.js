@@ -15,6 +15,103 @@
     return "orange";
   }
 
+  function renderRobledoReport(map) {
+    const container = document.getElementById("robledo-report");
+    if (!container) {
+      return;
+    }
+
+    const rows = map.comunas || [];
+    const robledo = rows.find(function (comuna) {
+      return comuna.comunaName === "Robledo";
+    });
+
+    if (!robledo) {
+      container.innerHTML =
+        '<div class="card-eyebrow">Robledo</div>' +
+        '<p class="card-text">Todavía no hay respuestas de Robledo. Cuando la comuna reúna ' +
+        map.kAnonymity +
+        " respuestas, este reporte se activa solo.</p>";
+      return;
+    }
+
+    if (!robledo.hasSufficientData) {
+      container.innerHTML =
+        '<div class="card-eyebrow">Robledo</div>' +
+        '<p class="card-text">' +
+        utils.escapeHtml(robledo.explainableReasons[0] || "Sin datos suficientes") +
+        "</p>" +
+        '<p class="form-note">Se necesitan al menos ' +
+        map.kAnonymity +
+        " respuestas anónimas para publicar el dato de la comuna.</p>";
+      return;
+    }
+
+    const width = Math.round((robledo.riskIndex / 10) * 100);
+    const visibles = rows
+      .filter(function (comuna) {
+        return comuna.hasSufficientData;
+      })
+      .sort(function (a, b) {
+        return b.riskIndex - a.riskIndex;
+      });
+    const position = visibles.findIndex(function (comuna) {
+      return comuna.comunaName === "Robledo";
+    });
+
+    const reasons = (robledo.explainableReasons || [])
+      .map(function (reason) {
+        return "<li>" + utils.escapeHtml(reason) + "</li>";
+      })
+      .join("");
+
+    const triggers =
+      map.topTriggers && map.topTriggers.length
+        ? '<div class="report-meta-item"><div class="report-meta-label">Disparadores más reportados</div>' +
+          '<div class="report-meta-value" style="font-size: 13px; font-weight: 600">' +
+          utils.escapeHtml(map.topTriggers.join(" · ")) +
+          "</div></div>"
+        : "";
+
+    container.innerHTML =
+      '<div class="card-eyebrow">Reporte por comuna · Robledo</div>' +
+      '<div class="report-head">' +
+      '<div><div class="report-index">' +
+      utils.formatNumber(robledo.riskIndex, 1) +
+      "<small>/10</small></div>" +
+      '<div class="card-text">Índice de riesgo del barrio</div></div>' +
+      '<span class="badge ' +
+      badgeClass(robledo.riskLevel) +
+      '">' +
+      utils.escapeHtml(robledo.riskLevel) +
+      " · " +
+      utils.formatNumber(robledo.riskIndex, 1) +
+      "/10</span>" +
+      "</div>" +
+      '<div class="progress"><span style="width: ' +
+      width +
+      '%"></span></div>' +
+      '<div class="report-meta">' +
+      '<div class="report-meta-item"><div class="report-meta-label">Respuestas</div><div class="report-meta-value">' +
+      robledo.totalResponses +
+      "</div></div>" +
+      '<div class="report-meta-item"><div class="report-meta-label">k-anonimato</div><div class="report-meta-value">' +
+      map.kAnonymity +
+      "</div></div>" +
+      '<div class="report-meta-item"><div class="report-meta-label">Puesto entre comunas</div><div class="report-meta-value">' +
+      (position >= 0 ? position + 1 : "—") +
+      " de " +
+      visibles.length +
+      "</div></div>" +
+      triggers +
+      "</div>" +
+      '<div class="card-eyebrow mt-16">Por qué este riesgo</div>' +
+      '<ul class="report-reasons">' +
+      reasons +
+      "</ul>" +
+      '<p class="form-note mt-8">Datos agregados y anónimos: nunca mostramos quién respondió.</p>';
+  }
+
   async function loadCatalog() {
     try {
       const comunas = await api.get("/surveys/comunas");
@@ -27,6 +124,12 @@
         .join("");
       if (current) {
         select.value = current;
+      }
+      const robledo = comunas.find(function (comuna) {
+        return comuna.name === "Robledo";
+      });
+      if (robledo) {
+        select.value = String(robledo.code);
       }
       catalogLoaded = true;
     } catch (error) {
@@ -45,6 +148,7 @@
       if (!map.comunas || !map.comunas.length) {
         container.innerHTML =
           '<p class="card-text">Todavía no hay respuestas. Sé de los primeros en sumar tu pulso anónimo.</p>';
+        renderRobledoReport(map);
         return;
       }
 
@@ -52,6 +156,7 @@
         .map(function (comuna) {
           const enough = comuna.hasSufficientData;
           const width = enough ? Math.round((comuna.riskIndex / 10) * 100) : 0;
+          const focus = comuna.comunaName === "Robledo" ? " is-focus" : "";
           const reasons =
             enough && comuna.explainableReasons && comuna.explainableReasons.length
               ? '<details class="comuna-reasons"><summary>¿Por qué este riesgo?</summary><ul>' +
@@ -64,7 +169,7 @@
               : "";
 
           return (
-            '<div class="comuna-row">' +
+            '<div class="comuna-row' + focus + '">' +
             '<div><div class="comuna-name">' + utils.escapeHtml(comuna.comunaName) + "</div>" +
             '<div class="comuna-meta">' +
             (enough ? comuna.totalResponses + " respuestas" : utils.escapeHtml(comuna.explainableReasons[0] || "Sin datos")) +
@@ -87,6 +192,7 @@
           : "";
 
       container.innerHTML = rows + triggers;
+      renderRobledoReport(map);
     } catch (error) {
       container.innerHTML = '<p class="card-text">No pudimos cargar el mapa de riesgo.</p>';
       toast(error.message);
