@@ -108,18 +108,30 @@
             </svg>
             <span>Reporte Robledo</span>
           </button>
+          <button class="topnav-tab" type="button" data-tab="analisis">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19V5" />
+              <path d="M8 16V9" />
+              <path d="M12 16V5" />
+              <path d="M16 16v-4" />
+              <path d="M20 19V7" />
+            </svg>
+            <span>Análisis Psicosocial</span>
+          </button>
           <button class="topnav-tab" type="button" data-tab="apoyo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M5 4h4l2 5-2.4 1.5a11.4 11.4 0 0 0 4.9 4.9L15 13l5 2v4a1.6 1.6 0 0 1-1.8 1.6A16.6 16.6 0 0 1 3.4 5.8 1.6 1.6 0 0 1 5 4Z" />
             </svg>
             <span>Rutas de Apoyo</span>
           </button>
-          <button class="topnav-tab" type="button" data-tab="perfil">
+          <button class="topnav-tab" type="button" data-tab="ajuste">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="8" r="3.5" />
-              <path d="M5 20a7 7 0 0 1 14 0" />
+              <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h8M16 18h4" />
+              <circle cx="16" cy="6" r="2" />
+              <circle cx="10" cy="12" r="2" />
+              <circle cx="14" cy="18" r="2" />
             </svg>
-            <span>Perfil</span>
+            <span>Ajustar mi ruta</span>
           </button>
         </nav>
       </header>
@@ -243,6 +255,15 @@
               <div class="skeleton"></div>
             </div>
           </section>
+
+          <section class="section dash-logros">
+            <div class="section-head">
+              <h2 class="section-title">Logros</h2>
+              <span class="section-hint">7 · 14 · 30 · 90 días</span>
+            </div>
+            <div class="achievement-row" id="achievement-row"></div>
+            <button class="btn btn-ghost btn-block mt-12" id="share-streak" type="button">Compartir mi racha</button>
+          </section>
         </section>
 
         <!-- ================= SECCIÓN · CRAVING / ANSIEDAD ================= -->
@@ -328,16 +349,27 @@
 
         <!-- ================= SECCIÓN · TEST PSICOSOCIAL ================= -->
         <section id="view-test" class="view" aria-label="Test psicosocial">
-          <div class="hero">
-            <div class="hero-label">Autoevaluación</div>
-            <h1 class="section-title mt-8">¿Cómo estás hoy, en serio?</h1>
-            <p class="card-text mt-8">
-              10 preguntas cortas sobre frecuencia, dependencia emocional, control y entorno escolar.
-              Te da un resultado y, si hace falta, te conecta con apoyo profesional. No es un diagnóstico.
+          <div class="card test-intro" id="test-intro">
+            <div class="card-eyebrow">Autoevaluación</div>
+            <h2 class="card-title test-title">Autoevaluación Psicosocial</h2>
+            <p class="card-text">
+              Conocé tu nivel de dependencia y cómo manejarlo en 2 minutos. Son 10 preguntas cortas
+              sobre frecuencia, dependencia emocional, control y entorno escolar.
             </p>
+            <ul class="test-points">
+              <li>Resultado de 0 a 100 con tu nivel de dependencia</li>
+              <li>Qué estás haciendo bien y dónde ajustar</li>
+              <li>Rutas de apoyo si las necesitás</li>
+            </ul>
+            <button class="btn btn-primary btn-block mt-16" id="assessment-start" type="button">Comenzar test</button>
+            <p class="form-note">No es un diagnóstico y nada sale de tu dispositivo.</p>
           </div>
 
-          <div class="card mt-12">
+          <div class="card hidden" id="assessment-panel">
+            <div class="section-head">
+              <h2 class="section-title">Tus 10 preguntas</h2>
+              <span class="section-hint">Respondé sin pensarlo mucho</span>
+            </div>
             <form class="form" id="assessment-form">
               <div class="quiz-list" id="assessment-questions"></div>
               <button class="btn btn-primary btn-block" type="submit">Ver mi resultado</button>
@@ -362,15 +394,6 @@
               </div>
             </div>
           </div>
-
-          <div class="card mt-12">
-            <div class="card-eyebrow">Antes de empezar</div>
-            <p class="card-text">
-              Nada sale de tu dispositivo. No pedimos nombre, correo ni ubicación. Si en algún momento querés
-              hablar con alguien, las <button class="link-button" type="button" data-goto="apoyo">rutas de apoyo</button>
-              están a un clic.
-            </p>
-          </div>
         </section>
 
         <!-- ================= SECCIÓN · DOJO ================= -->
@@ -386,40 +409,58 @@
             </div>
           </div>
 
-          <div class="chip-row mt-12" id="deck-chips"></div>
+          <section class="collapse mt-12" id="collapse-mitos">
+            <button class="collapse-head" type="button" data-cta="Explorar mitos" aria-expanded="false" aria-controls="collapse-mitos-body">
+              <span class="collapse-head-text">
+                <span class="collapse-title">Mitos vs. realidad</span>
+                <span class="collapse-hint">Deslizá la tarjeta y decidí si es mito o realidad</span>
+              </span>
+              <span class="collapse-cta">Explorar mitos</span>
+              <span class="collapse-icon" aria-hidden="true"></span>
+            </button>
 
-          <div class="deck-progress">
-            <span id="deck-position">0 / 0</span>
-            <div class="progress"><span id="deck-bar" style="width: 0%"></span></div>
-            <span id="deck-name">Mazo</span>
-          </div>
+            <div class="collapse-body" id="collapse-mitos-body" hidden>
+              <div class="deck-progress">
+                <span id="deck-position">0 / 0</span>
+                <div class="progress"><span id="deck-bar" style="width: 0%"></span></div>
+                <span id="deck-name">Mitos y Realidades</span>
+              </div>
 
-          <div class="deck-stage" id="deck-stage">
-            <div class="empty-card" id="deck-empty">Cargando tarjetas…</div>
-          </div>
+              <div class="deck-stage" id="deck-stage">
+                <div class="empty-card" id="deck-empty">Cargando tarjetas…</div>
+              </div>
 
-          <div class="swipe-actions" id="swipe-actions">
-            <button class="btn btn-myth" id="swipe-myth" type="button">Es mito</button>
-            <button class="btn btn-real" id="swipe-real" type="button">Es realidad</button>
-          </div>
+              <div class="swipe-actions" id="swipe-actions">
+                <button class="btn btn-myth" id="swipe-myth" type="button">Es mito</button>
+                <button class="btn btn-real" id="swipe-real" type="button">Es realidad</button>
+              </div>
 
-          <div class="card mt-16 hidden" id="deck-summary">
-            <div class="card-eyebrow">Mazo completado</div>
-            <h3 class="card-title" id="summary-title">Bien ahí.</h3>
-            <p class="card-text" id="summary-text"></p>
-            <div class="mt-12">
-              <button class="btn btn-primary" id="summary-support" type="button">¿Necesitás hablar con alguien?</button>
+              <div class="card mt-16 hidden" id="deck-summary">
+                <div class="card-eyebrow">Mazo completado</div>
+                <h3 class="card-title" id="summary-title">Bien ahí.</h3>
+                <p class="card-text" id="summary-text"></p>
+                <div class="mt-12">
+                  <button class="btn btn-primary" id="summary-support" type="button">¿Necesitás hablar con alguien?</button>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
 
-          <section class="section">
-            <div class="section-head">
-              <h2 class="section-title">Dojo de presión social</h2>
-              <span class="section-hint">Frases reales</span>
-            </div>
-            <p class="card-text small dim" style="margin-bottom: 10px">Tocá una respuesta para ver cómo suena. Elegí la que te quede natural.</p>
-            <div id="scenarios-list">
-              <div class="empty-card">Cargando escenarios…</div>
+          <section class="collapse mt-12" id="collapse-presion">
+            <button class="collapse-head" type="button" data-cta="Ver dilemas de presión" aria-expanded="false" aria-controls="collapse-presion-body">
+              <span class="collapse-head-text">
+                <span class="collapse-title">Presión social</span>
+                <span class="collapse-hint">Frases reales y respuestas asertivas para usar</span>
+              </span>
+              <span class="collapse-cta">Ver dilemas de presión</span>
+              <span class="collapse-icon" aria-hidden="true"></span>
+            </button>
+
+            <div class="collapse-body" id="collapse-presion-body" hidden>
+              <p class="card-text small dim" style="margin-bottom: 10px">Tocá una respuesta para ver cómo suena. Elegí la que te quede natural.</p>
+              <div id="scenarios-list">
+                <div class="empty-card">Cargando escenarios…</div>
+              </div>
             </div>
           </section>
         </section>
@@ -445,16 +486,6 @@
               <span class="section-hint" id="risk-count">—</span>
             </div>
             <div class="card" id="risk-map">
-              <div class="skeleton"></div>
-            </div>
-          </section>
-
-          <section class="section dash-analysis">
-            <div class="section-head">
-              <h2 class="section-title">Análisis psicosocial</h2>
-              <span class="section-hint">M2</span>
-            </div>
-            <div class="card" id="analysis-list">
               <div class="skeleton"></div>
             </div>
           </section>
@@ -531,6 +562,19 @@
           </section>
         </section>
 
+        <!-- ================= SECCIÓN · ANÁLISIS PSICOSOCIAL ================= -->
+        <section id="view-analisis" class="view" aria-label="Análisis psicosocial">
+          <section class="section">
+            <div class="section-head">
+              <h2 class="section-title">Categorías</h2>
+              <span class="section-hint" id="analysis-count">—</span>
+            </div>
+            <div class="card accordion-surface" id="analysis-list">
+              <div class="skeleton"></div>
+            </div>
+          </section>
+        </section>
+
         <!-- ================= SECCIÓN · RUTAS DE APOYO ================= -->
         <section id="view-apoyo" class="view" aria-label="Rutas de apoyo">
           <div class="hero">
@@ -551,138 +595,83 @@
               <div class="skeleton"></div>
             </div>
           </section>
-
-          <section class="section">
-            <div class="card">
-              <div class="card-eyebrow">Si la urgencia aparece</div>
-              <p class="card-text">
-                La Línea Amiga 106 da orientación psicológica confidencial en Medellín, 24/7, y la Línea 123
-                atiende urgencias de salud mental. También podés hablar con un adulto de confianza en tu colegio
-                o en casa: pedir ayuda no te resta control, te lo da.
-              </p>
-              <div class="btn-row mt-12">
-                <a class="btn btn-craving" href="tel:106">Llamar a la Línea 106</a>
-                <a class="btn btn-ghost" href="tel:123">Llamar a la Línea 123</a>
-              </div>
-            </div>
-          </section>
         </section>
 
-        <!-- ================= SECCIÓN · PERFIL ================= -->
-        <section id="view-perfil" class="view" aria-label="Perfil">
-          <div class="hero profile-hero">
-            <div class="hero-label">Tu perfil</div>
-            <h1 class="section-title mt-8" id="profile-name">parce</h1>
+        <!-- ================= SECCIÓN · AJUSTAR MI RUTA ================= -->
+        <section id="view-ajuste" class="view" aria-label="Ajustar mi ruta">
+          <div class="hero">
+            <div class="hero-label">Calculadora</div>
+            <h1 class="section-title mt-8">Ajustar mi ruta</h1>
             <p class="card-text mt-8">
-              Menos vape. Más vida. Todo lo que ves vive en este dispositivo: nada se envía por fuera.
+              Contá cuánto consumís y mirá, en vivo, cuánta plata y cuánta nicotina estás dejando atrás.
             </p>
           </div>
 
-          <section class="section">
-            <div class="section-head">
-              <h2 class="section-title">Logros</h2>
-              <span class="section-hint">7 · 14 · 30 · 90 días</span>
-            </div>
-            <div class="achievement-row" id="achievement-row"></div>
-            <button class="btn btn-ghost btn-block mt-12" id="share-streak" type="button">Compartir mi racha</button>
-          </section>
-
-          <section class="section">
-            <div class="section-head">
-              <h2 class="section-title">Ajustar mi ruta</h2>
-            </div>
-            <form class="card form" id="profile-form">
-              <div class="form-row two">
-                <div class="form-row">
-                  <label class="field-label" for="profile-alias">Cómo te llamamos</label>
-                  <input class="field" type="text" id="profile-alias" maxlength="20" placeholder="parce" />
-                </div>
-                <div class="form-row">
-                  <label class="field-label" for="profile-quitdate">Fecha de inicio</label>
-                  <input class="field" type="date" id="profile-quitdate" />
-                </div>
-              </div>
-              <div class="form-row two">
-                <div class="form-row">
-                  <label class="field-label" for="profile-cost">Costo diario (COP)</label>
-                  <input class="field" type="number" id="profile-cost" min="0" max="500000" step="500" />
-                </div>
-                <div class="form-row">
-                  <label class="field-label" for="profile-pod-type">Tipo de dispositivo / pod</label>
-                  <select class="field" id="profile-pod-type">
-                    <option value="1">Desechable (20-50 mg)</option>
-                    <option value="2">Pod recargable (20-40 mg)</option>
-                    <option value="3">Mod / caja (10-30 mg)</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-row two">
-                <div class="form-row">
-                  <label class="field-label" for="profile-pods">Pods por semana</label>
-                  <input class="field" type="number" id="profile-pods" min="1" max="70" value="3" />
-                </div>
-                <div class="form-row">
-                  <label class="field-label" for="profile-mg">Nicotina por pod (mg)</label>
-                  <input class="field" type="number" id="profile-mg" min="1" max="200" step="5" />
-                </div>
+          <form class="card form mt-12" id="route-form">
+            <div class="form-row two">
+              <div class="form-row">
+                <label class="field-label" for="route-pods">Pods por semana</label>
+                <input class="field" type="number" id="route-pods" min="1" max="70" value="3" />
               </div>
               <div class="form-row">
-                <label class="field-label" for="profile-cigs">Equivalente en cigarrillos</label>
-                <input class="field" id="profile-cigs" type="text" readonly />
+                <label class="field-label" for="route-frequency">Frecuencia de consumo</label>
+                <select class="field" id="route-frequency">
+                  <option value="1">1 a 3 veces por semana</option>
+                  <option value="2">4 a 6 veces por semana</option>
+                  <option value="4">Casi todos los días</option>
+                  <option value="6">Diario</option>
+                  <option value="12">Varios episodios al día</option>
+                </select>
               </div>
+            </div>
 
-              <div class="nicotine-panel" id="nicotine-panel">
-                <div class="card-eyebrow">Cálculo automático de nicotina</div>
-                <div class="nicotine-grid">
-                  <div class="stat">
-                    <div class="stat-label">Nicotina semanal</div>
-                    <div class="stat-value accent" id="nic-weekly">0 mg</div>
-                    <div class="stat-sub" id="nic-weekly-sub">0 mg al día</div>
-                  </div>
-                  <div class="stat">
-                    <div class="stat-label">Equivalente en cigarrillos</div>
-                    <div class="stat-value accent" id="nic-cigarettes">0</div>
-                    <div class="stat-sub" id="nic-cigarettes-sub">por semana</div>
-                  </div>
-                  <div class="stat">
-                    <div class="stat-label">Nicotina ingerida</div>
-                    <div class="stat-value accent" id="nic-ingested">0 mg</div>
-                    <div class="stat-sub">desde que empezaste</div>
-                  </div>
-                  <div class="stat">
-                    <div class="stat-label">Nicotina evitada</div>
-                    <div class="stat-value accent" id="nic-avoided">0 mg</div>
-                    <div class="stat-sub" id="nic-avoided-sub">en tu racha</div>
-                  </div>
-                  <div class="stat">
-                    <div class="stat-label">Ahorro por pods</div>
-                    <div class="stat-value accent" id="nic-cost">$0</div>
-                    <div class="stat-sub" id="nic-cost-sub">por semana</div>
-                  </div>
+            <div class="nicotine-panel" id="nicotine-panel">
+              <div class="card-eyebrow">Cálculo automático de nicotina</div>
+              <div class="nicotine-grid">
+                <div class="stat">
+                  <div class="stat-label">Nicotina semanal</div>
+                  <div class="stat-value accent" id="nic-weekly">0 mg</div>
+                  <div class="stat-sub" id="nic-weekly-sub">0 mg al día</div>
                 </div>
-                <p class="form-note" id="nic-note">
-                  Elegí el tipo de pod y la cantidad por semana: la equivalencia se calcula sola.
-                </p>
+                <div class="stat">
+                  <div class="stat-label">Episodios por semana</div>
+                  <div class="stat-value accent" id="nic-episodes">0</div>
+                  <div class="stat-sub" id="nic-episodes-sub">a tu frecuencia</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">Equivalente en cigarrillos</div>
+                  <div class="stat-value accent" id="nic-cigarettes">0</div>
+                  <div class="stat-sub" id="nic-cigarettes-sub">por semana</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">Nicotina ingerida</div>
+                  <div class="stat-value accent" id="nic-ingested">0 mg</div>
+                  <div class="stat-sub">desde que empezaste</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">Nicotina evitada</div>
+                  <div class="stat-value accent" id="nic-avoided">0 mg</div>
+                  <div class="stat-sub" id="nic-avoided-sub">en tu racha</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">Ahorro por pods</div>
+                  <div class="stat-value accent" id="nic-cost">$0</div>
+                  <div class="stat-sub" id="nic-cost-sub">por semana</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-label">Ahorro total</div>
+                  <div class="stat-value accent" id="nic-total">$0</div>
+                  <div class="stat-sub" id="nic-total-sub">en tu racha</div>
+                </div>
               </div>
-
-              <p class="form-note">Estos datos quedan solo en tu base local. Nada se envía por fuera.</p>
-              <button class="btn btn-primary btn-block" type="submit">Guardar mis datos</button>
-            </form>
-          </section>
-
-          <section class="section">
-            <div class="section-head">
-              <h2 class="section-title">Autoevaluación psicosocial</h2>
-              <span class="section-hint">10 preguntas</span>
-            </div>
-            <div class="card">
-              <p class="card-text">
-                Frecuencia, dependencia emocional, control y entorno escolar. Te da un resultado y,
-                si hace falta, te conecta con apoyo profesional. No es un diagnóstico.
+              <p class="form-note" id="nic-note">
+                La cuenta se recalcula sola con cada cambio.
               </p>
-              <button class="btn btn-primary btn-block mt-12" id="assessment-open" type="button">Hacer mi autoevaluación</button>
             </div>
-          </section>
+
+            <p class="form-note">Estos datos quedan solo en tu base local. Nada se envía por fuera.</p>
+            <button class="btn btn-primary btn-block" type="submit">Calcular mi ahorro</button>
+          </form>
 
           <section class="section">
             <div class="card">
@@ -700,11 +689,50 @@
       </button>
     </div>
 
+    <!-- ================= MODAL DE BIENVENIDA ================= -->
+    <div class="welcome" id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" hidden>
+      <div class="welcome-sheet">
+        <div class="welcome-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 11V7a1.5 1.5 0 0 1 3 0v4" />
+            <path d="M10 11V5.5a1.5 1.5 0 0 1 3 0V11" />
+            <path d="M13 11V7a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-1a5 5 0 0 1-4.2-2.3L4 14a1.5 1.5 0 0 1 2.4-1.8L8 13.5" />
+          </svg>
+        </div>
+
+        <h2 class="welcome-title" id="welcome-title">Bienvenido a Vapless</h2>
+        <p class="welcome-text">
+          Vapless es tu herramienta para tomar el control de tu salud y tus decisiones frente al vapeo.
+          Todo vive en este dispositivo y nadie más ve lo que escribís.
+        </p>
+
+        <ul class="welcome-pillars">
+          <li class="welcome-pillar">
+            <span class="welcome-pillar-title">Controlá la ansiedad</span>
+            <span class="welcome-pillar-text">Respiraciones guiadas para bajar el impulso en el momento.</span>
+          </li>
+          <li class="welcome-pillar">
+            <span class="welcome-pillar-title">Medí tu ahorro</span>
+            <span class="welcome-pillar-text">Cuánta plata y cuánta nicotina recuperás cada semana.</span>
+          </li>
+          <li class="welcome-pillar">
+            <span class="welcome-pillar-title">Pedí apoyo</span>
+            <span class="welcome-pillar-text">Rutas confidenciales de Medellín cuando las necesites.</span>
+          </li>
+        </ul>
+
+        <button class="btn btn-primary btn-block mt-16" id="welcome-start" type="button">Comenzar mi ruta</button>
+        <p class="form-note">Podés cerrar esto y volver cuando quieras.</p>
+      </div>
+    </div>
+
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="js/api.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/welcome.js"></script>
     <script src="js/accordion.js"></script>
+    <script src="js/dojo-data.js"></script>
     <script src="js/craving.js"></script>
     <script src="js/hack.js"></script>
     <script src="js/pulse.js"></script>

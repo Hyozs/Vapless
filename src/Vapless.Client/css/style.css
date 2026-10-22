@@ -680,37 +680,6 @@ main {
   color: var(--vapless-yellow-ink);
 }
 
-.chip-row {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 2px 0 8px;
-  scrollbar-width: none;
-}
-
-.chip-row::-webkit-scrollbar {
-  display: none;
-}
-
-.chip {
-  flex: 0 0 auto;
-  padding: 9px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--vapless-border);
-  background: var(--vapless-surface);
-  color: var(--vapless-text-muted);
-  font-size: 12.5px;
-  font-weight: 600;
-  white-space: nowrap;
-  transition: all 0.16s ease;
-}
-
-.chip.is-active {
-  background: var(--vapless-yellow-soft);
-  border-color: rgba(250, 204, 21, 0.45);
-  color: var(--vapless-yellow-ink);
-}
-
 .badge {
   display: inline-flex;
   align-items: center;
@@ -1718,7 +1687,8 @@ select.field {
       "hero hero"
       "stats savings"
       "nicotine recovery"
-      "goals recovery";
+      "goals recovery"
+      "logros recovery";
     gap: 18px;
     align-items: start;
   }
@@ -1749,6 +1719,10 @@ select.field {
     grid-area: goals;
   }
 
+  #view-inicio.is-active > .dash-logros {
+    grid-area: logros;
+  }
+
   #view-inicio.is-active > .section {
     margin-top: 0;
   }
@@ -1758,7 +1732,7 @@ select.field {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
       "hero hero"
-      "robledo analysis"
+      "robledo robledo"
       "map survey";
     gap: 18px;
     align-items: start;
@@ -1770,10 +1744,6 @@ select.field {
 
   #view-reporte.is-active > .robledo-card {
     grid-area: robledo;
-  }
-
-  #view-reporte.is-active > .dash-analysis {
-    grid-area: analysis;
   }
 
   #view-reporte.is-active > .dash-map {
@@ -1794,6 +1764,8 @@ select.field {
   }
 
   #view-test,
+  #view-analisis,
+  #view-ajuste,
   #view-apoyo {
     max-width: 860px;
     margin: 0 auto;
@@ -1863,13 +1835,18 @@ select.field {
   height: 20px;
   border-radius: 50%;
   border: 1px solid var(--vapless-border);
+  transition: border-color 0.16s ease;
+}
+
+.accordion-trigger:hover .accordion-icon {
+  border-color: rgba(250, 204, 21, 0.45);
 }
 
 .accordion-icon::before,
 .accordion-icon::after {
   content: "";
   position: absolute;
-  background: var(--vapless-text-muted);
+  background: var(--vapless-yellow-ink);
   transition: transform 0.18s ease, opacity 0.18s ease;
 }
 
@@ -1913,6 +1890,304 @@ select.field {
 
 .accordion-content .btn-row .hotline-phone {
   min-width: 0;
+}
+
+/* =========================================================
+   Modal de bienvenida (onboarding)
+   ========================================================= */
+body.has-modal {
+  overflow: hidden;
+}
+
+.welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(4, 6, 10, 0.82);
+  backdrop-filter: blur(6px);
+}
+
+.welcome[hidden] {
+  display: none;
+}
+
+.welcome-sheet {
+  width: min(100%, 460px);
+  padding: 26px 22px 22px;
+  border-radius: var(--radius-modal);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface);
+  box-shadow: var(--shadow-app);
+  animation: welcome-in 0.26s ease;
+}
+
+@keyframes welcome-in {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.welcome-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-yellow-soft);
+  color: var(--vapless-yellow-ink);
+}
+
+.welcome-badge svg {
+  width: 24px;
+  height: 24px;
+}
+
+.welcome-title {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-top: 16px;
+}
+
+.welcome-text {
+  color: var(--vapless-text-muted);
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.welcome-pillars {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.welcome-pillar {
+  display: grid;
+  gap: 2px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--vapless-border);
+  border-left: 2px solid var(--vapless-yellow);
+  background: var(--vapless-field);
+}
+
+.welcome-pillar-title {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--vapless-yellow-ink);
+}
+
+.welcome-pillar-text {
+  color: var(--vapless-text-muted);
+  font-size: 12.5px;
+}
+
+/* =========================================================
+   Bloques plegables (Dojo)
+   ========================================================= */
+.collapse {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface);
+  overflow: hidden;
+}
+
+.collapse-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  text-align: left;
+}
+
+.collapse-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.collapse-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--vapless-text);
+}
+
+.collapse-hint {
+  font-size: 12px;
+  color: var(--vapless-text-dim);
+}
+
+.collapse-cta {
+  flex: 0 0 auto;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface-2);
+  color: var(--vapless-yellow-ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.collapse-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--vapless-border);
+  transition: border-color 0.16s ease;
+}
+
+.collapse-head:hover .collapse-icon {
+  border-color: rgba(250, 204, 21, 0.45);
+}
+
+.collapse-icon::before,
+.collapse-icon::after {
+  content: "";
+  position: absolute;
+  background: var(--vapless-yellow-ink);
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.collapse-icon::before {
+  left: 5px;
+  top: 9px;
+  width: 8px;
+  height: 1px;
+}
+
+.collapse-icon::after {
+  left: 9px;
+  top: 5px;
+  width: 1px;
+  height: 8px;
+}
+
+.collapse.is-open .collapse-icon::after {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.collapse-body {
+  padding: 0 18px 18px;
+  animation: view-in 0.24s ease;
+}
+
+/* =========================================================
+   Test psicosocial: presentación colapsable
+   ========================================================= */
+.test-intro {
+  padding: 24px 20px 20px;
+}
+
+.test-title {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+
+.test-points {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.test-points li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--vapless-text-muted);
+}
+
+.test-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vapless-yellow);
+}
+
+/* =========================================================
+   Análisis psicosocial (M2)
+   ========================================================= */
+.accordion-surface .accordion {
+  gap: 0;
+}
+
+.accordion-surface .accordion-item {
+  border: 0;
+  border-bottom: 1px solid var(--vapless-border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.accordion-surface .accordion-item:last-child {
+  border-bottom: 0;
+}
+
+.accordion-surface .accordion-item.is-open {
+  border-left: 2px solid var(--vapless-yellow);
+  border-radius: var(--radius-sm);
+  background: var(--vapless-surface-2);
+}
+
+.accordion-surface .accordion-panel {
+  background: transparent;
+}
+
+.accordion-surface .accordion-trigger {
+  padding: 16px 18px;
+}
+
+.accordion-surface .accordion-title {
+  color: var(--vapless-text);
+}
+
+.accordion-surface .accordion-item.is-open .accordion-title {
+  color: var(--vapless-yellow-ink);
+}
+
+.analysis-eyebrow {
+  color: var(--vapless-yellow-ink);
+}
+
+.analysis-finding {
+  color: var(--vapless-text);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.analysis-rec {
+  color: var(--vapless-text);
+  font-size: 13.5px;
+  line-height: 1.6;
+  border-left: 2px solid var(--vapless-yellow);
+  padding-left: 12px;
 }
 
 /* =========================================================

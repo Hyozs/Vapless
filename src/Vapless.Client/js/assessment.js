@@ -303,8 +303,34 @@
   }
 
   function open() {
+    const intro = document.getElementById("test-intro");
+    const panel = document.getElementById("assessment-panel");
+
+    if (intro) {
+      intro.classList.add("hidden");
+    }
+    if (panel) {
+      panel.classList.remove("hidden");
+    }
+
     reset();
     loadQuestions();
+
+    if (panel) {
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function close() {
+    const intro = document.getElementById("test-intro");
+    const panel = document.getElementById("assessment-panel");
+
+    if (panel) {
+      panel.classList.add("hidden");
+    }
+    if (intro) {
+      intro.classList.remove("hidden");
+    }
   }
 
   function init(options) {
@@ -339,7 +365,12 @@
     document.getElementById("assessment-done").addEventListener("click", function () {
       onDone();
     });
+
+    const starter = document.getElementById("assessment-start");
+    if (starter) {
+      starter.addEventListener("click", open);
+    }
   }
 
-  window.VaplessAssessment = { init, open };
+  window.VaplessAssessment = { init, open, close };
 })();

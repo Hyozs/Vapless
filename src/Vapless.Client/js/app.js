@@ -20,7 +20,9 @@
 
   let toastTimer = null;
   let currentDays = 0;
-  let costTouched = false;
+  let currentProfile = null;
+
+  const FREQUENCY_KEY = "vapless.frequency";
 
   const utils = window.VaplessUtils;
   const api = window.VaplessApi;
@@ -162,30 +164,32 @@
   }
 
   function podProfile() {
-    const select = document.getElementById("profile-pod-type");
-    const type = Number(select.value) || DEFAULT_POD_TYPE;
-    return POD_PROFILES[type] || POD_PROFILES[DEFAULT_POD_TYPE];
+    const device = Number(currentProfile && currentProfile.primaryDevice) || DEFAULT_POD_TYPE;
+    return POD_PROFILES[device] || POD_PROFILES[DEFAULT_POD_TYPE];
   }
 
   function renderNicotinePreview() {
     const profile = podProfile();
-    const pods = Number(document.getElementById("profile-pods").value) || 0;
-    const mg = Number(document.getElementById("profile-mg").value) || 0;
+    const pods = Math.max(1, Number(document.getElementById("route-pods").value) || 1);
+    const episodesPerDay = Number(document.getElementById("route-frequency").value) || 1;
 
-    const weeklyMg = pods * mg;
+    const weeklyMg = pods * profile.mg;
     const dailyMg = weeklyMg / 7;
+    const weeklyEpisodes = episodesPerDay * 7;
     const cigarettes = pods * profile.cigs;
     const weeklyCost = pods * profile.cost;
     const weeks = currentDays / 7;
+
     const ingested = Math.round(weeklyMg * weeks * 10) / 10;
     const avoided = Math.round(weeklyMg * weeks * 10) / 10;
     const cigarettesAvoided = Math.round(cigarettes * weeks * 10) / 10;
-
-    document.getElementById("profile-cigs").value =
-      profile.cigs > 0 ? profile.cigs + " cigarrillos por pod" : "sin equivalente";
+    const totalSaved = Math.round(weeklyCost * weeks);
 
     document.getElementById("nic-weekly").textContent = utils.formatNumber(weeklyMg, 1) + " mg";
     document.getElementById("nic-weekly-sub").textContent = utils.formatNumber(dailyMg, 1) + " mg al día";
+    document.getElementById("nic-episodes").textContent = utils.formatNumber(weeklyEpisodes, 0);
+    document.getElementById("nic-episodes-sub").textContent =
+      utils.formatNumber(episodesPerDay, 0) + " por día";
     document.getElementById("nic-cigarettes").textContent = utils.formatNumber(cigarettes, 1);
     document.getElementById("nic-cigarettes-sub").textContent =
       utils.formatNumber(cigarettesAvoided, 1) + " evitados en tu racha";
@@ -194,9 +198,15 @@
     document.getElementById("nic-avoided-sub").textContent =
       utils.formatNumber(cigarettesAvoided, 1) + " cigarrillos en " + currentDays + " días";
     document.getElementById("nic-cost").textContent = utils.formatCop(weeklyCost);
-    document.getElementById("nic-cost-sub").textContent = "por semana · pod de " + utils.formatCop(profile.cost);
+    document.getElementById("nic-cost-sub").textContent =
+      "por semana · pod de " + utils.formatCop(profile.cost);
+    document.getElementById("nic-total").textContent = utils.formatCop(totalSaved);
+    document.getElementById("nic-total-sub").textContent = "en tu racha";
     document.getElementById("nic-note").textContent =
-      profile.name + ": " + profile.range + " de nicotina por pod. La cuenta se recalcula sola con cada cambio.";
+      profile.name +
+      ": " +
+      profile.range +
+      " de nicotina por pod. La cuenta se recalcula sola con cada cambio.";
   }
 
   function renderNicotineSummary(nicotine) {
@@ -231,24 +241,29 @@
       '<p class="card-text mt-12">' + utils.escapeHtml(nicotine.phrase) + "</p>";
   }
 
-  function fillProfileForm(profile) {
-    document.getElementById("profile-quitdate").value = (profile.quitDate || "").slice(0, 10);
-    document.getElementById("profile-alias").value = profile.alias || "";
-    document.getElementById("profile-cost").value = Math.round(profile.dailyCostCop || 0);
-    document.getElementById("profile-pods").value = Math.max(1, profile.podsPerWeek || 1);
-    document.getElementById("profile-mg").value = Math.max(1, profile.nicotineMgPerPod || 1);
-    const device = Number(profile.primaryDevice);
-    document.getElementById("profile-pod-type").value = String(
-      POD_PROFILES[device] ? device : DEFAULT_POD_TYPE
-    );
-    costTouched = false;
+  function fillRouteForm(profile) {
+    currentProfile = profile;
+    document.getElementById("route-pods").value = Math.max(1, profile.podsPerWeek || 1);
+
+    let frequency = 0;
+    try {
+      frequency = Number(localStorage.getItem(FREQUENCY_KEY) || 0);
+    } catch {
+      frequency = 0;
+    }
+    if (frequency) {
+      document.getElementById("route-frequency").value = String(frequency);
+    }
+
     renderNicotinePreview();
   }
 
   function renderIdentity(profile) {
     const alias = (profile && profile.alias) || "parce";
-    document.getElementById("greeting").textContent = "Hola, " + alias;
-    document.getElementById("profile-name").textContent = alias;
+    const greeting = document.getElementById("greeting");
+    if (greeting) {
+      greeting.textContent = "Hola, " + alias;
+    }
   }
 
   async function loadDashboard() {
@@ -288,11 +303,74 @@
 
     try {
       const profile = await api.get("/progress");
-      fillProfileForm(profile);
+      fillRouteForm(profile);
       renderIdentity(profile);
     } catch {
       /* El resumen ya muestra el error principal. */
     }
+  }
+
+  function setupRouteForm() {
+    const form = document.getElementById("route-form");
+    const podsInput = document.getElementById("route-pods");
+    const frequencyInput = document.getElementById("route-frequency");
+
+    podsInput.addEventListener("input", renderNicotinePreview);
+    frequencyInput.addEventListener("change", renderNicotinePreview);
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const profile = currentProfile || {};
+      const pods = Math.max(1, Number(podsInput.value) || 1);
+      const pod = podProfile();
+      const dailyCost = Math.round(((pods * pod.cost) / 7) / 500) * 500;
+
+      const payload = {
+        alias: profile.alias || null,
+        quitDate: profile.quitDate || null,
+        dailyCostCop: dailyCost,
+        nicotineMgPerPod: profile.nicotineMgPerPod || pod.mg,
+        podsPerWeek: pods,
+        primaryDevice: Number(profile.primaryDevice) || DEFAULT_POD_TYPE
+      };
+
+      try {
+        localStorage.setItem(FREQUENCY_KEY, String(frequencyInput.value));
+      } catch {
+        /* Modo privado: la frecuencia no se recuerda. */
+      }
+
+      try {
+        await api.put("/progress", payload);
+        toast("Listo. Tu ruta quedó actualizada.", "accent");
+        await loadDashboard();
+      } catch (error) {
+        toast(error.message);
+      }
+    });
+  }
+
+  /* Bloques plegables del Dojo (mitos y presión social). */
+  function setupCollapsibles() {
+    document.querySelectorAll(".collapse-head").forEach(function (head) {
+      head.addEventListener("click", function () {
+        const collapse = head.closest(".collapse");
+        const body = collapse ? collapse.querySelector(".collapse-body") : null;
+        if (!body) {
+          return;
+        }
+
+        const isOpen = collapse.classList.toggle("is-open");
+        body.hidden = !isOpen;
+        head.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+        const cta = head.querySelector(".collapse-cta");
+        if (cta) {
+          cta.textContent = isOpen ? "Ocultar" : head.dataset.cta || cta.textContent;
+        }
+      });
+    });
   }
 
   function setupNavigation() {
@@ -301,11 +379,11 @@
         const tab = button.dataset.tab;
         showTab(tab);
 
-        if (tab === "test" && window.VaplessAssessment) {
-          window.VaplessAssessment.open();
-        }
         if (tab === "reporte" && window.VaplessPulse) {
           window.VaplessPulse.reload();
+        }
+        if (tab === "analisis" && window.VaplessPulse) {
+          window.VaplessPulse.reloadAnalysis();
         }
       });
     });
@@ -335,73 +413,6 @@
         });
       }
     });
-
-    const assessmentOpen = document.getElementById("assessment-open");
-    if (assessmentOpen) {
-      assessmentOpen.addEventListener("click", function () {
-        showTab("test");
-        if (window.VaplessAssessment) {
-          window.VaplessAssessment.open();
-        }
-      });
-    }
-  }
-
-  function setupProfileForm() {
-    const form = document.getElementById("profile-form");
-    const podType = document.getElementById("profile-pod-type");
-    const podsInput = document.getElementById("profile-pods");
-    const mgInput = document.getElementById("profile-mg");
-    const costInput = document.getElementById("profile-cost");
-
-    function syncDailyCost() {
-      if (costTouched) {
-        return;
-      }
-      const profile = podProfile();
-      const pods = Number(podsInput.value) || 0;
-      costInput.value = Math.round(((pods * profile.cost) / 7) / 500) * 500;
-    }
-
-    podType.addEventListener("change", function () {
-      const profile = podProfile();
-      mgInput.value = profile.mg;
-      syncDailyCost();
-      renderNicotinePreview();
-    });
-
-    podsInput.addEventListener("input", function () {
-      syncDailyCost();
-      renderNicotinePreview();
-    });
-
-    mgInput.addEventListener("input", renderNicotinePreview);
-
-    costInput.addEventListener("input", function () {
-      costTouched = true;
-    });
-
-    form.addEventListener("submit", async function (event) {
-      event.preventDefault();
-      const quitDateValue = document.getElementById("profile-quitdate").value;
-
-      const payload = {
-        alias: document.getElementById("profile-alias").value.trim() || null,
-        quitDate: quitDateValue ? new Date(quitDateValue + "T12:00:00").toISOString() : null,
-        dailyCostCop: Number(costInput.value),
-        podsPerWeek: Number(podsInput.value),
-        nicotineMgPerPod: Number(mgInput.value),
-        primaryDevice: Number(podType.value)
-      };
-
-      try {
-        await api.put("/progress", payload);
-        toast("Listo. Tu ruta quedó actualizada.", "accent");
-        await loadDashboard();
-      } catch (error) {
-        toast(error.message);
-      }
-    });
   }
 
   function setupShareStreak() {
@@ -429,7 +440,8 @@
     }
 
     setupNavigation();
-    setupProfileForm();
+    setupRouteForm();
+    setupCollapsibles();
     setupShareStreak();
     loadDashboard();
 
@@ -454,6 +466,14 @@
           showTab("inicio");
         },
         toast: toast
+      });
+    }
+
+    if (window.VaplessWelcome) {
+      window.VaplessWelcome.init({
+        onStart: function () {
+          showTab("inicio");
+        }
       });
     }
 

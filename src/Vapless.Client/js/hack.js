@@ -1,13 +1,18 @@
 (function () {
   const XP_KEY = "vapless.xp";
   const DONE_KEY = "vapless.completedDecks";
+  const DECK_ID = "mitos-y-realidades";
+  const DECK_NAME = "Mitos y Realidades";
 
-  let decks = [];
-  let activeDeck = 0;
+  let cards = [];
   let cardIndex = 0;
   let busy = false;
   let answered = false;
   let onSupport = function () {};
+
+  function utils() {
+    return window.VaplessUtils;
+  }
 
   function xp() {
     return Number(localStorage.getItem(XP_KEY) || 0);
@@ -15,7 +20,10 @@
 
   function setXp(value) {
     localStorage.setItem(XP_KEY, String(value));
-    document.getElementById("xp-value").textContent = String(value);
+    const label = document.getElementById("xp-value");
+    if (label) {
+      label.textContent = String(value);
+    }
   }
 
   function completedDecks() {
@@ -27,59 +35,24 @@
     }
   }
 
-  function markCompleted(category) {
+  function markCompleted(id) {
     const done = completedDecks();
-    if (!done.includes(category)) {
-      done.push(category);
+    if (!done.includes(id)) {
+      done.push(id);
       localStorage.setItem(DONE_KEY, JSON.stringify(done));
     }
   }
 
-  function currentDeck() {
-    return decks[activeDeck];
-  }
-
   function currentCard() {
-    const deck = currentDeck();
-    return deck ? deck.cards[cardIndex] : null;
-  }
-
-  function renderChips() {
-    const container = document.getElementById("deck-chips");
-    const done = completedDecks();
-
-    container.innerHTML = decks
-      .map((deck, index) => {
-        const isActive = index === activeDeck ? " is-active" : "";
-        const finished = done.includes(deck.category) ? " · listo" : "";
-        return (
-          '<button class="chip' + isActive + '" type="button" data-deck="' + index + '">' +
-          window.VaplessUtils.escapeHtml(deck.name) +
-          " (" + deck.cardCount + ")" + finished +
-          "</button>"
-        );
-      })
-      .join("");
-
-    container.querySelectorAll("[data-deck]").forEach((button) => {
-      button.addEventListener("click", function () {
-        activeDeck = Number(button.dataset.deck);
-        cardIndex = 0;
-        answered = false;
-        busy = false;
-        document.getElementById("deck-summary").classList.add("hidden");
-        renderChips();
-        renderDeck();
-      });
-    });
+    return cards[cardIndex];
   }
 
   function cardFront(card) {
     return (
       '<div class="card-front">' +
-      '<div><div class="deck-tag">' + window.VaplessUtils.escapeHtml(card.categoryName) + "</div>" +
-      '<div class="statement">' + window.VaplessUtils.escapeHtml(card.statement) + "</div></div>" +
-      '<div class="swipe-hint">Arrastrá la tarjeta o usá los botones</div>' +
+      '<div><div class="deck-tag">' + utils().escapeHtml(card.theme) + "</div>" +
+      '<div class="statement">' + utils().escapeHtml(card.statement) + "</div></div>" +
+      '<div class="swipe-hint">¿Es mito o es realidad? Arrastrá la tarjeta o usá los botones.</div>' +
       "</div>"
     );
   }
@@ -108,8 +81,8 @@
       }
 
       dx = event.clientX - startX;
-      const dy = (event.clientY - startY) * 0.12;
-      card.style.transform = "translate(" + dx + "px, " + dy + "px) rotate(" + dx / 22 + "deg)";
+      const dy = event.clientY - startY;
+      card.style.transform = "translate(" + dx + "px, " + dy * 0.12 + "px) rotate(" + dx / 22 + "deg)";
       card.style.opacity = String(1 - Math.min(0.35, Math.abs(dx) / 520));
     });
 
@@ -134,7 +107,7 @@
   }
 
   function renderDeck() {
-    const deck = currentDeck();
+    const card = currentCard();
     const stage = document.getElementById("deck-stage");
     const actions = document.getElementById("swipe-actions");
     const summary = document.getElementById("deck-summary");
@@ -142,24 +115,23 @@
     const bar = document.getElementById("deck-bar");
     const deckName = document.getElementById("deck-name");
 
-    if (!deck || !deck.cards.length) {
-      stage.innerHTML = '<div class="empty-card">No hay tarjetas en este mazo.</div>';
+    if (!card) {
+      stage.innerHTML = "";
       actions.classList.add("hidden");
       return;
     }
 
-    if (cardIndex >= deck.cards.length) {
+    if (cardIndex >= cards.length) {
       stage.innerHTML = "";
       actions.classList.add("hidden");
       summary.classList.remove("hidden");
-      position.textContent = deck.cards.length + " / " + deck.cards.length;
+      position.textContent = cards.length + " / " + cards.length;
       bar.style.width = "100%";
-      deckName.textContent = deck.name;
-      document.getElementById("summary-title").textContent = deck.name + " completado. Bien ahí.";
+      deckName.textContent = DECK_NAME;
+      document.getElementById("summary-title").textContent = DECK_NAME + " completado. Bien ahí.";
       document.getElementById("summary-text").textContent =
-        "Sumaste tarjetas a tu criterio. Si querés seguir, elegí otro mazo o abrí el Dojo de presión social.";
-      markCompleted(deck.category);
-      renderChips();
+        "Repasaste mitos y realidades, y ganaste XP. Si querés seguir, abrí el Dojo de presión social para ensayar respuestas asertivas.";
+      markCompleted(DECK_ID);
       return;
     }
 
@@ -167,17 +139,17 @@
     actions.classList.remove("hidden");
     runActionsState(false);
 
-    const card = deck.cards[cardIndex];
-    const next = deck.cards[cardIndex + 1];
+    const next = cards[cardIndex + 1];
 
     let html = "";
     if (next) {
-      html +=
+      html =
         '<div class="swipe-card is-behind" aria-hidden="true">' +
         '<div class="card-front"><div><div class="deck-tag">' +
-        window.VaplessUtils.escapeHtml(next.categoryName) +
-        "</div><div class=\"statement\">" +
-        window.VaplessUtils.escapeHtml(next.statement) +
+        utils().escapeHtml(next.theme) +
+        "</div>" +
+        '<div class="statement">' +
+        utils().escapeHtml(next.statement) +
         '</div></div><div class="swipe-hint">Después</div></div></div>';
     }
 
@@ -192,19 +164,25 @@
     const top = document.getElementById("top-card");
     bindDrag(top);
 
-    position.textContent = (cardIndex + 1) + " / " + deck.cards.length;
-    bar.style.width = Math.round((cardIndex / deck.cards.length) * 100) + "%";
-    deckName.textContent = deck.name;
+    position.textContent = cardIndex + 1 + " / " + cards.length;
+    bar.style.width = Math.round((cardIndex / cards.length) * 100) + "%";
+    deckName.textContent = DECK_NAME;
     answered = false;
     busy = false;
   }
 
   function runActionsState(disabled) {
-    document.getElementById("swipe-myth").disabled = disabled;
-    document.getElementById("swipe-real").disabled = disabled;
+    const myth = document.getElementById("swipe-myth");
+    const real = document.getElementById("swipe-real");
+    if (myth) {
+      myth.disabled = disabled;
+    }
+    if (real) {
+      real.disabled = disabled;
+    }
   }
 
-  async function answer(isMyth) {
+  function answer(isMyth) {
     if (busy || answered) {
       return;
     }
@@ -218,38 +196,28 @@
     answered = true;
     runActionsState(true);
 
-    try {
-      const result = await window.VaplessApi.post("/hack/cards/" + card.id + "/answer", {
-        answerIsMyth: isMyth
-      });
+    const correct = card.isMyth === isMyth;
+    const truth = card.isMyth ? "un mito" : "una realidad";
 
-      if (result.correct) {
-        setXp(xp() + result.xpEarned);
-      }
+    const top = document.getElementById("top-card");
+    const back = top.querySelector(".card-back");
+    back.innerHTML =
+      '<div class="verdict ' + (correct ? "good" : "miss") + '">' +
+      utils().escapeHtml(correct ? "Correcto: era " + truth + "." : "Al revés: esto es " + truth + ".") +
+      "</div>" +
+      '<div class="explanation">' + utils().escapeHtml(card.explanation) + "</div>" +
+      '<button class="btn btn-primary btn-block" type="button" data-next="1">Siguiente</button>';
 
-      const top = document.getElementById("top-card");
-      const back = top.querySelector(".card-back");
-      back.innerHTML =
-        '<div class="verdict ' + (result.correct ? "good" : "miss") + '">' +
-        window.VaplessUtils.escapeHtml(result.feedback) +
-        "</div>" +
-        '<div class="explanation">' +
-        window.VaplessUtils.escapeHtml(result.explanation) +
-        "</div>" +
-        '<button class="btn btn-primary btn-block" type="button" data-next="1">Siguiente</button>';
-
-      top.classList.add("flipped");
-      top.addEventListener("click", function (event) {
-        if (event.target.closest("[data-next]")) {
-          advance();
-        }
-      });
-    } catch (error) {
-      answered = false;
-      busy = false;
-      runActionsState(false);
-      window.VaplessToast(error.message);
+    if (correct) {
+      setXp(xp() + (card.xp || window.VaplessDojoData.xpPerCard || 10));
     }
+
+    top.classList.add("flipped");
+    top.addEventListener("click", function (event) {
+      if (event.target.closest("[data-next]")) {
+        advance();
+      }
+    });
   }
 
   function advance() {
@@ -263,29 +231,21 @@
     }, 240);
   }
 
-  async function load() {
-    try {
-      const data = await window.VaplessApi.get("/hack/decks");
-      decks = Array.isArray(data) ? data : [];
-      setXp(xp());
-
-      if (!decks.length) {
-        document.getElementById("deck-stage").innerHTML =
-          '<div class="empty-card">Todavía no hay tarjetas cargadas.</div>';
-        return;
-      }
-
-      const done = completedDecks();
-      const pending = decks.findIndex((deck) => !done.includes(deck.category));
-      activeDeck = pending >= 0 ? pending : 0;
-      cardIndex = 0;
-      renderChips();
-      renderDeck();
-    } catch (error) {
+  function load() {
+    const data = window.VaplessDojoData;
+    if (!data || !data.cards || !data.cards.length) {
       document.getElementById("deck-stage").innerHTML =
-        '<div class="empty-card">No pudimos cargar los mazos. Revisá que la API local esté corriendo.</div>';
-      window.VaplessToast(error.message);
+        '<div class="empty-card">Todavía no hay tarjetas cargadas.</div>';
+      return;
     }
+
+    cards = data.cards.slice();
+    setXp(xp());
+
+    const done = completedDecks();
+    const alreadyDone = done.includes(DECK_ID);
+    cardIndex = alreadyDone ? 0 : 0;
+    renderDeck();
   }
 
   function init(options) {

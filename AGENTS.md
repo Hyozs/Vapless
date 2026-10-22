@@ -121,8 +121,10 @@ Vapless/
 │       └── js/
 │           ├── api.js                       # Cliente fetch + utilidades de formato
 │           ├── theme.js                     # Conmutador claro/oscuro + localStorage
-│           ├── app.js                       # Navegación (topnav), dashboard, perfil, toasts
+│           ├── welcome.js                   # Modal de bienvenida (solo la primera vez)
+│           ├── app.js                       # Navegación (topnav), colapsables, dashboard, calculadora
 │           ├── accordion.js                 # Acordeones (análisis y rutas de apoyo)
+│           ├── dojo-data.js                 # Banco del Dojo: 24 mitos/realidades + 6 escenarios
 │           ├── assessment.js                # Test psicosocial (10 preguntas) + derivación
 │           ├── craving.js                   # Pantalla Craving: 4-4-4 / 4-7-8 indefinida + registro
 │           ├── hack.js                      # Mazos swipe, XP y progreso local
@@ -169,13 +171,20 @@ Configuración de estáticos: `Program.cs` resuelve `../Vapless.Client` desde el
 
 ### Frontend
 
-- JavaScript en IIFE, sin módulos ES ni bundler. Cada archivo expone un único global (`VaplessApi`, `VaplessTheme`, `VaplessHack`, `VaplessCraving`, `VaplessPulse`, `VaplessToast`, `VaplessAccordion`, `VaplessAssessment`).
-- Navegación: una sola barra superior (`nav.topnav-tabs`) con todas las secciones visibles, sin menús anidados: Inicio, Craving / Ansiedad, Test Psicosocial, Dojo, Reporte Robledo, Rutas de Apoyo y Perfil. Cada pestaña es una vista (`section#view-<tab>`) y `showTab(tab)` en `app.js` alterna la vista, marca la pestaña activa (`is-active` + `aria-current="page"`) y desplaza la barra para dejarla visible en pantallas angostas.
+- JavaScript en IIFE, sin módulos ES ni bundler. Cada archivo expone un único global (`VaplessApi`, `VaplessTheme`, `VaplessWelcome`, `VaplessHack`, `VaplessCraving`, `VaplessPulse`, `VaplessToast`, `VaplessAccordion`, `VaplessAssessment`).
+- Navegación: una sola barra superior (`nav.topnav-tabs`) con todas las secciones visibles, sin menús anidados: Inicio, Craving / Ansiedad, Test Psicosocial, Dojo, Reporte Robledo, Análisis Psicosocial, Rutas de Apoyo y **Ajustar mi ruta** (calculadora de nicotina y ahorro). Cada pestaña es una vista (`section#view-<tab>`) y `showTab(tab)` en `app.js` alterna la vista, marca la pestaña activa (`is-active` + `aria-current="page"`) y desplaza la barra para dejarla visible en pantallas angostas.
+- El módulo M2 (Análisis Psicosocial) tiene vista propia (`view-analisis`) que muestra **solo** el contenedor de "Categorías" con sus 5 acordeones. `js/pulse.js` expone `reloadAnalysis()` para refrescarla al entrar a la pestaña.
+- **Vistas colapsables:** el Test Psicosocial arranca con una tarjeta de presentación ("Comenzar test") y el banco de 10 preguntas se despliega solo al pulsar ese botón (`js/assessment.js` → `open()`). El Dojo tiene dos bloques plegables (`.collapse`): "Explorar mitos" y "Ver dilemas de presión" (`setupCollapsibles()` en `app.js`).
+- **Modal de bienvenida:** `js/welcome.js` muestra el popup de onboarding solo la primera vez (bandera `hasSeenWelcome: true` en `localStorage`) y se cierra con "Comenzar mi ruta".
+- **Dojo (`js/dojo-data.js`):** el banco del Dojo vive en el cliente. 24 tarjetas de Mitos y Realidades en **un único flujo continuo** (sin barra de categorías): 12 mitos + 12 realidades, cada una con su explicación. `js/hack.js` las evalúa localmente (la tarjeta trae `isMyth`) y reparte 10 XP por acierto. Los 6 escenarios de presión social traen 3 respuestas **únicas** cada uno (HUMOR, DIRECTA, ALTERNATIVA) escritas para ese contexto; `js/pulse.js` los usa con respaldo de `GET /api/v1/dojo/scenarios`.
+- **Alcance-epidemiológico:** toda la inteligencia de Vapless es de la **Comuna 7 - Robledo**. El mapa de riesgo, el reporte por comuna y la encuesta están filtrados por `ROBLEDO` en `js/pulse.js`; la encuesta solo ofrece Robledo.
 - Tema: `data-theme="dark" | "light"` en `<html>`; `js/theme.js` aplica y persiste la preferencia en `localStorage` (`vapless.theme`). El script inline del `<head>` aplica el tema antes del primer pintado para evitar parpadeos.
 - Toda inserción de texto proveniente de la API pasa por `VaplessUtils.escapeHtml`.
 - **Todo usuario de Vapless es consumidor activo, exfumador en cesación o joven bajo presión real de consumo.** Por eso ninguna encuesta, formulario o test ofrece opciones tipo "Nunca he vapeado", "No uso", "Ninguno" o "0 veces": la escala arranca en el mínimo de consumo activo ("1 a 3 veces por semana", "Ocasional en fiestas", "Diario"). El banco de preguntas del test llega desde la API, así que `js/assessment.js` filtra en cliente las opciones que niegan el consumo (`NON_CONSUMER_OPTIONS` + `NON_CONSUMER_PATTERN`).
 - Estado personal en `localStorage`:
   - `vapless.theme`: `dark` (predeterminado) o `light`.
+  - `hasSeenWelcome`: `true` cuando el usuario ya cerró el modal de bienvenida.
+  - `vapless.frequency`: episodios por día elegidos en "Ajustar mi ruta".
   - `vapless.xp`: XP acumulado en el Dojo.
   - `vapless.completedDecks`: array JSON de categorías completadas.
 - No se usan librerías de UI, íconos externos ni emojis en la interfaz.
@@ -237,6 +246,7 @@ Tokens derivados: `--vapless-yellow-soft`, `--vapless-orange-ink`, `--vapless-fi
 - **Reporte por comuna (Robledo):** tarjeta con índice de riesgo, nivel, respuestas, k-anonimato, puesto entre comunas, disparadores más reportados (como chips) y razones explicables; se alimenta de `GET /api/v1/surveys/risk-map`.
 - **Chips de disparadores (`.trigger-chip`):** cada disparador va en su propia píldora (fondo `#232936`, borde limpio, texto `#E5E7EB`) con el conteo en neutro. Las tarjetas de métricas usan `padding: 16px`, `min-height: fit-content` y `overflow: visible` para que el texto nunca se corte.
 - **Acordeones (`js/accordion.js`):** secciones plegables de Vapless (tarjeta `#141821`, borde `#232936`, título en `#FACC15` con ícono +/−) para el análisis psicosocial y las rutas de apoyo local. Un grupo por sección: al abrir uno se cierran los demás.
+- **Acordeón de superficie (`.accordion-surface`):** variante para el M2: las categorías viven dentro de una sola tarjeta `#141821` con borde `#232936`, separadas por divisores; la abierta gana fondo `#1E2638`, borde izquierdo amarillo y título en `#FACC15`. Las etiquetas internas ("Hallazgo", "Qué te recomendar") van en amarillo y el texto en `#E5E7EB`. El `+`/`−` es un botón real (la fila completa es un `<button>`).
 - **Panel de nicotina:** recálculo en vivo (mg semanales, mg diarios, equivalente en cigarrillos, nicotina ingerida/evitada y ahorro en COP) a partir del tipo de pod y los pods por semana.
 
 ---
@@ -246,7 +256,7 @@ Tokens derivados: `--vapless-yellow-soft`, `--vapless-orange-ink`, `--vapless-fi
 | Módulo | Tier | Implementación |
 |---|---|---|
 | Shared Kernel | — | Entidades, SQLite, `KAnonymityPolicy` (k = 5), calculadora COP/nicotina, rutas de ayuda |
-| M1 Pulso Comunal | MUST | `POST /api/v1/surveys`, `GET /api/v1/surveys/risk-map`, reglas `IRiskRule`; el cliente arma el Reporte Robledo con esos agregados |
+| M1 Pulso Comunal | MUST | `POST /api/v1/surveys`, `GET /api/v1/surveys/risk-map`, reglas `IRiskRule`; el cliente arma el Reporte Robledo con esos agregados y **solo muestra la Comuna 7 - Robledo** |
 | M2 Análisis Psicosocial | MUST | `GET /api/v1/surveys/analysis`: familia, ansiedad, presión social, inicio temprano, desechables |
 | M3 Hack al Hábito + Dojo | SHOULD | Mazos swipe (`/api/v1/hack/*`) y escenarios asertivos (`/api/v1/dojo/scenarios`) |
 | M4 Ruta de Salida | SHOULD | `/api/v1/cravings`, `/api/v1/progress/summary`, `/api/v1/progress`, `/api/v1/progress/nicotine` |
@@ -286,9 +296,9 @@ El índice se calcula como `min(10, puntos / 13 * 10)` y se clasifica: bajo `< 2
 | `GET` | `/surveys/comunas` | Catálogo de comunas y corregimientos |
 | `GET` | `/surveys/risk-map` | Mapa de riesgo con k-anonimato |
 | `GET` | `/surveys/analysis` | Hallazgos psicosociales agregados |
-| `GET` | `/hack/decks` | Mazos completos con tarjetas |
+| `GET` | `/hack/decks` | Mazos completos con tarjetas (el cliente usa su banco local `js/dojo-data.js`) |
 | `GET` | `/hack/decks/{category}` | Un mazo por categoría (1–4) |
-| `POST` | `/hack/cards/{id}/answer` | Evalúa `answerIsMyth`, devuelve feedback, explicación y XP |
+| `POST` | `/hack/cards/{id}/answer` | Evalúa `answerIsMyth`, devuelve feedback, explicación y XP (el Dojo del cliente evalúa localmente) |
 | `GET` | `/dojo/scenarios` | Escenarios de presión social y 3 respuestas asertivas |
 | `GET` | `/support/lines` | Líneas de ayuda (Línea Amiga 106, 123, ICBF 141, psicoorientación) |
 | `GET` | `/assessment/questions` | Banco de 10 preguntas del test psicosocial con sus opciones |
@@ -304,6 +314,7 @@ Respuestas de error: `{ "error": "mensaje en español" }`.
 - No se recolectan datos personales identificables de menores.
 - La ubicación se limita a la comuna seleccionada manualmente; no hay GPS.
 - Los agregados comunales solo se publican con `n >= 5`. Si no se cumple, la API devuelve `hasSufficientData: false`, índice 0 y un mensaje de enmascaramiento.
+- El alcance epidemiológico de Vapless es la **Comuna 7 - Robledo**: el cliente filtra el mapa de riesgo, el reporte por comuna y la encuesta para no exponer datos de otras comunas.
 - El progreso personal (XP, mazos completados, racha visible, tema claro/oscuro) se guarda en el navegador del estudiante.
 - SQLite opera como archivo local (`vapless.db`); no hay servicios externos.
 - Los textos de apoyo recuerdan que la Línea Amiga 106 y psicoorientación son confidenciales, no un reporte disciplinario.
