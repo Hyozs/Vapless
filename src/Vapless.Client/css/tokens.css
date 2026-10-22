@@ -1,38 +1,40 @@
 :root {
-  /* Colores Vapless — Modo oscuro (predeterminado) */
-  --vapless-bg: #0b0d12; /* BG profundo: fondo de pantalla */
-  --vapless-bg-energy: #111827; /* Negro Energía: fondo principal */
-  --vapless-surface: #141821; /* Surface: tarjetas y sheets */
-  --vapless-surface-hover: #1c2230;
-  --vapless-border: #232936; /* Borde: tarjetas e inputs */
+  /* =======================================================
+     Paleta Vapless: 1 acento + neutros (máx. 3 colores base)
+     - Acento: amarillo (CTA primario, racha, progreso)
+     - Superficie: fondo y tarjetas
+     - Neutro: texto y bordes
+     ======================================================= */
 
-  --vapless-yellow: #facc15; /* Amarillo Vapless: CTA, rachas, punto */
-  --vapless-yellow-soft: rgba(250, 204, 21, 0.12);
-  --vapless-orange: #f97316; /* Naranja Impulso: solo craving */
-  --vapless-orange-soft: rgba(249, 115, 22, 0.14);
-  --vapless-green: #4ade80; /* Verde Progreso: logros y confirmaciones */
-  --vapless-green-soft: rgba(74, 222, 128, 0.12);
-  --vapless-white: #f8fafc; /* Blanco Nube: fondos claros */
+  /* Superficie / neutro oscuro */
+  --vapless-bg: #0b0d12; /* Fondo de pantalla */
+  --vapless-surface: #141821; /* Tarjetas y contenedores */
+  --vapless-surface-2: #1e2638; /* Superficie elevada: hover, chips, badges */
+  --vapless-surface-hover: #1e2638;
+  --vapless-border: #232936; /* Bordes sutiles */
 
-  --vapless-text: #e5e7eb; /* Texto primario */
-  --vapless-text-muted: #9ca3af; /* Texto secundario */
+  /* Texto / borde neutro */
+  --vapless-text: #e5e7eb; /* Texto principal */
+  --vapless-text-muted: #9ca3af; /* Texto secundario y pestañas inactivas */
   --vapless-text-dim: #6b7280; /* Placeholders y deshabilitados */
 
-  /* Tintes legibles de los acentos (texto y trazos) */
+  /* Acento único: amarillo Vapless (éxito y progreso) */
+  --vapless-yellow: #facc15;
+  --vapless-yellow-soft: rgba(250, 204, 21, 0.12);
   --vapless-yellow-ink: #facc15;
+  --vapless-on-accent: #0b0d12; /* Texto sobre amarillo */
+
+  /* Naranja: uso exclusivo del temporizador de Craving activo */
+  --vapless-orange: #f97316;
   --vapless-orange-ink: #f97316;
-  --vapless-green-ink: #4ade80;
-  --vapless-on-accent: #0b0d12; /* Texto sobre amarillo/naranja/verde */
 
   /* Superficies derivadas */
-  --vapless-field: #0f131b; /* Inputs y paneles internos */
-  --vapless-track: #0e1219; /* Tracks de barras y switches */
-  --vapless-soft-bg: #0b0d12; /* Fondos secundarios (paneles, acordeones) */
-  --vapless-glass: rgba(10, 12, 17, 0.45); /* Superficies translúcidas */
-  --vapless-overlay: rgba(4, 6, 10, 0.72); /* Overlay de modales */
-  --vapless-nav-bg: rgba(11, 13, 18, 0.96); /* Barra superior */
+  --vapless-field: #141821; /* Inputs y paneles internos */
+  --vapless-track: #0f131b; /* Tracks de barras y switches */
+  --vapless-soft-bg: #0b0d12; /* Fondos secundarios (acordeones) */
+  --vapless-nav-bg: rgba(20, 24, 33, 0.96); /* Barra superior */
   --vapless-app-bg: rgba(10, 12, 17, 0.72); /* Contenedor de la app */
-  --vapless-divider: rgba(35, 41, 54, 0.9); /* Separadores punteados */
+  --vapless-divider: #232936; /* Separadores punteados */
   --vapless-skeleton-a: #161b25;
   --vapless-skeleton-b: #1d2330;
 
@@ -67,7 +69,7 @@
   --space-6: 24px;
   --space-7: 40px;
 
-  /* Sombras */
+  /* Sombras: neutras, sin tinte de color */
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-yellow: 0 12px 32px rgba(250, 204, 21, 0.22);
@@ -81,30 +83,30 @@
 }
 
 /* =========================================================
-   Modo claro — mismo lenguaje visual, fondos claros
+   Modo claro — mismos neutros, invertidos
    ========================================================= */
 [data-theme="light"] {
   --vapless-bg: #f8fafc;
-  --vapless-bg-energy: #ffffff;
   --vapless-surface: #ffffff;
+  --vapless-surface-2: #f1f5f9;
   --vapless-surface-hover: #f1f5f9;
   --vapless-border: #e2e8f0;
 
   --vapless-text: #0f172a;
-  --vapless-text-muted: #475569;
+  --vapless-text-muted: #64748b;
   --vapless-text-dim: #64748b;
 
-  /* Los acentos de marca se mantienen; solo se oscurecen para leerse */
-  --vapless-yellow-ink: #b45309;
-  --vapless-orange-ink: #c2410c;
-  --vapless-green-ink: #15803d;
+  --vapless-yellow: #facc15;
+  --vapless-yellow-soft: rgba(250, 204, 21, 0.16);
+  --vapless-yellow-ink: #b45309; /* Variante legible del acento sobre fondo claro */
   --vapless-on-accent: #0b0d12;
+
+  --vapless-orange: #f97316;
+  --vapless-orange-ink: #c2410c;
 
   --vapless-field: #ffffff;
   --vapless-track: #e2e8f0;
   --vapless-soft-bg: #f1f5f9;
-  --vapless-glass: rgba(15, 23, 42, 0.04);
-  --vapless-overlay: rgba(15, 23, 42, 0.45);
   --vapless-nav-bg: rgba(255, 255, 255, 0.92);
   --vapless-app-bg: rgba(255, 255, 255, 0.92);
   --vapless-divider: #e2e8f0;

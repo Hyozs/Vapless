@@ -1,4 +1,4 @@
-const CACHE_NAME = "vapless-v5";
+const CACHE_NAME = "vapless-v7";
 const SHELL = [
   "./",
   "./index.html",

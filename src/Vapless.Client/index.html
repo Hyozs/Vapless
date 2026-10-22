@@ -152,11 +152,11 @@
 
             <div class="progress-line">
               <div class="progress-line-item">
-                <span class="progress-dot green" aria-hidden="true"></span>
+                <span class="progress-dot accent" aria-hidden="true"></span>
                 <span id="home-cop">+ $0 ahorrados</span>
               </div>
               <div class="progress-line-item">
-                <span class="progress-dot green" aria-hidden="true"></span>
+                <span class="progress-dot accent" aria-hidden="true"></span>
                 <span id="home-life">+ 0 mg de vida recuperada</span>
               </div>
             </div>
@@ -168,12 +168,12 @@
           <div class="stat-grid">
             <div class="stat">
               <div class="stat-label">Ahorrado</div>
-              <div class="stat-value green" id="stat-cop">$0</div>
+              <div class="stat-value accent" id="stat-cop">$0</div>
               <div class="stat-sub" id="stat-cop-sub">COP</div>
             </div>
             <div class="stat">
               <div class="stat-label">Vida recuperada</div>
-              <div class="stat-value green" id="stat-nicotine">0 mg</div>
+              <div class="stat-value accent" id="stat-nicotine">0 mg</div>
               <div class="stat-sub">Nicotina que tu cuerpo no recibió</div>
             </div>
           </div>
@@ -248,7 +248,7 @@
         <!-- ================= SECCIÓN · CRAVING / ANSIEDAD ================= -->
         <section id="view-craving" class="view" aria-label="Craving y ansiedad">
           <div class="hero craving-hero">
-            <div class="hero-label">Naranja impulso</div>
+            <div class="hero-label">Respira</div>
             <h1 class="section-title mt-8">Resistí. Seguí. Viví.</h1>
             <p class="card-text mt-8">
               Van <strong id="craving-minutes">0</strong> minutos. El craving pasa siempre: vos solo tenés que aguantar la ola.
@@ -482,12 +482,18 @@
                     <option value="1">Desechable</option>
                     <option value="2">Pod recargable</option>
                     <option value="3">Mod / caja</option>
-                    <option value="0">No uso</option>
                   </select>
                 </div>
                 <div class="form-row">
-                  <label class="field-label" for="survey-frequency">Veces al día</label>
-                  <input class="field" type="number" id="survey-frequency" min="0" max="40" value="2" required />
+                  <label class="field-label" for="survey-frequency">Frecuencia de consumo</label>
+                  <select class="field" id="survey-frequency">
+                    <option value="1">1 a 3 veces por semana</option>
+                    <option value="1">Ocasional en fiestas</option>
+                    <option value="2">4 a 6 veces por semana</option>
+                    <option value="4">Casi todos los días</option>
+                    <option value="6">Diario</option>
+                    <option value="12">Varios episodios al día</option>
+                  </select>
                 </div>
               </div>
               <div class="form-row">
@@ -607,18 +613,17 @@
                     <option value="1">Desechable (20-50 mg)</option>
                     <option value="2">Pod recargable (20-40 mg)</option>
                     <option value="3">Mod / caja (10-30 mg)</option>
-                    <option value="0">No uso</option>
                   </select>
                 </div>
               </div>
               <div class="form-row two">
                 <div class="form-row">
                   <label class="field-label" for="profile-pods">Pods por semana</label>
-                  <input class="field" type="number" id="profile-pods" min="0" max="70" value="3" />
+                  <input class="field" type="number" id="profile-pods" min="1" max="70" value="3" />
                 </div>
                 <div class="form-row">
                   <label class="field-label" for="profile-mg">Nicotina por pod (mg)</label>
-                  <input class="field" type="number" id="profile-mg" min="0" max="200" step="5" />
+                  <input class="field" type="number" id="profile-mg" min="1" max="200" step="5" />
                 </div>
               </div>
               <div class="form-row">
@@ -631,27 +636,27 @@
                 <div class="nicotine-grid">
                   <div class="stat">
                     <div class="stat-label">Nicotina semanal</div>
-                    <div class="stat-value green" id="nic-weekly">0 mg</div>
+                    <div class="stat-value accent" id="nic-weekly">0 mg</div>
                     <div class="stat-sub" id="nic-weekly-sub">0 mg al día</div>
                   </div>
                   <div class="stat">
                     <div class="stat-label">Equivalente en cigarrillos</div>
-                    <div class="stat-value green" id="nic-cigarettes">0</div>
+                    <div class="stat-value accent" id="nic-cigarettes">0</div>
                     <div class="stat-sub" id="nic-cigarettes-sub">por semana</div>
                   </div>
                   <div class="stat">
                     <div class="stat-label">Nicotina ingerida</div>
-                    <div class="stat-value green" id="nic-ingested">0 mg</div>
+                    <div class="stat-value accent" id="nic-ingested">0 mg</div>
                     <div class="stat-sub">desde que empezaste</div>
                   </div>
                   <div class="stat">
                     <div class="stat-label">Nicotina evitada</div>
-                    <div class="stat-value green" id="nic-avoided">0 mg</div>
+                    <div class="stat-value accent" id="nic-avoided">0 mg</div>
                     <div class="stat-sub" id="nic-avoided-sub">en tu racha</div>
                   </div>
                   <div class="stat">
                     <div class="stat-label">Ahorro por pods</div>
-                    <div class="stat-value green" id="nic-cost">$0</div>
+                    <div class="stat-value accent" id="nic-cost">$0</div>
                     <div class="stat-sub" id="nic-cost-sub">por semana</div>
                   </div>
                 </div>

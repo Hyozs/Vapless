@@ -21,6 +21,32 @@
   let questions = [];
   let loading = false;
 
+  /* En Vapless todos son consumidores activos o exconsumidores: se descartan las
+     opciones que niegan el consumo (el banco llega desde la API). */
+  const NON_CONSUMER_OPTIONS = {
+    "q-frecuencia": ["Nunca"],
+    "q-dias": ["Ninguno"]
+  };
+
+  const NON_CONSUMER_PATTERN =
+    /(nunca\s+(he\s+)?vape|ninguna\s+vez|no\s+consumo|no\s+uso\s+(el\s+)?vapeador|0\s+(veces|d[ií]as|episodios))/i;
+
+  function isNonConsumerOption(question, option) {
+    const label = (option && option.label) || "";
+    const blocked = NON_CONSUMER_OPTIONS[question.id] || [];
+    if (blocked.indexOf(label) >= 0) {
+      return true;
+    }
+    return NON_CONSUMER_PATTERN.test(label);
+  }
+
+  function activeOptions(question) {
+    const options = (question.options || []).filter(function (option) {
+      return !isNonConsumerOption(question, option);
+    });
+    return options.length ? options : question.options || [];
+  }
+
   function escape(value) {
     return utils ? utils.escapeHtml(value) : String(value);
   }
@@ -33,7 +59,7 @@
 
     questionsEl.innerHTML = questions
       .map(function (question, index) {
-        const options = question.options
+        const options = activeOptions(question)
           .map(function (option, optionIndex) {
             return (
               '<label class="quiz-option">' +

@@ -19,8 +19,9 @@
 
 Principios de producto:
 
-- Modo oscuro por defecto.
-- Cero mensajes de culpa, miedo o castigo. Nunca usar rojo `#EF4444`.
+- Modo oscuro por defecto, con modo claro opcional.
+- Paleta mínima de máximo 3 colores base: amarillo `#FACC15` (acento), superficies `#0B0D12` / `#141821` y neutros `#E5E7EB` / `#232936`. El naranja `#F97316` solo aparece en el temporizador de Craving activo.
+- Cero mensajes de culpa, miedo o castigo. Nunca usar rojo `#EF4444`, verdes fosforescentes, azules ni morados.
 - Voseo empoderador y cercano: "Respirá", "Tú mandás", "+ $X ahorrados".
 - Privacidad de menores: sin nombres, correos, documentos ni geolocalización precisa.
 - Todo el progreso personal vive en `localStorage`; la API solo guarda agregados anónimos y datos locales de la instalación.
@@ -172,6 +173,7 @@ Configuración de estáticos: `Program.cs` resuelve `../Vapless.Client` desde el
 - Navegación: una sola barra superior (`nav.topnav-tabs`) con todas las secciones visibles, sin menús anidados: Inicio, Craving / Ansiedad, Test Psicosocial, Dojo, Reporte Robledo, Rutas de Apoyo y Perfil. Cada pestaña es una vista (`section#view-<tab>`) y `showTab(tab)` en `app.js` alterna la vista, marca la pestaña activa (`is-active` + `aria-current="page"`) y desplaza la barra para dejarla visible en pantallas angostas.
 - Tema: `data-theme="dark" | "light"` en `<html>`; `js/theme.js` aplica y persiste la preferencia en `localStorage` (`vapless.theme`). El script inline del `<head>` aplica el tema antes del primer pintado para evitar parpadeos.
 - Toda inserción de texto proveniente de la API pasa por `VaplessUtils.escapeHtml`.
+- **Todo usuario de Vapless es consumidor activo, exfumador en cesación o joven bajo presión real de consumo.** Por eso ninguna encuesta, formulario o test ofrece opciones tipo "Nunca he vapeado", "No uso", "Ninguno" o "0 veces": la escala arranca en el mínimo de consumo activo ("1 a 3 veces por semana", "Ocasional en fiestas", "Diario"). El banco de preguntas del test llega desde la API, así que `js/assessment.js` filtra en cliente las opciones que niegan el consumo (`NON_CONSUMER_OPTIONS` + `NON_CONSUMER_PATTERN`).
 - Estado personal en `localStorage`:
   - `vapless.theme`: `dark` (predeterminado) o `light`.
   - `vapless.xp`: XP acumulado en el Dojo.
@@ -187,24 +189,25 @@ Configuración de estáticos: `Program.cs` resuelve `../Vapless.Client` desde el
 
 La paleta se declara una sola vez por tema. El modo oscuro vive en `:root` y el claro en `[data-theme="light"]`; el atributo se fija en `<html>`.
 
+**Máximo 3 colores base:** un acento (amarillo), una superficie (fondo + tarjetas) y un neutro de texto/bordes. El naranja es la única excepción y solo se usa en el temporizador de Craving activo.
+
 | Token | Modo oscuro | Modo claro | Uso |
 |---|---|---|---|
 | `--vapless-bg` | `#0B0D12` | `#F8FAFC` | Fondo de pantalla |
-| `--vapless-bg-energy` | `#111827` | `#FFFFFF` | Negro Energía: fondo principal |
-| `--vapless-surface` | `#141821` | `#FFFFFF` | Surface: tarjetas y sheets |
-| `--vapless-surface-hover` | `#1C2230` | `#F1F5F9` | Hover de superficies |
-| `--vapless-border` | `#232936` | `#E2E8F0` | Borde: tarjetas e inputs |
-| `--vapless-yellow` | `#FACC15` | `#FACC15` | CTA primario, rellenos de marca |
-| `--vapless-orange` | `#F97316` | `#F97316` | Exclusivo craving / alertas de impulso |
-| `--vapless-green` | `#4ADE80` | `#4ADE80` | Logros, ahorro y confirmaciones |
-| `--vapless-white` | `#F8FAFC` | `#F8FAFC` | Blanco Nube: fondos claros |
+| `--vapless-surface` | `#141821` | `#FFFFFF` | Tarjetas y contenedores |
+| `--vapless-surface-2` | `#1E2638` | `#F1F5F9` | Hover, chips y badges |
+| `--vapless-border` | `#232936` | `#E2E8F0` | Bordes sutiles |
 | `--vapless-text` | `#E5E7EB` | `#0F172A` | Texto principal |
-| `--vapless-text-muted` | `#9CA3AF` | `#475569` | Texto secundario |
+| `--vapless-text-muted` | `#9CA3AF` | `#64748B` | Texto secundario y pestañas inactivas |
 | `--vapless-text-dim` | `#6B7280` | `#64748B` | Placeholders y deshabilitados |
+| `--vapless-yellow` | `#FACC15` | `#FACC15` | Acento único: CTA primario, racha, progreso |
+| `--vapless-yellow-ink` | `#FACC15` | `#B45309` | Variante legible del acento sobre fondo claro |
+| `--vapless-on-accent` | `#0B0D12` | `#0B0D12` | Texto sobre amarillo |
+| `--vapless-orange` | `#F97316` | `#F97316` | Exclusivo del temporizador de Craving activo |
 
-Tokens derivados (heredan por tema): `--vapless-yellow-ink`, `--vapless-orange-ink`, `--vapless-green-ink` (variantes legibles para texto y trazos), `--vapless-on-accent` (`#0B0D12`), `--vapless-field`, `--vapless-track`, `--vapless-soft-bg`, `--vapless-glass`, `--vapless-overlay`, `--vapless-nav-bg`, `--vapless-app-bg`, `--vapless-divider`, `--vapless-skeleton-*` y las sombras.
+Tokens derivados: `--vapless-yellow-soft`, `--vapless-orange-ink`, `--vapless-field`, `--vapless-track`, `--vapless-soft-bg`, `--vapless-nav-bg`, `--vapless-app-bg`, `--vapless-divider`, `--vapless-skeleton-*` y las sombras neutras.
 
-**Prohibido:** rojo `#EF4444`, tonos de alarma y mensajes de culpa. Máximo 3 colores por pantalla; el amarillo nunca ocupa un fondo completo y el botón primario es amarillo con texto `#0B0D12`. El rojo nunca aparece en ningún tema.
+**Prohibido:** rojo `#EF4444`, verdes fosforescentes, azules, morados y cualquier otro color fuera de la paleta de 3 bases; también los gradientes de color y los fondos multicolores (solo superficies planas con borde `#232936`). El amarillo nunca ocupa un fondo completo salvo el CTA primario, el FAB y el tile de logro. Cero mensajes de culpa, miedo o castigo.
 
 ### Tipografía
 
@@ -222,16 +225,17 @@ Tokens derivados (heredan por tema): `--vapless-yellow-ink`, `--vapless-orange-i
 ### Componentes clave
 
 - **Logo:** `vapless` en minúscula + punto amarillo (nunca existe la versión sin punto).
-- **TopNav (barra superior sticky):** logo + eslogan, chip de racha ("N días vapeless") y conmutador de tema en la esquina superior derecha; debajo, la fila de pestañas con todas las secciones: Inicio, Craving / Ansiedad, Test Psicosocial, Dojo, Reporte Robledo, Rutas de Apoyo y Perfil. La pestaña activa se rellena en `#FACC15` con texto `#0B0D12`; en pantallas angostas la fila se desplaza y la pestaña activa queda centrada.
+- **TopNav (barra superior sticky):** logo + eslogan, chip de racha ("N días vapeless") y conmutador de tema en la esquina superior derecha; debajo, la fila de pestañas con todas las secciones: Inicio, Craving / Ansiedad, Test Psicosocial, Dojo, Reporte Robledo, Rutas de Apoyo y Perfil. Fondo `#141821`, borde inferior `#232936`; la pestaña activa se marca **solo** con texto `#FACC15` y una línea inferior amarilla, y las demás quedan en neutro `#9CA3AF`. En pantallas angostas la fila se desplaza y la pestaña activa queda centrada.
 - **Conmutador de tema:** botón circular con ícono de luna (modo oscuro) o sol (modo claro); alterna `data-theme` en `<html>` y guarda la preferencia en `localStorage` (`vapless.theme`).
-- **Pantalla Craving:** estados `idle → respirando → completado (verde)`. La respiración sigue en la técnica elegida hasta que el usuario termine o cambie de técnica.
-- **Botón flotante naranja** "Siento ganas": lleva a la pantalla de Craving.
-- **Tarjetas:** fondo `#141821` (oscuro) / `#FFFFFF` (claro), borde `#232936` / `#E2E8F0`, radio 18 px, padding 20 px.
+- **Pantalla Craving:** estados `idle → respirando → completado`. El naranja `#F97316` aparece únicamente mientras el temporizador está en marcha (anillo de respiración, reloj y borde de la tarjeta); en reposo todo es neutro y el estado completado usa el acento amarillo.
+- **Botón flotante "Siento ganas":** CTA principal en amarillo `#FACC15` con texto `#0B0D12`.
+- **Tarjetas:** fondo `#141821` (oscuro) / `#FFFFFF` (claro), borde `#232936` / `#E2E8F0`, radio 18 px, padding 20 px, sin gradientes.
 - **ProgressRing:** SVG con trazo amarillo de 8 px sobre track `#232936`; centro con número Poppins 800 y label en 10 px uppercase.
 - **Tiles de logros:** 48×48, radio 12; desbloqueado con fondo amarillo, bloqueado con `#141821` y opacidad 0.35.
-- **Barras de progreso:** amarillas para racha/XP, verdes para ahorro y metas.
-- **Badges de riesgo:** verde (bajo), amarillo (medio), naranja (alto y muy alto).
-- **Reporte por comuna (Robledo):** tarjeta con índice de riesgo, nivel, respuestas, k-anonimato, puesto entre comunas, disparadores más reportados y razones explicables; se alimenta de `GET /api/v1/surveys/risk-map`.
+- **Barras de progreso:** amarillas (relleno sólido, sin degradado) para racha, XP, ahorro y metas.
+- **Badges:** neutros (fondo `#1E2638`, borde `#232936`); solo `.badge.accent` usa el amarillo para marcar acciones.
+- **Reporte por comuna (Robledo):** tarjeta con índice de riesgo, nivel, respuestas, k-anonimato, puesto entre comunas, disparadores más reportados (como chips) y razones explicables; se alimenta de `GET /api/v1/surveys/risk-map`.
+- **Chips de disparadores (`.trigger-chip`):** cada disparador va en su propia píldora (fondo `#232936`, borde limpio, texto `#E5E7EB`) con el conteo en neutro. Las tarjetas de métricas usan `padding: 16px`, `min-height: fit-content` y `overflow: visible` para que el texto nunca se corte.
 - **Acordeones (`js/accordion.js`):** secciones plegables de Vapless (tarjeta `#141821`, borde `#232936`, título en `#FACC15` con ícono +/−) para el análisis psicosocial y las rutas de apoyo local. Un grupo por sección: al abrir uno se cierran los demás.
 - **Panel de nicotina:** recálculo en vivo (mg semanales, mg diarios, equivalente en cigarrillos, nicotina ingerida/evitada y ahorro en COP) a partir del tipo de pod y los pods por semana.
 
@@ -337,7 +341,7 @@ Datos de demostración sembrados: perfil con 12 días de racha, 2 antojos de eje
 
 1. No romper la dirección de dependencias entre capas.
 2. No agregar paquetes, frameworks de frontend ni servicios cloud sin justificarlo.
-3. Mantener el modo oscuro y la paleta; nunca introducir rojo ni mensajes de miedo.
+3. Mantener el modo oscuro por defecto y la paleta de 3 colores base; nunca introducir rojo, verdes fosforescentes, azules, morados, gradientes de color ni mensajes de miedo.
 4. Todo texto de cara al usuario va en español con voseo.
 5. Cualquier dato nuevo de menores debe pasar por la política de k-anonimato o quedarse en `localStorage`.
 6. Si se agrega una regla de riesgo, implementar `IRiskRule` y registrarla en `AddApplication()`.
@@ -345,6 +349,7 @@ Datos de demostración sembrados: perfil con 12 días de racha, 2 antojos de eje
 8. Verificar siempre con `dotnet build Vapless.slnx` y probar `GET /api/health` antes de cerrar un cambio.
 9. No ejecutar migraciones sobre una base con datos de demostración sin respaldo previo.
 10. Mantener este archivo actualizado cuando cambie la arquitectura, la API o los tokens de diseño.
+11. No reintroducir opciones de "nunca he vapeado / no uso / 0 veces" en ningún formulario, encuesta o test del cliente.
 
 
 

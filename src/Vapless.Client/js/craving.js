@@ -236,7 +236,7 @@
         })
         .join("");
       resultEl.classList.remove("hidden");
-      resultEl.classList.add("is-green");
+      resultEl.classList.add("is-accent");
       logEl.classList.add("hidden");
       doneBtn.textContent = "Registrar mi antojo";
       doneBtn.disabled = false;

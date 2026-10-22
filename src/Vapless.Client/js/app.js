@@ -2,8 +2,10 @@
   const RING_CIRCUMFERENCE = 540.35;
   const RING_CYCLE_DAYS = 30;
 
+  /* En Vapless todos son consumidores activos o exconsumidores: no existe el tipo "No uso". */
+  const DEFAULT_POD_TYPE = 1;
+
   const POD_PROFILES = {
-    0: { name: "No usa", mg: 0, cigs: 0, cost: 0, range: "0 mg" },
     1: { name: "Desechable", mg: 50, cigs: 50, cost: 15000, range: "20-50 mg" },
     2: { name: "Pod recargable", mg: 30, cigs: 30, cost: 25000, range: "20-40 mg" },
     3: { name: "Mod / caja", mg: 20, cigs: 20, cost: 40000, range: "10-30 mg" }
@@ -26,7 +28,7 @@
   function toast(message, kind) {
     const element = document.getElementById("toast");
     element.textContent = message;
-    element.className = "toast is-visible" + (kind === "green" ? " green" : "");
+    element.className = "toast is-visible" + (kind === "accent" ? " accent" : "");
     if (toastTimer) {
       clearTimeout(toastTimer);
     }
@@ -134,7 +136,7 @@
           '<div class="goal' + (goal.reached ? " reached" : "") + '">' +
           '<span class="goal-name">' + utils.escapeHtml(goal.name) + "</span>" +
           '<span class="goal-value">' + utils.formatCop(goal.targetCop) + "</span>" +
-          '<div class="progress' + (goal.reached ? " green" : "") + '">' +
+          '<div class="progress' + (goal.reached ? " accent" : "") + '">' +
           '<span style="width: ' + percent + '%"></span>' +
           "</div></div>"
         );
@@ -161,8 +163,8 @@
 
   function podProfile() {
     const select = document.getElementById("profile-pod-type");
-    const type = Number(select.value);
-    return POD_PROFILES[type] || POD_PROFILES[0];
+    const type = Number(select.value) || DEFAULT_POD_TYPE;
+    return POD_PROFILES[type] || POD_PROFILES[DEFAULT_POD_TYPE];
   }
 
   function renderNicotinePreview() {
@@ -211,19 +213,19 @@
     container.innerHTML =
       '<div class="card-eyebrow">' + utils.escapeHtml(nicotine.podTypeName) + " · " + nicotine.podsPerWeek + " pods/semana</div>" +
       '<div class="nicotine-summary-grid">' +
-      '<div class="stat"><div class="stat-label">Nicotina por semana</div><div class="stat-value green">' +
+      '<div class="stat"><div class="stat-label">Nicotina por semana</div><div class="stat-value accent">' +
       utils.formatNumber(nicotine.weeklyNicotineMg, 1) + ' mg</div><div class="stat-sub">' +
       utils.formatNumber(nicotine.dailyNicotineMg, 1) + " mg al día</div></div>" +
-      '<div class="stat"><div class="stat-label">Equivalente en cigarrillos</div><div class="stat-value green">' +
+      '<div class="stat"><div class="stat-label">Equivalente en cigarrillos</div><div class="stat-value accent">' +
       utils.formatNumber(nicotine.weeklyCigarettes, 1) + '</div><div class="stat-sub">' +
       utils.formatNumber(nicotine.cigarettesAvoided, 1) + " evitados</div></div>" +
-      '<div class="stat"><div class="stat-label">Nicotina ingerida</div><div class="stat-value green">' +
+      '<div class="stat"><div class="stat-label">Nicotina ingerida</div><div class="stat-value accent">' +
       utils.formatNumber(nicotine.nicotineIngestedMg, 1) + ' mg</div><div class="stat-sub">desde que empezaste</div></div>' +
-      '<div class="stat"><div class="stat-label">Nicotina evitada</div><div class="stat-value green">' +
+      '<div class="stat"><div class="stat-label">Nicotina evitada</div><div class="stat-value accent">' +
       utils.formatNumber(nicotine.nicotineAvoidedMg, 1) + ' mg</div><div class="stat-sub">en tu racha</div></div>' +
-      '<div class="stat"><div class="stat-label">Ahorro por pods</div><div class="stat-value green">' +
+      '<div class="stat"><div class="stat-label">Ahorro por pods</div><div class="stat-value accent">' +
       utils.formatCop(nicotine.weeklyCostCop) + '</div><div class="stat-sub">por semana</div></div>' +
-      '<div class="stat"><div class="stat-label">Ahorro total</div><div class="stat-value green">' +
+      '<div class="stat"><div class="stat-label">Ahorro total</div><div class="stat-value accent">' +
       utils.formatCop(nicotine.copSaved) + '</div><div class="stat-sub">en tu racha</div></div>' +
       "</div>" +
       '<p class="card-text mt-12">' + utils.escapeHtml(nicotine.phrase) + "</p>";
@@ -233,9 +235,12 @@
     document.getElementById("profile-quitdate").value = (profile.quitDate || "").slice(0, 10);
     document.getElementById("profile-alias").value = profile.alias || "";
     document.getElementById("profile-cost").value = Math.round(profile.dailyCostCop || 0);
-    document.getElementById("profile-pods").value = profile.podsPerWeek;
-    document.getElementById("profile-mg").value = profile.nicotineMgPerPod;
-    document.getElementById("profile-pod-type").value = String(profile.primaryDevice);
+    document.getElementById("profile-pods").value = Math.max(1, profile.podsPerWeek || 1);
+    document.getElementById("profile-mg").value = Math.max(1, profile.nicotineMgPerPod || 1);
+    const device = Number(profile.primaryDevice);
+    document.getElementById("profile-pod-type").value = String(
+      POD_PROFILES[device] ? device : DEFAULT_POD_TYPE
+    );
     costTouched = false;
     renderNicotinePreview();
   }
@@ -391,7 +396,7 @@
 
       try {
         await api.put("/progress", payload);
-        toast("Listo. Tu ruta quedó actualizada.", "green");
+        toast("Listo. Tu ruta quedó actualizada.", "accent");
         await loadDashboard();
       } catch (error) {
         toast(error.message);
@@ -411,7 +416,7 @@
           return;
         }
         await navigator.clipboard.writeText(text);
-        toast("Racha copiada. Compartila cuando quieras.", "green");
+        toast("Racha copiada. Compartila cuando quieras.", "accent");
       } catch (error) {
         toast("No pudimos compartir. Tu racha sigue siendo tuya.");
       }
@@ -431,7 +436,7 @@
     window.VaplessCraving.init({
       onSaved: function () {
         loadDashboard();
-        toast("Antojo registrado. Sumaste otro día de control.", "green");
+        toast("Antojo registrado. Sumaste otro día de control.", "accent");
       },
       onSupport: goSupport
     });

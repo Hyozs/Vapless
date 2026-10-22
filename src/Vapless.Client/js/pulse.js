@@ -5,14 +5,30 @@
   let onSupport = function () {};
   let catalogLoaded = false;
 
-  function badgeClass(level) {
-    if (level === "Bajo") {
-      return "green";
+  /* Los disparadores se muestran como chips: nunca como texto corrido. */
+  function triggerChips(items) {
+    if (!items || !items.length) {
+      return "";
     }
-    if (level === "Medio") {
-      return "yellow";
-    }
-    return "orange";
+
+    return (
+      '<div class="trigger-list">' +
+      items
+        .map(function (item) {
+          const parts = String(item).split(" (");
+          const label = parts[0];
+          const count = parts.length > 1 ? parts[1].replace(/\)$/, "") : "";
+
+          return (
+            '<span class="trigger-chip">' +
+            utils.escapeHtml(label) +
+            (count ? '<span class="trigger-count">' + utils.escapeHtml(count) + "</span>" : "") +
+            "</span>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
   }
 
   function renderRobledoReport(map) {
@@ -67,10 +83,10 @@
 
     const triggers =
       map.topTriggers && map.topTriggers.length
-        ? '<div class="report-meta-item"><div class="report-meta-label">Disparadores más reportados</div>' +
-          '<div class="report-meta-value" style="font-size: 13px; font-weight: 600">' +
-          utils.escapeHtml(map.topTriggers.join(" · ")) +
-          "</div></div>"
+        ? '<div class="report-meta-item report-triggers">' +
+          '<div class="report-meta-label">Disparadores más reportados</div>' +
+          triggerChips(map.topTriggers) +
+          "</div>"
         : "";
 
     container.innerHTML =
@@ -80,9 +96,7 @@
       utils.formatNumber(robledo.riskIndex, 1) +
       "<small>/10</small></div>" +
       '<div class="card-text">Índice de riesgo del barrio</div></div>' +
-      '<span class="badge ' +
-      badgeClass(robledo.riskLevel) +
-      '">' +
+      '<span class="badge">' +
       utils.escapeHtml(robledo.riskLevel) +
       " · " +
       utils.formatNumber(robledo.riskIndex, 1) +
@@ -174,7 +188,7 @@
             '<div class="comuna-meta">' +
             (enough ? comuna.totalResponses + " respuestas" : utils.escapeHtml(comuna.explainableReasons[0] || "Sin datos")) +
             "</div></div>" +
-            '<span class="badge ' + (enough ? badgeClass(comuna.riskLevel) : "") + '">' +
+            '<span class="badge">' +
             (enough ? utils.escapeHtml(comuna.riskLevel) + " · " + utils.formatNumber(comuna.riskIndex, 1) + "/10" : "Sin datos") +
             "</span>" +
             '<div class="progress"><span style="width: ' + width + '%"></span></div>' +
@@ -186,9 +200,10 @@
 
       const triggers =
         map.topTriggers && map.topTriggers.length
-          ? '<p class="card-text mt-12 dim small">Disparadores más reportados: ' +
-            map.topTriggers.map(utils.escapeHtml).join(" · ") +
-            "</p>"
+          ? '<div class="report-triggers-inline">' +
+            '<div class="report-meta-label">Disparadores más reportados</div>' +
+            triggerChips(map.topTriggers) +
+            "</div>"
           : "";
 
       container.innerHTML = rows + triggers;
@@ -215,7 +230,7 @@
           title: insight.title,
           subtitle: enough ? "Dato visible para la ciudad" : "Muestra insuficiente: dato enmascarado",
           badge: enough ? "Visible" : "Enmascarado",
-          badgeClass: enough ? "green" : "",
+          badgeClass: enough ? "accent" : "",
           content:
             '<p class="card-text">' + utils.escapeHtml(insight.finding) + "</p>" +
             '<p class="rec">' + utils.escapeHtml(insight.recommendation) + "</p>"
@@ -248,7 +263,7 @@
           title: line.name,
           subtitle: line.schedule + " · " + line.scope,
           badge: numeric ? "Llamar ahora" : "Contacto",
-          badgeClass: numeric ? "green" : "",
+          badgeClass: numeric ? "accent" : "",
           content:
             '<p class="card-text">' + utils.escapeHtml(line.description) + "</p>" +
             '<div class="btn-row mt-12">' +
@@ -337,7 +352,7 @@
 
       try {
         const result = await api.post("/surveys", payload);
-        toast(result.message, "green");
+        toast(result.message, "accent");
         document.getElementById("survey-school").checked = false;
         await Promise.all([loadRiskMap(), loadAnalysis()]);
       } catch (error) {

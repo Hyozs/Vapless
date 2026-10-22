@@ -10,10 +10,7 @@ body {
 }
 
 body {
-  background:
-    radial-gradient(1200px 600px at 50% -10%, rgba(250, 204, 21, 0.08), transparent 60%),
-    radial-gradient(900px 500px at 110% 20%, rgba(249, 115, 22, 0.05), transparent 60%),
-    var(--vapless-bg);
+  background: var(--vapless-bg);
   color: var(--vapless-text);
   font-family: var(--font-body);
   font-size: var(--fs-14);
@@ -63,7 +60,7 @@ p {
 }
 
 /* =========================================================
-   Barra de navegaciÃ³n superior
+   Barra de navegación superior
    ========================================================= */
 .topnav {
   position: sticky;
@@ -110,8 +107,8 @@ p {
   flex: 0 0 auto;
   padding: 9px 14px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--vapless-border);
-  background: var(--vapless-surface);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--vapless-text-muted);
   font-size: var(--fs-12);
   font-weight: 600;
@@ -126,15 +123,16 @@ p {
 }
 
 .topnav-tab:hover {
-  background: var(--vapless-surface-hover);
+  background: var(--vapless-surface);
   color: var(--vapless-text);
 }
 
 .topnav-tab.is-active {
-  background: var(--vapless-yellow);
-  border-color: var(--vapless-yellow-ink);
-  color: var(--vapless-on-accent);
+  background: var(--vapless-surface);
+  border-color: var(--vapless-border);
+  color: var(--vapless-yellow-ink);
   font-weight: 700;
+  box-shadow: inset 0 -2px 0 var(--vapless-yellow);
 }
 
 .theme-toggle {
@@ -296,25 +294,10 @@ main {
 .hero {
   border-radius: var(--radius-lg);
   border: 1px solid var(--vapless-border);
-  background:
-    radial-gradient(160% 120% at 10% 0%, rgba(250, 204, 21, 0.14), transparent 55%),
-    var(--vapless-surface);
+  background: var(--vapless-surface);
   padding: 20px;
   overflow: hidden;
   position: relative;
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  right: -40px;
-  top: -60px;
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  border: 1px solid rgba(250, 204, 21, 0.18);
-  box-shadow: 0 0 0 26px rgba(250, 204, 21, 0.04), 0 0 0 52px rgba(250, 204, 21, 0.02);
-  pointer-events: none;
 }
 
 .hero-label {
@@ -376,7 +359,6 @@ main {
   stroke-dasharray: 540.35;
   stroke-dashoffset: 540.35;
   transition: stroke-dashoffset 0.8s ease;
-  filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.35));
 }
 
 .streak-center {
@@ -420,7 +402,7 @@ main {
 }
 
 .breath-timer #craving-remaining {
-  color: var(--vapless-orange-ink);
+  color: var(--vapless-text-muted);
   font-weight: 700;
 }
 
@@ -463,13 +445,13 @@ main {
 }
 
 .recovery-item.done .recovery-mark {
-  background: var(--vapless-green-soft);
-  border-color: rgba(74, 222, 128, 0.4);
-  color: var(--vapless-green-ink);
+  background: var(--vapless-yellow-soft);
+  border-color: rgba(250, 204, 21, 0.4);
+  color: var(--vapless-yellow-ink);
 }
 
 .recovery-item.done .recovery-title {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
 }
 
 .recovery-title {
@@ -518,11 +500,7 @@ main {
   letter-spacing: -0.03em;
 }
 
-.stat-value.green {
-  color: var(--vapless-green-ink);
-}
-
-.stat-value.yellow {
+.stat-value.accent {
   color: var(--vapless-yellow-ink);
 }
 
@@ -555,7 +533,7 @@ main {
   color: var(--vapless-on-accent);
   font-family: var(--font-title);
   font-weight: 800;
-  box-shadow: var(--shadow-yellow);
+  box-shadow: var(--shadow-card);
 }
 
 .btn-primary:hover {
@@ -563,14 +541,15 @@ main {
 }
 
 .btn-craving {
-  background: var(--vapless-orange);
-  color: #1c0f05;
-  box-shadow: var(--shadow-orange);
+  background: var(--vapless-surface-2);
+  color: var(--vapless-text);
+  border: 1px solid var(--vapless-border);
   font-weight: 700;
 }
 
 .btn-craving:hover {
-  background: #fb8c3c;
+  color: var(--vapless-yellow-ink);
+  border-color: rgba(250, 204, 21, 0.45);
 }
 
 .btn-ghost {
@@ -612,12 +591,12 @@ main {
   gap: 9px;
   padding: 13px 22px;
   border-radius: var(--radius-pill);
-  background: var(--vapless-orange);
-  color: #1c0f05;
+  background: var(--vapless-yellow);
+  color: var(--vapless-on-accent);
   font-weight: 700;
   font-size: 14px;
-  box-shadow: var(--shadow-orange);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-card);
+  border: 1px solid transparent;
 }
 
 .craving-fab:active {
@@ -628,17 +607,17 @@ main {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: #1c0f05;
+  background: var(--vapless-on-accent);
   animation: pulse-dot 1.8s ease infinite;
 }
 
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(28, 15, 5, 0.4);
+    box-shadow: 0 0 0 0 rgba(11, 13, 18, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 7px rgba(28, 15, 5, 0);
+    box-shadow: 0 0 0 7px rgba(11, 13, 18, 0);
   }
 }
 
@@ -655,12 +634,12 @@ main {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #d9ae08, var(--vapless-yellow));
+  background: var(--vapless-yellow);
   transition: width 0.4s ease;
 }
 
-.progress.green > span {
-  background: linear-gradient(90deg, #2fae5d, var(--vapless-green));
+.progress.accent > span {
+  background: var(--vapless-yellow);
 }
 
 .goal {
@@ -694,11 +673,11 @@ main {
 }
 
 .goal.reached .goal-name {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
 }
 
 .goal.reached .goal-value {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
 }
 
 .chip-row {
@@ -741,26 +720,15 @@ main {
   font-size: 11px;
   font-weight: 600;
   border: 1px solid var(--vapless-border);
-  color: var(--vapless-text-muted);
+  background: var(--vapless-surface-2);
+  color: var(--vapless-text);
   white-space: nowrap;
 }
 
-.badge.green {
-  background: var(--vapless-green-soft);
-  border-color: rgba(74, 222, 128, 0.3);
-  color: var(--vapless-green-ink);
-}
-
-.badge.yellow {
+.badge.accent {
   background: var(--vapless-yellow-soft);
   border-color: rgba(250, 204, 21, 0.3);
   color: var(--vapless-yellow-ink);
-}
-
-.badge.orange {
-  background: var(--vapless-orange-soft);
-  border-color: rgba(249, 115, 22, 0.35);
-  color: var(--vapless-orange-ink);
 }
 
 .comuna-row {
@@ -967,9 +935,7 @@ select.field {
   inset: 0;
   border-radius: var(--radius-lg);
   border: 1px solid var(--vapless-border);
-  background:
-    radial-gradient(120% 90% at 10% 0%, rgba(250, 204, 21, 0.08), transparent 55%),
-    var(--vapless-surface);
+  background: var(--vapless-surface);
   padding: 22px;
   display: flex;
   flex-direction: column;
@@ -1046,11 +1012,11 @@ select.field {
 }
 
 .card-back .verdict.good {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
 }
 
 .card-back .verdict.miss {
-  color: var(--vapless-yellow-ink);
+  color: var(--vapless-text-muted);
 }
 
 .card-back .explanation {
@@ -1071,15 +1037,15 @@ select.field {
 }
 
 .btn-myth {
-  border: 1px solid rgba(249, 115, 22, 0.4);
-  background: var(--vapless-orange-soft);
-  color: var(--vapless-orange-ink);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface-2);
+  color: var(--vapless-text);
 }
 
 .btn-real {
-  border: 1px solid rgba(74, 222, 128, 0.35);
-  background: var(--vapless-green-soft);
-  color: var(--vapless-green-ink);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface-2);
+  color: var(--vapless-text);
 }
 
 .deck-progress {
@@ -1111,8 +1077,8 @@ select.field {
 
 .deck-summary {
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(74, 222, 128, 0.35);
-  background: var(--vapless-green-soft);
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  background: var(--vapless-yellow-soft);
   padding: 20px;
 }
 
@@ -1130,8 +1096,8 @@ select.field {
 .scenario .peer {
   margin-top: 10px;
   padding: 10px 12px;
-  border-left: 2px solid var(--vapless-orange);
-  background: var(--vapless-orange-soft);
+  border-left: 2px solid var(--vapless-border);
+  background: var(--vapless-surface-2);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: 13.5px;
 }
@@ -1214,7 +1180,7 @@ select.field {
 }
 
 .insight .rec {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
   font-size: 12.5px;
   margin-top: 6px;
 }
@@ -1234,18 +1200,27 @@ select.field {
 
 .breath-ring .track {
   fill: none;
-  stroke: rgba(249, 115, 22, 0.16);
+  stroke: var(--vapless-border);
   stroke-width: 8;
 }
 
 .breath-ring .bar {
   fill: none;
-  stroke: var(--vapless-orange);
+  stroke: var(--vapless-border);
   stroke-width: 8;
   stroke-linecap: round;
   stroke-dasharray: 596.9;
   stroke-dashoffset: 0;
   transition: stroke-dashoffset 1s linear;
+}
+
+/* El naranja es exclusivo del temporizador de Craving en marcha. */
+.craving-card.is-respirando .breath-ring .track {
+  stroke: rgba(249, 115, 22, 0.2);
+}
+
+.craving-card.is-respirando .breath-ring .bar {
+  stroke: var(--vapless-orange);
 }
 
 .breath-center {
@@ -1294,21 +1269,21 @@ select.field {
 }
 
 .intensity.is-active {
-  border-color: rgba(249, 115, 22, 0.5);
-  background: var(--vapless-orange-soft);
-  color: var(--vapless-orange-ink);
+  border-color: rgba(250, 204, 21, 0.5);
+  background: var(--vapless-yellow-soft);
+  color: var(--vapless-yellow-ink);
 }
 
 .result-box {
   border-radius: var(--radius-md);
-  border: 1px solid rgba(74, 222, 128, 0.35);
-  background: var(--vapless-green-soft);
+  border: 1px solid var(--vapless-border);
+  background: var(--vapless-surface);
   padding: 16px;
   margin-top: 14px;
 }
 
 .result-box h3 {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
   font-size: 18px;
 }
 
@@ -1347,8 +1322,8 @@ select.field {
   transform: translate(-50%, 0);
 }
 
-.toast.green {
-  border-color: rgba(74, 222, 128, 0.35);
+.toast.accent {
+  border-color: rgba(250, 204, 21, 0.45);
 }
 
 .muted {
@@ -1417,7 +1392,7 @@ select.field {
 }
 
 /* =========================================================
-   TÃ©cnicas de respiraciÃ³n
+   Técnicas de respiración
    ========================================================= */
 .technique-tabs {
   display: grid;
@@ -1450,12 +1425,12 @@ select.field {
 }
 
 .technique.is-active {
-  border-color: var(--vapless-orange-ink);
-  background: var(--vapless-orange-soft);
+  border-color: rgba(250, 204, 21, 0.5);
+  background: var(--vapless-yellow-soft);
 }
 
 .technique.is-active strong {
-  color: var(--vapless-orange-ink);
+  color: var(--vapless-yellow-ink);
 }
 
 .technique-hint {
@@ -1466,7 +1441,7 @@ select.field {
 }
 
 /* =========================================================
-   Fuentes cientÃ­ficas (acordeÃ³n)
+   Fuentes científicas (acordeón)
    ========================================================= */
 .sources-card {
   padding: 0;
@@ -1498,7 +1473,7 @@ select.field {
 }
 
 .sources[open] summary::after {
-  content: "â€“";
+  content: "–";
 }
 
 .sources ul {
@@ -1535,7 +1510,7 @@ select.field {
 }
 
 /* =========================================================
-   AutoevaluaciÃ³n psicosocial
+   Autoevaluación psicosocial
    ========================================================= */
 .quiz-list {
   display: grid;
@@ -1632,18 +1607,6 @@ select.field {
   margin-left: 4px;
 }
 
-.assessment-result[data-level="leve"] .assessment-score {
-  color: var(--vapless-green-ink);
-}
-
-.assessment-result[data-level="moderado"] .assessment-score {
-  color: var(--vapless-yellow-ink);
-}
-
-.assessment-result[data-level="grave"] .assessment-score {
-  color: var(--vapless-orange-ink);
-}
-
 .support-card {
   margin-top: 16px;
   padding: 16px;
@@ -1652,19 +1615,15 @@ select.field {
   background: var(--vapless-surface);
 }
 
-.support-card[data-level="leve"] {
-  border-color: rgba(74, 222, 128, 0.4);
-  background: var(--vapless-green-soft);
-}
-
-.support-card[data-level="moderado"] {
-  border-color: rgba(250, 204, 21, 0.45);
-  background: var(--vapless-yellow-soft);
+.support-card[data-level="leve"],
+.support-card[data-level="moderado"],
+.support-card[data-level="grave"] {
+  border-color: var(--vapless-border);
+  background: var(--vapless-surface);
 }
 
 .support-card[data-level="grave"] {
-  border-color: rgba(249, 115, 22, 0.6);
-  background: var(--vapless-orange-soft);
+  border-left: 2px solid var(--vapless-yellow);
 }
 
 .support-card h4 {
@@ -1696,9 +1655,7 @@ select.field {
 @media (min-width: 1024px) {
   body {
     padding: 0;
-    background:
-      radial-gradient(1200px 620px at 50% -12%, rgba(250, 204, 21, 0.08), transparent 62%),
-      var(--vapless-bg);
+    background: var(--vapless-bg);
   }
 
   .app {
@@ -1861,7 +1818,7 @@ select.field {
 }
 
 .accordion-item.is-open {
-  border-color: rgba(250, 204, 21, 0.45);
+  border-color: var(--vapless-border);
   background: var(--vapless-surface-hover);
 }
 
@@ -1946,7 +1903,7 @@ select.field {
 }
 
 .accordion-content .rec {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
   font-size: 12.5px;
 }
 
@@ -2048,16 +2005,17 @@ select.field {
 }
 
 .support-card.priority {
-  border-color: rgba(249, 115, 22, 0.7);
-  background: linear-gradient(180deg, rgba(249, 115, 22, 0.18), rgba(249, 115, 22, 0.06));
-  box-shadow: var(--shadow-orange);
+  border-color: var(--vapless-border);
+  border-left: 2px solid var(--vapless-yellow);
+  background: var(--vapless-surface);
+  box-shadow: var(--shadow-card);
 }
 
 .support-card.priority h4 {
-  color: var(--vapless-orange-ink);
+  color: var(--vapless-yellow-ink);
 }
 /* =========================================================
-   Saludo y lÃ­nea de progreso (Inicio)
+   Saludo y línea de progreso (Inicio)
    ========================================================= */
 .hero-greeting {
   display: flex;
@@ -2087,7 +2045,7 @@ select.field {
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-card);
   border: 1px solid var(--vapless-border);
-  background: var(--vapless-glass);
+  background: var(--vapless-surface);
 }
 
 .progress-line-item {
@@ -2105,9 +2063,8 @@ select.field {
   background: var(--vapless-text-dim);
 }
 
-.progress-dot.green {
-  background: var(--vapless-green);
-  box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+.progress-dot.accent {
+  background: var(--vapless-yellow);
 }
 
 /* =========================================================
@@ -2157,13 +2114,59 @@ select.field {
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 10px;
   margin-top: 14px;
+  align-items: start;
 }
 
 .report-meta-item {
-  padding: 12px;
+  padding: 16px;
+  min-height: fit-content;
+  overflow: visible;
   border-radius: var(--radius-sm);
   border: 1px solid var(--vapless-border);
   background: var(--vapless-field);
+}
+
+.report-triggers {
+  grid-column: 1 / -1;
+}
+
+.report-triggers-inline {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vapless-divider);
+  min-height: fit-content;
+  overflow: visible;
+}
+
+/* Chips de disparadores: cada uno en su propia píldora, sin amontonar texto */
+.trigger-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  min-height: fit-content;
+  overflow: visible;
+}
+
+.trigger-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--vapless-border);
+  border: 1px solid var(--vapless-border);
+  color: var(--vapless-text);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.trigger-count {
+  color: var(--vapless-text-muted);
+  font-weight: 500;
 }
 
 .report-meta-label {
@@ -2220,7 +2223,7 @@ select.field {
   font-size: var(--fs-14);
   background: var(--vapless-yellow);
   color: var(--vapless-on-accent);
-  box-shadow: var(--shadow-yellow);
+  box-shadow: var(--shadow-card);
 }
 
 .achievement.is-locked .achievement-tile {
@@ -2239,16 +2242,14 @@ select.field {
 }
 
 .achievement.is-unlocked .achievement-label {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
 }
 
 /* =========================================================
    Pantalla de craving
    ========================================================= */
 .craving-hero {
-  background:
-    radial-gradient(160% 120% at 10% 0%, rgba(249, 115, 22, 0.18), transparent 58%),
-    var(--vapless-surface);
+  background: var(--vapless-surface);
 }
 
 .craving-card {
@@ -2273,8 +2274,12 @@ select.field {
   font-family: var(--font-title);
   font-weight: 800;
   font-size: var(--fs-28);
-  color: var(--vapless-orange-ink);
+  color: var(--vapless-text);
   letter-spacing: -0.02em;
+}
+
+.craving-card.is-respirando .craving-timer #craving-elapsed {
+  color: var(--vapless-orange-ink);
 }
 
 .craving-actions {
@@ -2288,23 +2293,23 @@ select.field {
 }
 
 .craving-card.is-completado {
-  border-color: rgba(74, 222, 128, 0.55);
-  background: linear-gradient(180deg, rgba(74, 222, 128, 0.08), var(--vapless-surface) 60%);
+  border-color: rgba(250, 204, 21, 0.55);
+  background: var(--vapless-surface);
 }
 
 .craving-card.is-completado .craving-timer #craving-elapsed {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
 }
 
 .craving-card.is-completado .breath-phase {
-  color: var(--vapless-green-ink);
+  color: var(--vapless-yellow-ink);
 }
 
-.result-box.is-green {
-  border-color: rgba(74, 222, 128, 0.45);
-  background: linear-gradient(180deg, rgba(74, 222, 128, 0.1), var(--vapless-surface) 70%);
+.result-box.is-accent {
+  border-color: rgba(250, 204, 21, 0.45);
+  background: var(--vapless-surface);
 }
 
-.result-box.is-green h3 {
-  color: var(--vapless-green-ink);
+.result-box.is-accent h3 {
+  color: var(--vapless-yellow-ink);
 }
